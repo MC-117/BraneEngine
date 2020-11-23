@@ -1,0 +1,1053 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\Base">
+      <UniqueIdentifier>{c6fb3d32-06d9-4ede-8b1d-d0cc81182d77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Camera">
+      <UniqueIdentifier>{993097a2-17a1-4a3d-9e44-bf173abbd3ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Shape">
+      <UniqueIdentifier>{8b3399a1-5ae3-43b5-94cd-11747324a6cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Render">
+      <UniqueIdentifier>{d897638c-9009-41a2-81b6-223b60feafcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Actor">
+      <UniqueIdentifier>{bdb5b16b-ce5b-4931-b17d-58a5ca3b1d2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Base">
+      <UniqueIdentifier>{46fe12d6-0f28-4a01-99d2-55837add59ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Camera">
+      <UniqueIdentifier>{daaec7c2-f025-42bb-8c7e-036eb7aedc96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Actor">
+      <UniqueIdentifier>{6cbb567f-afbf-4bd4-8386-f012c4d8b2d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Render">
+      <UniqueIdentifier>{9d6f39c6-5084-47eb-b5d1-7f49d0fb38db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Shape">
+      <UniqueIdentifier>{1a45af0e-d055-44ce-8d2b-99a34b9a5a27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Reader">
+      <UniqueIdentifier>{901d261f-7392-4c80-8852-6272f87843ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Reader">
+      <UniqueIdentifier>{2b649064-4c0e-4443-b0c2-343237c79e48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Control">
+      <UniqueIdentifier>{32549bf2-f09b-4f51-b464-d2cecb9d2068}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Control">
+      <UniqueIdentifier>{d84a57c1-6a0a-4e99-b0a8-9e0d7171a5e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="资源文件\Shaders">
+      <UniqueIdentifier>{180db05f-ebcb-4a6f-ab6e-9f1187a79d33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Managment">
+      <UniqueIdentifier>{54dc67a6-5040-4a5a-9e98-9adc4322c463}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Managment">
+      <UniqueIdentifier>{2537122e-7189-48ae-918a-b4ef9994cfc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Render\Light">
+      <UniqueIdentifier>{4ca904fb-2d86-4d0c-8ace-b9c9f70b0f60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Render\Base">
+      <UniqueIdentifier>{02ab429a-6b0b-4070-8f62-360cc914f0ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Render\Light">
+      <UniqueIdentifier>{bbbbac6a-f432-4abf-8ffc-d88eca7104b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Render\Base">
+      <UniqueIdentifier>{2e77f878-f51d-41e8-8d6e-684570c896a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Render\Render">
+      <UniqueIdentifier>{37aa8821-c0a4-4961-a2ff-5525d8c085fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Tools">
+      <UniqueIdentifier>{d3eb76a8-877b-40e8-a987-257281dbef33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\DataContainer">
+      <UniqueIdentifier>{adc812ee-56ef-446b-8017-ad91929e4488}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\DataContainer">
+      <UniqueIdentifier>{a03a9cf3-0f25-4493-99b6-de28594bc529}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ThridParty">
+      <UniqueIdentifier>{13a2a452-6e38-4e50-b872-33637c15fcb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ThridParty">
+      <UniqueIdentifier>{1231be3b-1c3e-44d1-bc39-320dc6150838}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ThridParty\ImGUI">
+      <UniqueIdentifier>{28bfcb58-2483-4e9c-87c8-c64e9f22af19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ThridParty\ImGUI">
+      <UniqueIdentifier>{a0deb8d3-ee10-47e7-b602-0a003301b0a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\GUI">
+      <UniqueIdentifier>{eaa74c90-5eb9-44bc-92d9-6791d91ea61f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\GUI">
+      <UniqueIdentifier>{c449f037-15c2-4fc5-9ec6-75e2817c4b66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Render\Render">
+      <UniqueIdentifier>{7d9ddbc4-1f33-4512-83a5-8d1a756346c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Render\Texture">
+      <UniqueIdentifier>{76336214-83a0-4513-87fa-3bd67e19a7ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Render\Texture">
+      <UniqueIdentifier>{85cd1178-78e7-4b20-a161-8c8c1285418d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Physics">
+      <UniqueIdentifier>{695f2c66-1a48-4221-abcf-c0da2cd02ae5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Physics">
+      <UniqueIdentifier>{0c6c8058-44c2-4c2e-bb10-2d264eaada19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="资源文件\AssetFiles">
+      <UniqueIdentifier>{90490bac-0ff3-44c0-aac8-945762c19975}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\GUI\WindowsUI">
+      <UniqueIdentifier>{d9eef812-31cb-44f1-af52-1e09529693bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\GUI\WindowsUI">
+      <UniqueIdentifier>{812fff07-6184-4616-945b-3a5b58f8e953}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\PythonExtension">
+      <UniqueIdentifier>{baf0f9aa-225b-476f-8723-6774562c3e8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\PythonExtension">
+      <UniqueIdentifier>{0c91c99a-f042-4ce7-96f5-af7bcd5babf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Animation">
+      <UniqueIdentifier>{585feb4c-cb2d-4cb8-870c-4e717ef9d6da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Animation">
+      <UniqueIdentifier>{4c434610-4caf-43e0-9c43-a3762077bd71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Audio">
+      <UniqueIdentifier>{392f63e2-0562-4d8d-bffe-9ea26c44f561}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Audio">
+      <UniqueIdentifier>{a97a0697-39f8-41c3-ac10-f8fb53f78c13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Assets">
+      <UniqueIdentifier>{c3a0fea3-e25e-4cfa-99d8-c075d9e4ac48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Assets">
+      <UniqueIdentifier>{d460bf41-c943-4fe2-b92b-a9f7ce41f708}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Plugin">
+      <UniqueIdentifier>{a34557b2-b8fa-4e08-ab53-cb363f3b8fc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Plugin">
+      <UniqueIdentifier>{fac6b13f-1841-47d4-84d2-162f91c0a646}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Extra">
+      <UniqueIdentifier>{ea70ce3b-78c9-4478-80f3-918de515faa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Extra">
+      <UniqueIdentifier>{65217cea-8d27-4898-880d-2206a1a7f078}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Render\ParticleSystem">
+      <UniqueIdentifier>{6f7ec5cd-ea8f-4380-8d61-b390a9934331}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Render\ParticleSystem">
+      <UniqueIdentifier>{d8ed3b09-f78e-452a-afc5-adb67a76937f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ThridParty\ImGuizmo">
+      <UniqueIdentifier>{7697df1e-2390-4ba8-880a-00bb5492ffef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ThridParty\ImGuizmo">
+      <UniqueIdentifier>{8545c4e9-8d69-4210-94bf-2e12ad4389d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ThridParty\ImGuiNodeEditor">
+      <UniqueIdentifier>{77e3c0dc-bfe8-421a-a9a6-382258ee2424}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ThridParty\ImGuiNodeEditor">
+      <UniqueIdentifier>{45f94c9a-f3b1-44ec-9812-8b3da870b2d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\ThridParty\stb_image">
+      <UniqueIdentifier>{eedabf38-2ad7-472b-9ac8-8a4d37c6b2fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Tools\AnimationCoverter">
+      <UniqueIdentifier>{8ac1385c-cd5a-45d1-a980-f8565bb34220}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Tools">
+      <UniqueIdentifier>{1a50fed1-b657-4847-8373-2d4ae7479b53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Tools\AnimationCoverter">
+      <UniqueIdentifier>{3419a915-a137-4ea1-813b-6268f653ba11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Tools\ToolShelf">
+      <UniqueIdentifier>{e10efda8-2b99-46a9-973b-69852dc506f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Tools\ToolShelf">
+      <UniqueIdentifier>{702c0bd7-43e1-4e26-b47d-19cea87bc9cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Render\Shader">
+      <UniqueIdentifier>{87ab9bdf-e2aa-40b5-a3ee-3f6f235b4c80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Render\Shader">
+      <UniqueIdentifier>{2a0748d5-39c3-4888-bb43-f81acd54c1be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Render\Postprocess">
+      <UniqueIdentifier>{bbb009f2-49fa-4d25-8087-8f7ce228b12c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Render\Postprocess">
+      <UniqueIdentifier>{1493d154-2087-4689-bfbe-605cf82afce7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Vendor">
+      <UniqueIdentifier>{15b35a32-f1a0-4721-97f8-959838dd99c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Vendor\OpenGL">
+      <UniqueIdentifier>{2bd56423-611d-4883-b86b-71578a7d1222}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Vendor\DX12">
+      <UniqueIdentifier>{3306de6f-b789-4e12-93b4-e593341f46d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Vendor">
+      <UniqueIdentifier>{d0d846c5-ee57-45c3-8d76-090ada7802ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Vendor\OpenGL">
+      <UniqueIdentifier>{1211a08b-7c84-44a1-8194-79c68abdf3ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Vendor\DX12">
+      <UniqueIdentifier>{ae212000-23b4-4ab3-a997-4f561ddeddde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Vendor\Base">
+      <UniqueIdentifier>{be1ffe2f-7725-4665-a6a0-72d62177a5db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Vendor\Base">
+      <UniqueIdentifier>{37747c72-449f-4d78-9fa4-d2aaf116c13d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Camera.cpp">
+      <Filter>源文件\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>源文件\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="Shape.cpp">
+      <Filter>源文件\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>源文件\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>源文件\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjReader.cpp">
+      <Filter>源文件\Reader</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>源文件\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>源文件\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>源文件\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="initial.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp">
+      <Filter>源文件\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>源文件\Render\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>源文件\Render\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderPool.cpp">
+      <Filter>源文件\Render\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>源文件\Render\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRender.cpp">
+      <Filter>源文件\Render\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Directlight.cpp">
+      <Filter>源文件\Render\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>源文件\Render\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Brane.cpp">
+      <Filter>源文件\Managment</Filter>
+    </ClCompile>
+    <ClCompile Include="SkySphere.cpp">
+      <Filter>源文件\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshActor.cpp">
+      <Filter>源文件\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.cpp">
+      <Filter>源文件\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>源文件\ThridParty\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>源文件\ThridParty\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>源文件\ThridParty\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>源文件\ThridParty\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>源文件\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIControl.cpp">
+      <Filter>源文件\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Render.cpp">
+      <Filter>源文件\Render\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTarget.cpp">
+      <Filter>源文件\Render\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcessingCamera.cpp">
+      <Filter>源文件\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>源文件\Render\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>源文件\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBody.cpp">
+      <Filter>源文件\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicalWorld.cpp">
+      <Filter>源文件\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicalBody.cpp">
+      <Filter>源文件\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicalMaterial.cpp">
+      <Filter>源文件\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionActor.cpp">
+      <Filter>源文件\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Asset.cpp">
+      <Filter>源文件\Managment</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraRender.cpp">
+      <Filter>源文件\Render\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowCameraRender.cpp">
+      <Filter>源文件\Render\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowCamera.cpp">
+      <Filter>源文件\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorWindow.cpp">
+      <Filter>源文件\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIWindow.cpp">
+      <Filter>源文件\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectorWindow.cpp">
+      <Filter>源文件\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetLoadWindow.cpp">
+      <Filter>源文件\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleWindow.cpp">
+      <Filter>源文件\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>源文件\Managment</Filter>
+    </ClCompile>
+    <ClCompile Include="Unit.cpp">
+      <Filter>源文件\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadingUI.cpp">
+      <Filter>源文件\GUI\WindowsUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PythonManager.cpp">
+      <Filter>源文件\PythonExtension</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_stdlib.cpp">
+      <Filter>源文件\ThridParty\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="VehicleActor.cpp">
+      <Filter>源文件\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderCommandList.cpp">
+      <Filter>源文件\Render\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Importer.cpp">
+      <Filter>源文件\Reader</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonMesh.cpp">
+      <Filter>源文件\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonMeshRender.cpp">
+      <Filter>源文件\Render\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Bone.cpp">
+      <Filter>源文件\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonMeshActor.cpp">
+      <Filter>源文件\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationClip.cpp">
+      <Filter>源文件\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioSource.cpp">
+      <Filter>源文件\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="CapsuleActor.cpp">
+      <Filter>源文件\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonPhysicalAsset.cpp">
+      <Filter>源文件\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Serialization.cpp">
+      <Filter>源文件\Managment</Filter>
+    </ClCompile>
+    <ClCompile Include="IKSolver.cpp">
+      <Filter>源文件\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="GrassMeshActor.cpp">
+      <Filter>源文件\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginBase.cpp">
+      <Filter>源文件\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginManager.cpp">
+      <Filter>源文件\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="Events.cpp">
+      <Filter>源文件\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>源文件\DataContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetBrowser.cpp">
+      <Filter>源文件\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="FaceTrackerObject.cpp">
+      <Filter>源文件\Extra</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationStateMachine.cpp">
+      <Filter>源文件\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>源文件\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleEmitter.cpp">
+      <Filter>源文件\Render\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>源文件\Render\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialWindow.cpp">
+      <Filter>源文件\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowBar.cpp">
+      <Filter>源文件\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PythonScript.cpp">
+      <Filter>源文件\PythonExtension</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphWindow.cpp">
+      <Filter>源文件\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo.cpp">
+      <Filter>源文件\ThridParty\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Builders.cpp">
+      <Filter>源文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="crude_json.cpp">
+      <Filter>源文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing.cpp">
+      <Filter>源文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_canvas.cpp">
+      <Filter>源文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_node_editor.cpp">
+      <Filter>源文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_node_editor_api.cpp">
+      <Filter>源文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets.cpp">
+      <Filter>源文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="PythonGraphWindow.cpp">
+      <Filter>源文件\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonAnimationPipeline.cpp">
+      <Filter>源文件\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonPose.cpp">
+      <Filter>源文件\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="BlendSpaceWindow.cpp">
+      <Filter>源文件\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicalController.cpp">
+      <Filter>源文件\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothBody.cpp">
+      <Filter>源文件\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureViewer.cpp">
+      <Filter>源文件\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SerializationEditor.cpp">
+      <Filter>源文件\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="tool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolShelf.cpp">
+      <Filter>源文件\Tools\ToolShelf</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationConverter.cpp">
+      <Filter>源文件\Tools\AnimationCoverter</Filter>
+    </ClCompile>
+    <ClCompile Include="MMDPmxParser.cpp">
+      <Filter>源文件\Tools\AnimationCoverter</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>源文件\Render\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderStage.cpp">
+      <Filter>源文件\Render\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcessCameraRender.cpp">
+      <Filter>源文件\Render\Postprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcessPass.cpp">
+      <Filter>源文件\Render\Postprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="BloomPass.cpp">
+      <Filter>源文件\Render\Postprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcessGraph.cpp">
+      <Filter>源文件\Render\Postprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="ToneMapPass.cpp">
+      <Filter>源文件\Render\Postprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="BlitPass.cpp">
+      <Filter>源文件\Render\Postprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="SSAOPass.cpp">
+      <Filter>源文件\Render\Postprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="DOFPass.cpp">
+      <Filter>源文件\Render\Postprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="IVendor.cpp">
+      <Filter>源文件\Vendor\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Vendors\OpenGL\OpenGLVendor.cpp">
+      <Filter>源文件\Vendor\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_glfw.cpp">
+      <Filter>源文件\Vendor\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_opengl3.cpp">
+      <Filter>源文件\Vendor\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Vendors\DX12\DX12Vendor.cpp">
+      <Filter>源文件\Vendor\DX12</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_dx12.cpp">
+      <Filter>源文件\Vendor\DX12</Filter>
+    </ClCompile>
+    <ClCompile Include="Vendors\OpenGL\OpenGLTexture2D.cpp">
+      <Filter>源文件\Vendor\OpenGL</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Unit.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>头文件\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>头文件\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>头文件\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjReader.h">
+      <Filter>头文件\Reader</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>头文件\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Control.h">
+      <Filter>头文件\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>头文件\Render\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRender.h">
+      <Filter>头文件\Render\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>头文件\Render\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>头文件\Render\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderPool.h">
+      <Filter>头文件\Render\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>头文件\Render\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectLight.h">
+      <Filter>头文件\Render\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Brane.h">
+      <Filter>头文件\Managment</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>头文件\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>头文件\ThridParty\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>头文件\ThridParty\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>头文件\ThridParty\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>头文件\ThridParty\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>头文件\ThridParty\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>头文件\ThridParty\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>头文件\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIControl.h">
+      <Filter>头文件\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTarget.h">
+      <Filter>头文件\Render\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Render.h">
+      <Filter>头文件\Render\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraRender.h">
+      <Filter>头文件\Render\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcessingCamera.h">
+      <Filter>头文件\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>头文件\Render\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="IRendering.h">
+      <Filter>头文件\Render\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>头文件\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicalMaterial.h">
+      <Filter>头文件\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody.h">
+      <Filter>头文件\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicalWorld.h">
+      <Filter>头文件\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicalBody.h">
+      <Filter>头文件\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionActor.h">
+      <Filter>头文件\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshActor.h">
+      <Filter>头文件\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset.h">
+      <Filter>头文件\Managment</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowCameraRender.h">
+      <Filter>头文件\Render\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowCamera.h">
+      <Filter>头文件\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="UIWindow.h">
+      <Filter>头文件\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorWindow.h">
+      <Filter>头文件\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectorWindow.h">
+      <Filter>头文件\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetLoadWindow.h">
+      <Filter>头文件\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>头文件\Managment</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleWindow.h">
+      <Filter>头文件\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SkySphere.h">
+      <Filter>头文件\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadingUI.h">
+      <Filter>头文件\GUI\WindowsUI</Filter>
+    </ClInclude>
+    <ClInclude Include="PythonManager.h">
+      <Filter>头文件\PythonExtension</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_stdlib.h">
+      <Filter>头文件\ThridParty\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="VehicleActor.h">
+      <Filter>头文件\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderCommandList.h">
+      <Filter>头文件\Render\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Importer.h">
+      <Filter>头文件\Reader</Filter>
+    </ClInclude>
+    <ClInclude Include="Bone.h">
+      <Filter>头文件\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonMesh.h">
+      <Filter>头文件\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonMeshRender.h">
+      <Filter>头文件\Render\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonMeshActor.h">
+      <Filter>头文件\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSource.h">
+      <Filter>头文件\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="CapsuleActor.h">
+      <Filter>头文件\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Serialization.h">
+      <Filter>头文件\Managment</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonPhysicalAsset.h">
+      <Filter>头文件\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationClip.h">
+      <Filter>头文件\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Curve.h">
+      <Filter>头文件\DataContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="sTOB.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="IKSolver.h">
+      <Filter>头文件\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="GrassMeshActor.h">
+      <Filter>头文件\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginBase.h">
+      <Filter>头文件\Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginManager.h">
+      <Filter>头文件\Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="Events.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="FaceTrackerObject.h">
+      <Filter>头文件\Extra</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>头文件\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>头文件\DataContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationStateMachine.h">
+      <Filter>头文件\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetBrowser.h">
+      <Filter>头文件\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleEmitter.h">
+      <Filter>头文件\Render\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>头文件\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>头文件\Render\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialWindow.h">
+      <Filter>头文件\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonAnimationPipeline.h">
+      <Filter>头文件\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowBar.h">
+      <Filter>头文件\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="PythonScript.h">
+      <Filter>头文件\PythonExtension</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphWindow.h">
+      <Filter>头文件\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo.h">
+      <Filter>头文件\ThridParty\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_bezier_math.h">
+      <Filter>头文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_canvas.h">
+      <Filter>头文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_extra_math.h">
+      <Filter>头文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_node_editor.h">
+      <Filter>头文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_node_editor_internal.h">
+      <Filter>头文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Interop.h">
+      <Filter>头文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Math2D.h">
+      <Filter>头文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Widgets.h">
+      <Filter>头文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Builders.h">
+      <Filter>头文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="crude_json.h">
+      <Filter>头文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing.h">
+      <Filter>头文件\ThridParty\ImGuiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="PythonGraphWindow.h">
+      <Filter>头文件\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="PythonGraph.h">
+      <Filter>头文件\PythonExtension</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonPose.h">
+      <Filter>头文件\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="BlendSpaceWindow.h">
+      <Filter>头文件\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicalController.h">
+      <Filter>头文件\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothBody.h">
+      <Filter>头文件\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureViewer.h">
+      <Filter>头文件\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SerializationEditor.h">
+      <Filter>头文件\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>头文件\ThridParty\stb_image</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image_write.h">
+      <Filter>头文件\ThridParty\stb_image</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolShelf.h">
+      <Filter>头文件\Tools\ToolShelf</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationConverter.h">
+      <Filter>头文件\Tools\AnimationCoverter</Filter>
+    </ClInclude>
+    <ClInclude Include="MMDVmdParser.h">
+      <Filter>头文件\Tools\AnimationCoverter</Filter>
+    </ClInclude>
+    <ClInclude Include="MMDCpp14.h">
+      <Filter>头文件\Tools\AnimationCoverter</Filter>
+    </ClInclude>
+    <ClInclude Include="SJ2UTF8Table.h">
+      <Filter>头文件\Tools\AnimationCoverter</Filter>
+    </ClInclude>
+    <ClInclude Include="MMDPmxParser.h">
+      <Filter>头文件\Tools\AnimationCoverter</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>头文件\Render\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderStage.h">
+      <Filter>头文件\Render\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcessCameraRender.h">
+      <Filter>头文件\Render\Postprocess</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcessPass.h">
+      <Filter>头文件\Render\Postprocess</Filter>
+    </ClInclude>
+    <ClInclude Include="ToneMapPass.h">
+      <Filter>头文件\Render\Postprocess</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcessGraph.h">
+      <Filter>头文件\Render\Postprocess</Filter>
+    </ClInclude>
+    <ClInclude Include="BloomPass.h">
+      <Filter>头文件\Render\Postprocess</Filter>
+    </ClInclude>
+    <ClInclude Include="BlitPass.h">
+      <Filter>头文件\Render\Postprocess</Filter>
+    </ClInclude>
+    <ClInclude Include="SSAOPass.h">
+      <Filter>头文件\Render\Postprocess</Filter>
+    </ClInclude>
+    <ClInclude Include="DOFPass.h">
+      <Filter>头文件\Render\Postprocess</Filter>
+    </ClInclude>
+    <ClInclude Include="ITexture.h">
+      <Filter>头文件\Vendor\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="IVendor.h">
+      <Filter>头文件\Vendor\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Vendors\OpenGL\OpenGLVendor.h">
+      <Filter>头文件\Vendor\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Vendors\DX12\DX12.h">
+      <Filter>头文件\Vendor\DX12</Filter>
+    </ClInclude>
+    <ClInclude Include="Vendors\DX12\d3dx12.h">
+      <Filter>头文件\Vendor\DX12</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_glfw.h">
+      <Filter>头文件\Vendor\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_opengl3.h">
+      <Filter>头文件\Vendor\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Vendors\DX12\DX12Vendor.h">
+      <Filter>头文件\Vendor\DX12</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_dx12.h">
+      <Filter>头文件\Vendor\DX12</Filter>
+    </ClInclude>
+    <ClInclude Include="Vendors\OpenGL\OpenGLTexture2D.h">
+      <Filter>头文件\Vendor\OpenGL</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Default.mat">
+      <Filter>资源文件\Shaders</Filter>
+    </None>
+    <None Include="PBR.mat">
+      <Filter>资源文件\Shaders</Filter>
+    </None>
+    <None Include="Axis.mat">
+      <Filter>资源文件\Shaders</Filter>
+    </None>
+    <None Include="ClassDiagram.cd" />
+    <None Include="AssetDefineFile.assets">
+      <Filter>资源文件\AssetFiles</Filter>
+    </None>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Engine\Shaders\PostProcessing.mat">
+      <Filter>资源文件\Shaders</Filter>
+    </None>
+    <None Include="ClassDiagram2.cd" />
+    <None Include="ClassDiagram3.cd" />
+    <None Include="ClassDiagram4.cd" />
+    <None Include="ClassDiagram5.cd" />
+    <None Include="imgui_bezier_math.inl">
+      <Filter>头文件\ThridParty\ImGuiNodeEditor</Filter>
+    </None>
+    <None Include="imgui_extra_math.inl">
+      <Filter>头文件\ThridParty\ImGuiNodeEditor</Filter>
+    </None>
+    <None Include="imgui_node_editor_internal.inl">
+      <Filter>头文件\ThridParty\ImGuiNodeEditor</Filter>
+    </None>
+    <None Include="Math2D.inl">
+      <Filter>头文件\ThridParty\ImGuiNodeEditor</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Tangram.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Icon\Logo.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

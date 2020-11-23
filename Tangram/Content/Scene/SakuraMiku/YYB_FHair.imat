@@ -1,0 +1,15 @@
+#material Engine/Shaders/Toon_Skeleton.mat
+Scalar highlightCut: 0.999000
+Scalar highlightCutSmooth: 0.000000
+Scalar normalScale: 1.000000
+Scalar rimCut: 0.800000
+Scalar rimCutSmooth: 0.000000
+Scalar shadowCut: 0.500000
+Scalar shadowCutSmooth: 0.000000
+Color baseColor: 0.560784, 0.560784, 0.560784, 1.000000
+Color highlightColor: 1.000000, 1.000000, 1.000000, 1.000000
+Color rimColor: 0.000000, 0.000000, 0.000000, 1.000000
+Color shadowColor: 0.250980, 0.250980, 0.250980, 1.000000
+Texture colorMap: Content/Scene/YYBMiku/YYB_hair03.png
+Texture depthMap: white
+Texture normalMap: Engine/Textures/Default_N.png

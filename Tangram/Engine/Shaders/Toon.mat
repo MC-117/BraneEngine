@@ -1,0 +1,148 @@
+#order 1000
+#material
+Color baseColor: 255, 255, 255, 255
+Texture colorMap: white
+Color shadowColor: 150, 150, 150, 255
+Color highlightColor: 255, 255, 255, 255
+Color rimColor: 255, 255, 255, 255
+Scalar shadowCut: 0.5
+Scalar shadowCutSmooth: 0.0
+Scalar highlightCut: 0.999
+Scalar highlightCutSmooth: 0.0
+Scalar rimCut: 0.8
+Scalar rimCutSmooth: 0.0
+Scalar normalScale: 1.0
+Texture normalMap: black
+Texture depthMap: white
+#vertex
+#version 460 core
+layout (std430, binding = 0) buffer CB0
+{
+    mat4 Transforms[];
+};
+
+layout (location = 0) in vec3 pos;
+layout (location = 1) in vec2 uv;
+layout (location = 2) in vec3 norm;
+uniform mat4 pmat;
+uniform mat4 lmat;
+out vec3 Normal;
+out vec2 TexCoords;
+out vec4 lightSpacePos;
+out vec3 WorldPos;
+
+void main()
+{
+    WorldPos = (Transforms[gl_InstanceID + gl_BaseInstance] * vec4(pos, 1.0)).xyz;
+    gl_Position = pmat * Transforms[gl_InstanceID + gl_BaseInstance] * vec4(pos, 1.0);
+    Normal = normalize(mat3(Transforms[gl_InstanceID + gl_BaseInstance]) * norm);
+    lightSpacePos = lmat * vec4(WorldPos, 1.0);
+    TexCoords = uv;
+    TexCoords.y = 1 - TexCoords.y;
+}
+#fragment
+#version 410 core
+
+struct DirectLight
+{
+    vec3 direction;
+    float intensity;
+    vec3 color;
+};
+
+uniform vec3 camPos;
+uniform DirectLight directLight;
+in vec3 Normal;
+in vec2 TexCoords;
+in vec4 lightSpacePos;
+in vec3 WorldPos;
+out vec4 FragColor;
+
+uniform vec4 baseColor;
+uniform sampler2D colorMap;
+uniform vec4 shadowColor;
+uniform vec4 highlightColor;
+uniform vec4 rimColor;
+uniform float shadowCut;
+uniform float shadowCutSmooth;
+uniform float highlightCut;
+uniform float highlightCutSmooth;
+uniform float rimCut;
+uniform float rimCutSmooth;
+uniform float normalScale;
+uniform sampler2D normalMap;
+uniform sampler2D depthMap;
+
+float fresnelSchlick(float cosTheta, float F0)
+{
+    return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
+}
+
+vec4 smoothToon(vec4 base, vec4 over, float value, float cut, float smoothValue)
+{
+    float hs = clamp(smoothValue, 0.0f, 1.0f) / 2.0f;
+    return mix(over, base, smoothstep(max(0.0f, cut - hs), min(1.0f, cut + hs), value));
+}
+
+mat3 cotangent( vec3 N, vec3 p, vec2 uv )
+{
+    // get edge vectors of the pixel triangle
+    vec3 dp1 = dFdx( p );
+    vec3 dp2 = dFdy( p );
+    vec2 duv1 = dFdx( uv );
+    vec2 duv2 = dFdy( uv );
+
+    // solve the linear system
+    vec3 dp2perp = cross( dp2, N );
+    vec3 dp1perp = cross( N, dp1 );
+    vec3 T = dp2perp * duv1.x + dp1perp * duv2.x;
+    vec3 B = dp2perp * duv1.y + dp1perp * duv2.y;
+
+    // construct a scale-invariant frame 
+    float invmax = inversesqrt( max( dot(T,T), dot(B,B) ) );
+    return mat3( T * invmax, B * invmax, N );
+}
+
+float ShadowCalculation(vec4 fragPosLightSpace, vec3 N, vec3 L)
+{
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+
+    if (projCoords.z >= 1.0) {
+        return 1.0;
+    }
+    
+    projCoords = projCoords * 0.5 + 0.5;
+
+    float currentDepth = projCoords.z;
+    
+    float shadow = 0.0;
+    float bias = max(0.00005 * (1.0 - dot(N, L)), 0.000005);
+
+    vec2 texelSize = 1.0 / textureSize(depthMap, 0);
+    for(int x = -3; x <= 3; ++x)
+    {
+        for(int y = -3; y <= 3; ++y)
+        {
+            float pcfDepth = texture(depthMap, projCoords.xy + vec2(x, y) * texelSize).r; 
+            shadow += currentDepth - bias > pcfDepth ? 0.0 : 1.0;        
+        }    
+    }
+    shadow /= 49.0;
+    return shadow;
+}
+
+void main()
+{
+    vec3 N = normalize(cotangent(Normal, WorldPos, TexCoords) * ((normalize(texture(normalMap, TexCoords) * 2 - 1)).xyz) * normalScale);
+    vec3 V = normalize(camPos - WorldPos);
+    vec4 albedo = texture(colorMap, TexCoords);
+    float a = albedo.a * baseColor.a;
+    vec3 L = normalize(directLight.direction);
+    vec3 H = normalize(V + L);
+    vec4 ambience = mix(shadowColor, baseColor, ShadowCalculation(lightSpacePos, N, L));
+    ambience = smoothToon(ambience, shadowColor, dot(N, L), shadowCut, shadowCutSmooth);
+    ambience = mix(ambience, highlightColor, smoothToon(vec4(1.0f), vec4(0.0f), dot(N, H), highlightCut, highlightCutSmooth));
+    ambience = smoothToon(rimColor, ambience, fresnelSchlick(dot(N, normalize(camPos - WorldPos)), 0.33f), rimCut, rimCutSmooth);
+    FragColor = albedo * ambience;
+    FragColor.a = a;
+}

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="RenderCommandList">
+    <Position X="3.5" Y="0.75" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="RenderCommandList::shader_order">
+        <TypeIdentifier>
+          <NewMemberFileName>RenderCommandList.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+      <Struct Name="RenderCommandList::MeshTransformData">
+        <TypeIdentifier>
+          <NewMemberFileName>RenderCommandList.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+      <Struct Name="RenderCommandList::MeshTransformDataPack">
+        <TypeIdentifier>
+          <NewMemberFileName>RenderCommandList.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+      <Struct Name="RenderCommandList::MeshDataRenderPack">
+        <TypeIdentifier>
+          <NewMemberFileName>RenderCommandList.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAQCAQAAAAAAAAAAAAAAIAAEAAAAAAAAAAAAACg=</HashCode>
+      <FileName>RenderCommandList.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="RenderCommand">
+    <Position X="6.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAABAAAAAAAAAABAAAA=</HashCode>
+      <FileName>RenderCommandList.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

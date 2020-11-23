@@ -1,0 +1,14 @@
+#material Engine/Shaders/PBR_Dither.mat
+Scalar ao: 1.000000
+Scalar emission: 0.080000
+Scalar metallic: 0.500000
+Scalar normalScale: 1.000000
+Scalar roughness: 0.500000
+Color baseColor: 1.000000, 0.970461, 0.708092, 1.000000
+Texture aoMap: Content/Scene/textures/w.jpg
+Texture colorMap: Content/Scene/Texture/Plate1.png
+Texture depthMap: white
+Texture emissionMap: Content/Scene/Texture/Plate1.png
+Texture metallicMap: Content/Scene/textures/w.jpg
+Texture normalMap: Engine/Textures/Default_N.png
+Texture roughnessMap: Content/Scene/textures/w.jpg

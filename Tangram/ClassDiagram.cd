@@ -1,0 +1,403 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Actor">
+    <Position X="45.25" Y="8.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AABQAAACAAAAgAAAAABAAAAQAAAAAABAAABAAAAAAAA=</HashCode>
+      <FileName>Actor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshActor">
+    <Position X="42.25" Y="11.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAQAAAAAAABAAAAAAAABAAAAAARQAAAAAAA=</HashCode>
+      <FileName>MeshActor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SkySphere">
+    <Position X="47.5" Y="11.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AEBRAAAEMAAAhAAAAABABICAAAgQiAIAAARwAEBABAA=</HashCode>
+      <FileName>SkySphere.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Delegate&lt;...T&gt;" Collapsed="true">
+    <Position X="64" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Delegate.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Object">
+    <Position X="1.5" Y="0.5" Width="6" />
+    <TypeIdentifier>
+      <HashCode>gABAAZGCATAAAARgABAIAHASAoAEAABAAgAYAABIAAQ=</HashCode>
+      <FileName>Object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ObjectIterator" Collapsed="true">
+    <Position X="60.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEABAAAAAAAAAgAAgAgAAAAAAAAAAAAAIEACA=</HashCode>
+      <FileName>Object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Transform">
+    <Position X="18.25" Y="1.25" Width="4.25" />
+    <NestedTypes>
+      <Enum Name="Transform::UpdateState" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Transform.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>BAAQAgAAAAAABAABAACQJAQSCAAAAABCAAAAAAAABYA=</HashCode>
+      <FileName>Transform.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="World">
+    <Position X="37" Y="8.25" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAJAAABGAhACICACAwAkA4AQEgACABLgAAARAAIAACA=</HashCode>
+      <FileName>World.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Control" Collapsed="true">
+    <Position X="60.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Control.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Curve" Collapsed="true">
+    <Position X="62.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Curve.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUI" Collapsed="true">
+    <Position X="60.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAEAAAAAAAAAgACAAAAgQEAABAAEAAAAAAAAgIwAAA=</HashCode>
+      <FileName>GUI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UIControl">
+    <Position X="9.75" Y="16.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAEAAAABEAAAAAQAAA=</HashCode>
+      <FileName>UIControl.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FbxLoader" Collapsed="true">
+    <Position X="58.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BACACAAAEIAAAAAAAAAAAIBEAAAAAAACAAAAAAAAAIA=</HashCode>
+      <FileName>FbxLoader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MaterialLoader" Collapsed="true">
+    <Position X="58.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAUAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MaterialLoader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ObjReader" Collapsed="true">
+    <Position X="62.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ObjReader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Material" Collapsed="true">
+    <Position X="64" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEDAAAAAAAAUBoAABQAgQQQAAEAgAAgoAIAAiEAIAAA=</HashCode>
+      <FileName>Material.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Render">
+    <Position X="14.25" Y="4.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAAACCEAAAAAAAARAAAAAAAAAABQABAAQQAA=</HashCode>
+      <FileName>Render.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderPass">
+    <Position X="8.25" Y="8.25" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>EAIAAIAAAAAgAEAAAAAAIAAAAAAAAAAAAAAIAADQQAA=</HashCode>
+      <FileName>RenderPass.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderPool" Collapsed="true">
+    <Position X="64" Y="2.5" Width="1.5" />
+    <NestedTypes>
+      <Struct Name="RenderPool::render_order" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>RenderPool.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAIAAABAAgAAAAAEAgAAAQAAAAAAAAAgAAgAAAISAAA=</HashCode>
+      <FileName>RenderPool.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderTarget" Collapsed="true">
+    <Position X="58.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAEAAAAAEFEKAQMZAAAAAAAAAAAAgAgAQAAAAAEAQg=</HashCode>
+      <FileName>RenderTarget.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shader" Collapsed="true">
+    <Position X="60.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wAAAAAKACIAAAAAAAAAAIABAAAgEAIAABAAACAACAgA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Texture">
+    <Position X="6.5" Y="23.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAqAQAQAAAEAAAAAAACAAAAQIAAAABAAA=</HashCode>
+      <FileName>Texture.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DirectLight">
+    <Position X="11.75" Y="12.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAQAQAAA=</HashCode>
+      <FileName>DirectLight.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Light">
+    <Position X="14.5" Y="8.25" Width="4" />
+    <TypeIdentifier>
+      <HashCode>QgBAAAAAIAAAAEAAACAEAgQAAAAACACAAAAQAAAQAAA=</HashCode>
+      <FileName>Light.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PointLight">
+    <Position X="16.75" Y="12.75" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAACAAAAAAAAAAAAAAAAAIAARAAA=</HashCode>
+      <FileName>PointLight.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AxisRender">
+    <Position X="19.25" Y="8.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAEABAAAAAAAAAAAAAAAAAAAQAEBQAEA=</HashCode>
+      <FileName>AxisRender.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CameraRender">
+    <Position X="26.75" Y="8.25" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgCEAAAIAAAAAAAAAAAAAAAAAAIABQAAA=</HashCode>
+      <FileName>CameraRender.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshRender">
+    <Position X="32.25" Y="8.25" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAIAAAAAAQEgAAAAQAAQAAAABBAAAAAAAAABQQAA=</HashCode>
+      <FileName>MeshRender.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Texture2D">
+    <Position X="5.75" Y="27.5" Width="6" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAMAACAAABAAAAAAAIAAACAAAAQAUAABAACA=</HashCode>
+      <FileName>Texture2D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mesh">
+    <Position X="16.5" Y="20.75" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAQAgAAAAAAA=</HashCode>
+      <FileName>Mesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shape">
+    <Position X="16.5" Y="16.25" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAABAAAAAAAAABAIAQAAAAAQAwAgAgCwA=</HashCode>
+      <FileName>Shape.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Board">
+    <Position X="0.75" Y="25.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAECAABgAAAAAABAQAAAAAARgAgAIAgACAAAAA=</HashCode>
+      <FileName>Board.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Piece">
+    <Position X="0.5" Y="19.25" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAACAABAAAAEBBBAYAAAACAggAAAAAwIAAAAAI=</HashCode>
+      <FileName>Piece.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PieceActor">
+    <Position X="41.75" Y="14.75" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAgAAAAAAgAAAAAAABAAA=</HashCode>
+      <FileName>PieceActor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Camera">
+    <Position X="51.75" Y="8.25" Width="6" />
+    <NestedTypes>
+      <Enum Name="Camera::CameraMode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Camera.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>CAACAgAAQAAAAAiYBIAgIAAAAAAAAABAAAEAAAAAAAI=</HashCode>
+      <FileName>Camera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PostProcessingCamera">
+    <Position X="52.75" Y="13.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAgAABAAAAAABAAAAAAAhAAAAAAACAAAAA=</HashCode>
+      <FileName>PostProcessingCamera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRendering" Collapsed="true">
+    <Position X="62.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IRendering.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Brane" Collapsed="true">
+    <Position X="58.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAACAAAEAAAAAAACAAAAAAACQA=</HashCode>
+      <FileName>Brane.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Input">
+    <Position X="0.5" Y="9" Width="6.25" />
+    <TypeIdentifier>
+      <HashCode>DohQBAADJxAACEEAAGAgAwIQUIAAMQUFEAEAAAsAAAA=</HashCode>
+      <FileName>Input.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PieceUI">
+    <Position X="8.75" Y="19" Width="6.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAACACABAAAAAAAAAAAAAQAgAQAAAYAAA=</HashCode>
+      <FileName>PieceUI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Unit2D&lt;T&gt;">
+    <Position X="25.25" Y="15.5" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAQAACAAAAAAAAABgQABAACA=</HashCode>
+      <FileName>Unit.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Color" Collapsed="true">
+    <Position X="58.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoAQABgAAAAAA=</HashCode>
+      <FileName>Unit.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="RenderInfo" Collapsed="true">
+    <Position X="58.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAEAEAAAAAAAAAAAAAAAAQI=</HashCode>
+      <FileName>Unit.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MatAttribute&lt;T&gt;" Collapsed="true">
+    <Position X="62.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Unit.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CurveKey" Collapsed="true">
+    <Position X="60.5" Y="4.75" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="CurveKey::KeySmoothMode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Curve.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AIABAAAAAAAAAACAAAAAAAIAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Curve.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="PPoint" Collapsed="true">
+    <Position X="64" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Piece.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Typedef Name="Unit2Di" Collapsed="true">
+    <Position X="29" Y="14" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Unit.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="Unit2Df" Collapsed="true">
+    <Position X="26" Y="21" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Unit.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="Unit2Dd" Collapsed="true">
+    <Position X="26" Y="14" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Unit.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="TypeID" Collapsed="true">
+    <Position X="58.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Brane.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Enum Name="TransformSpace" Collapsed="true">
+    <Position X="62.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Unit.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MouseButtonEnum" Collapsed="true">
+    <Position X="60.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACACQAAAAAAA=</HashCode>
+      <FileName>Input.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="InputStateEnum" Collapsed="true">
+    <Position X="58.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Input.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

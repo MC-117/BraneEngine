@@ -1,0 +1,23 @@
+#material
+Texture depthMap
+#vertex
+#version 410 core
+const vec2 quadVertices[4] = vec2[](vec2(-1.0, -1.0), vec2(1.0, -1.0), vec2(-1.0, 1.0), vec2(1.0, 1.0));
+const vec2 quadUV[4] = vec2[](vec2(0.0, 0.0), vec2(1.0, 0.0), vec2(0.0, 1.0), vec2(1.0, 1.0));
+out vec2 UV;
+void main()
+{
+    gl_Position = vec4(quadVertices[gl_VertexID], 0.0, 1.0);
+    UV = quadUV[gl_VertexID];
+}
+
+#fragment
+#version 410 core
+layout (location = 0) out vec4 oCol0;
+in vec2 UV;
+uniform sampler2D depthMap;
+
+void main()
+{
+    oCol0 = vec4(texture(depthMap, UV).xyz, 1.0);
+}

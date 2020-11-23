@@ -1,0 +1,501 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Lib|Win32">
+      <Configuration>Lib</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Lib|x64">
+      <Configuration>Lib</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{CC0BFCD1-4A27-4919-BC08-05E08CEBEDC0}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Tangram</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Lib|Win32'">
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Lib|x64'">
+    <PlatformToolset>v140</PlatformToolset>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\29556\Desktop\Code Resources\glew-2.1.0\include;C:\Users\29556\Desktop\Code Resources\glew-2.1.0\include;C:\Users\29556\Desktop\Code Resources\eigen-eigen\Eigen;C:\Users\29556\Desktop\Code Resources\freeglut\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\29556\Desktop\Code Resources\glew-2.1.0\lib\Release\Win32;C:\Users\29556\Desktop\Code Resources\freeglut\lib;$(LibraryPath)</LibraryPath>
+    <LibraryWPath>C:\Users\29556\Desktop\Code Resources\glew-2.1.0\bin\Release\Win32;C:\Users\29556\Desktop\Code Resources\freeglut\bin;$(LibraryWPath)</LibraryWPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>ThirdParty\Python37\include;ThirdParty\glfw\include;ThirdParty\bullet3;C:\Program Files\Autodesk\FBX\FBX SDK\2019.2\include;ThirdParty\glew-2.1.0\include;ThirdParty\Eigen;ThirdParty\freeglut\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>ThirdParty\Python37\libs;ThirdParty\bullet3\lib\x64\Debug;C:\Program Files\Autodesk\FBX\FBX SDK\2019.2\lib\vs2015\x64\debug;ThirdParty\freeglut\lib\x64;ThirdParty\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
+    <LibraryWPath>ThirdParty\glew-2.1.0\bin\Release\x64;ThirdParty\freeglut\bin\x64;$(LibraryWPath)</LibraryWPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\29556\Desktop\Code Resources\glew-2.1.0\include;C:\Users\29556\Desktop\Code Resources\eigen-eigen\Eigen;C:\Users\29556\Desktop\Code Resources\freeglut\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\29556\Desktop\Code Resources\glew-2.1.0\lib\Release\Win32;C:\Users\29556\Desktop\Code Resources\freeglut\lib;$(LibraryPath)</LibraryPath>
+    <LibraryWPath>C:\Users\29556\Desktop\Code Resources\glew-2.1.0\bin\Release\Win32;C:\Users\29556\Desktop\Code Resources\freeglut\bin;$(LibraryWPath)</LibraryWPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>ThirdParty\NvCloth\include;ThirdParty\physx-4.1\include;ThirdParty\FaceTracker\include;C:\Users\MC117\Desktop\Code Resource\boost_1_72_0;ThirdParty\freealut-1.1\include;ThirdParty\OpenAL-1.1\include;ThirdParty\assimp-5.0.1\include;ThirdParty\Python37\include;ThirdParty\glfw\include;ThirdParty\bullet3;ThirdParty\glew-2.1.0\include;ThirdParty\Eigen;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>ThirdParty\NvCloth\lib;ThirdParty\physx-4.1\lib\x64\Profile;ThirdParty\FaceTracker\lib;ThirdParty\freealut-1.1\libs\x64;ThirdParty\OpenAL-1.1\libs\Win64;ThirdParty\assimp-5.0.1\lib\Release;ThirdParty\Python37\libs;ThirdParty\glfw\lib\x64\lib-vc2015;ThirdParty\bullet3\lib\x64\Release;ThirdParty\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
+    <LibraryWPath>ThirdParty\glew-2.1.0\bin\Release\x64;$(LibraryWPath)</LibraryWPath>
+    <SourcePath>ThirdParty\NvCloth\src;$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Lib|x64'">
+    <IncludePath>ThirdParty;ThirdParty\NvCloth\include;ThirdParty\physx-4.1\include;ThirdParty\FaceTracker\include;C:\Users\29556\Desktop\Code Resources\boost_1_72_0;ThirdParty\freealut-1.1\include;ThirdParty\OpenAL-1.1\include;ThirdParty\assimp-5.0.1\include;ThirdParty\Python37\include;ThirdParty\glfw\include;ThirdParty\bullet3;ThirdParty\glew-2.1.0\include;ThirdParty\Eigen;ThirdParty\freeglut\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>ThirdParty\NvCloth\lib;ThirdParty\physx-4.1\lib\x64\Profile;ThirdParty\FaceTracker\lib;ThirdParty\freealut-1.1\libs\x64;ThirdParty\OpenAL-1.1\libs\Win64;ThirdParty\assimp-5.0.1\lib\Release;ThirdParty\Python37\libs;ThirdParty\glfw\lib\x64\lib-vc2015;ThirdParty\bullet3\lib\x64\Release;ThirdParty\freeglut\lib\x64;ThirdParty\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
+    <SourcePath>ThirdParty\NvCloth\src;$(SourcePath)</SourcePath>
+    <LibraryWPath>ThirdParty\glew-2.1.0\bin\Release\x64;ThirdParty\freeglut\bin\x64;$(LibraryWPath)</LibraryWPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>dxguid.lib;dinput8.lib;freeglut.lib;glew32.lib;glew32s.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>python3.lib;python37.lib;glfw3dll.lib;glfw3.lib;BulletDynamics_vs2010_x64_debug.lib;BulletCollision_vs2010_x64_debug.lib;LinearMath_vs2010_x64_debug.lib;dxguid.lib;dinput8.lib;freeglut.lib;glew32.lib;glew32s.lib;libfbxsdk.lib;libfbxsdk-md.lib;libfbxsdk-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>dxguid.lib;dinput8.lib;freeglut.lib;glew32.lib;glew32s.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>BT_THREADSAFE=1;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <PrecompiledHeaderFile>Config.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>NvCloth_x64.lib;LowLevelAABB_static_64.lib;LowLevelDynamics_static_64.lib;LowLevel_static_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_64.lib;PhysXCooking_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;PhysXVehicle_static_64.lib;PhysX_64.lib;SceneQuery_static_64.lib;SimulationController_static_64.lib;FaceTracker.lib;alut64.lib;OpenAL32.lib;IrrXML.lib;assimp-vc140-mt.lib;python3.lib;python37.lib;glfw3dll.lib;glfw3.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;dxguid.lib;dinput8.lib;glew32.lib;opengl32.lib;d3d12.lib;d3dcompiler.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Manifest>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Lib|x64'">
+    <ClCompile>
+      <Optimization>Full</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>NvCloth_x64.lib;LowLevelAABB_static_64.lib;LowLevelDynamics_static_64.lib;LowLevel_static_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_64.lib;PhysXCooking_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;PhysXVehicle_static_64.lib;PhysX_64.lib;SceneQuery_static_64.lib;SimulationController_static_64.lib;FaceTracker.lib;alut64.lib;OpenAL32.lib;IrrXML.lib;assimp-vc140-mt.lib;python3.lib;python37.lib;glfw3dll.lib;glfw3.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;dxguid.lib;dinput8.lib;freeglut.lib;glew32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>NvCloth_x64.lib;LowLevelAABB_static_64.lib;LowLevelDynamics_static_64.lib;LowLevel_static_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_64.lib;PhysXCooking_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;PhysXVehicle_static_64.lib;PhysX_64.lib;SceneQuery_static_64.lib;SimulationController_static_64.lib;FaceTracker.lib;alut64.lib;OpenAL32.lib;IrrXML.lib;assimp-vc140-mt.lib;python3.lib;python37.lib;glfw3dll.lib;glfw3.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;dxguid.lib;dinput8.lib;freeglut.lib;glew32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Manifest>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="AnimationClip.cpp" />
+    <ClCompile Include="AnimationConverter.cpp" />
+    <ClCompile Include="AnimationStateMachine.cpp" />
+    <ClCompile Include="Asset.cpp" />
+    <ClCompile Include="AssetBrowser.cpp" />
+    <ClCompile Include="AssetLoadWindow.cpp" />
+    <ClCompile Include="AudioSource.cpp" />
+    <ClCompile Include="BlendSpaceWindow.cpp" />
+    <ClCompile Include="BlitPass.cpp" />
+    <ClCompile Include="BloomPass.cpp" />
+    <ClCompile Include="Bone.cpp" />
+    <ClCompile Include="Builders.cpp" />
+    <ClCompile Include="CameraRender.cpp" />
+    <ClCompile Include="CapsuleActor.cpp" />
+    <ClCompile Include="Character.cpp" />
+    <ClCompile Include="ClothBody.cpp" />
+    <ClCompile Include="CollisionActor.cpp" />
+    <ClCompile Include="Console.cpp" />
+    <ClCompile Include="ConsoleWindow.cpp" />
+    <ClCompile Include="crude_json.cpp" />
+    <ClCompile Include="DOFPass.cpp" />
+    <ClCompile Include="Drawing.cpp" />
+    <ClCompile Include="EditorWindow.cpp" />
+    <ClCompile Include="Events.cpp" />
+    <ClCompile Include="FaceTrackerObject.cpp" />
+    <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="GraphWindow.cpp" />
+    <ClCompile Include="GrassMeshActor.cpp" />
+    <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="IKSolver.cpp" />
+    <ClCompile Include="imgui.cpp" />
+    <ClCompile Include="ImGuizmo.cpp" />
+    <ClCompile Include="imgui_canvas.cpp" />
+    <ClCompile Include="imgui_demo.cpp" />
+    <ClCompile Include="imgui_draw.cpp" />
+    <ClCompile Include="imgui_impl_dx12.cpp" />
+    <ClCompile Include="imgui_impl_glfw.cpp" />
+    <ClCompile Include="imgui_impl_opengl3.cpp" />
+    <ClCompile Include="imgui_node_editor.cpp" />
+    <ClCompile Include="imgui_node_editor_api.cpp" />
+    <ClCompile Include="imgui_stdlib.cpp" />
+    <ClCompile Include="imgui_widgets.cpp" />
+    <ClCompile Include="Importer.cpp" />
+    <ClCompile Include="InspectorWindow.cpp" />
+    <ClCompile Include="IVendor.cpp" />
+    <ClCompile Include="LoadingUI.cpp" />
+    <ClCompile Include="MaterialWindow.cpp" />
+    <ClCompile Include="MeshActor.cpp" />
+    <ClCompile Include="Brane.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Directlight.cpp" />
+    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="initial.cpp" />
+    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshRender.cpp" />
+    <ClCompile Include="MMDPmxParser.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="ObjReader.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="ParticleEmitter.cpp" />
+    <ClCompile Include="PhysicalBody.cpp" />
+    <ClCompile Include="PhysicalController.cpp" />
+    <ClCompile Include="PhysicalMaterial.cpp" />
+    <ClCompile Include="PhysicalWorld.cpp" />
+    <ClCompile Include="PluginBase.cpp" />
+    <ClCompile Include="PluginManager.cpp" />
+    <ClCompile Include="PointLight.cpp" />
+    <ClCompile Include="PostProcessCameraRender.cpp" />
+    <ClCompile Include="PostProcessGraph.cpp" />
+    <ClCompile Include="PostProcessingCamera.cpp" />
+    <ClCompile Include="PostProcessPass.cpp" />
+    <ClCompile Include="PythonGraphWindow.cpp" />
+    <ClCompile Include="PythonManager.cpp" />
+    <ClCompile Include="PythonScript.cpp" />
+    <ClCompile Include="Render.cpp" />
+    <ClCompile Include="RenderCommandList.cpp" />
+    <ClCompile Include="RenderPool.cpp" />
+    <ClCompile Include="RenderTarget.cpp" />
+    <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="Serialization.cpp" />
+    <ClCompile Include="SerializationEditor.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShaderStage.cpp" />
+    <ClCompile Include="ShadowCamera.cpp" />
+    <ClCompile Include="ShadowCameraRender.cpp" />
+    <ClCompile Include="Shape.cpp" />
+    <ClCompile Include="SkeletonAnimationPipeline.cpp" />
+    <ClCompile Include="SkeletonMesh.cpp" />
+    <ClCompile Include="SkeletonMeshActor.cpp" />
+    <ClCompile Include="SkeletonMeshRender.cpp" />
+    <ClCompile Include="SkeletonPhysicalAsset.cpp" />
+    <ClCompile Include="SkeletonPose.cpp" />
+    <ClCompile Include="SkySphere.cpp" />
+    <ClCompile Include="SSAOPass.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
+    <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="TextureViewer.cpp" />
+    <ClCompile Include="ToneMapPass.cpp" />
+    <ClCompile Include="tool.cpp" />
+    <ClCompile Include="ToolShelf.cpp" />
+    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="UIControl.cpp" />
+    <ClCompile Include="UIWindow.cpp" />
+    <ClCompile Include="Unit.cpp" />
+    <ClCompile Include="Utility.cpp" />
+    <ClCompile Include="VehicleActor.cpp" />
+    <ClCompile Include="Vendors\DX12\DX12Vendor.cpp" />
+    <ClCompile Include="Vendors\OpenGL\OpenGLTexture2D.cpp" />
+    <ClCompile Include="Vendors\OpenGL\OpenGLVendor.cpp" />
+    <ClCompile Include="Widgets.cpp" />
+    <ClCompile Include="WindowBar.cpp" />
+    <ClCompile Include="World.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Actor.h" />
+    <ClInclude Include="AnimationClip.h" />
+    <ClInclude Include="AnimationConverter.h" />
+    <ClInclude Include="AnimationStateMachine.h" />
+    <ClInclude Include="Asset.h" />
+    <ClInclude Include="AssetBrowser.h" />
+    <ClInclude Include="AssetLoadWindow.h" />
+    <ClInclude Include="AudioSource.h" />
+    <ClInclude Include="BlendSpaceWindow.h" />
+    <ClInclude Include="BlitPass.h" />
+    <ClInclude Include="BloomPass.h" />
+    <ClInclude Include="Bone.h" />
+    <ClInclude Include="Builders.h" />
+    <ClInclude Include="CameraRender.h" />
+    <ClInclude Include="CapsuleActor.h" />
+    <ClInclude Include="Character.h" />
+    <ClInclude Include="ClothBody.h" />
+    <ClInclude Include="CollisionActor.h" />
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="Console.h" />
+    <ClInclude Include="ConsoleWindow.h" />
+    <ClInclude Include="crude_json.h" />
+    <ClInclude Include="Curve.h" />
+    <ClInclude Include="DOFPass.h" />
+    <ClInclude Include="Drawing.h" />
+    <ClInclude Include="EditorWindow.h" />
+    <ClInclude Include="Events.h" />
+    <ClInclude Include="FaceTrackerObject.h" />
+    <ClInclude Include="Geometry.h" />
+    <ClInclude Include="GraphWindow.h" />
+    <ClInclude Include="GrassMeshActor.h" />
+    <ClInclude Include="GUI.h" />
+    <ClInclude Include="IKSolver.h" />
+    <ClInclude Include="imconfig.h" />
+    <ClInclude Include="imgui.h" />
+    <ClInclude Include="ImGuizmo.h" />
+    <ClInclude Include="imgui_bezier_math.h" />
+    <ClInclude Include="imgui_canvas.h" />
+    <ClInclude Include="imgui_extra_math.h" />
+    <ClInclude Include="imgui_impl_dx12.h" />
+    <ClInclude Include="imgui_impl_glfw.h" />
+    <ClInclude Include="imgui_impl_opengl3.h" />
+    <ClInclude Include="imgui_internal.h" />
+    <ClInclude Include="imgui_node_editor.h" />
+    <ClInclude Include="imgui_node_editor_internal.h" />
+    <ClInclude Include="imgui_stdlib.h" />
+    <ClInclude Include="Importer.h" />
+    <ClInclude Include="imstb_rectpack.h" />
+    <ClInclude Include="imstb_textedit.h" />
+    <ClInclude Include="imstb_truetype.h" />
+    <ClInclude Include="InspectorWindow.h" />
+    <ClInclude Include="Interop.h" />
+    <ClInclude Include="IRendering.h" />
+    <ClInclude Include="ITexture.h" />
+    <ClInclude Include="LoadingUI.h" />
+    <ClInclude Include="MaterialWindow.h" />
+    <ClInclude Include="Math2D.h" />
+    <ClInclude Include="MeshActor.h" />
+    <ClInclude Include="Brane.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Control.h" />
+    <ClInclude Include="Delegate.h" />
+    <ClInclude Include="DirectLight.h" />
+    <ClInclude Include="Engine.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshRender.h" />
+    <ClInclude Include="MMDCpp14.h" />
+    <ClInclude Include="MMDPmxParser.h" />
+    <ClInclude Include="MMDVmdParser.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="ObjReader.h" />
+    <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="ParticleEmitter.h" />
+    <ClInclude Include="PhysicalBody.h" />
+    <ClInclude Include="PhysicalController.h" />
+    <ClInclude Include="PhysicalMaterial.h" />
+    <ClInclude Include="PhysicalWorld.h" />
+    <ClInclude Include="PluginBase.h" />
+    <ClInclude Include="PluginManager.h" />
+    <ClInclude Include="PointLight.h" />
+    <ClInclude Include="PostProcessCameraRender.h" />
+    <ClInclude Include="PostProcessGraph.h" />
+    <ClInclude Include="PostProcessingCamera.h" />
+    <ClInclude Include="PostProcessPass.h" />
+    <ClInclude Include="PythonGraph.h" />
+    <ClInclude Include="PythonGraphWindow.h" />
+    <ClInclude Include="PythonManager.h" />
+    <ClInclude Include="PythonScript.h" />
+    <ClInclude Include="Render.h" />
+    <ClInclude Include="RenderCommandList.h" />
+    <ClInclude Include="RenderPool.h" />
+    <ClInclude Include="RenderTarget.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="Serialization.h" />
+    <ClInclude Include="SerializationEditor.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderStage.h" />
+    <ClInclude Include="ShadowCamera.h" />
+    <ClInclude Include="ShadowCameraRender.h" />
+    <ClInclude Include="Shape.h" />
+    <ClInclude Include="SJ2UTF8Table.h" />
+    <ClInclude Include="SkeletonAnimationPipeline.h" />
+    <ClInclude Include="SkeletonMesh.h" />
+    <ClInclude Include="SkeletonMeshActor.h" />
+    <ClInclude Include="SkeletonMeshRender.h" />
+    <ClInclude Include="SkeletonPhysicalAsset.h" />
+    <ClInclude Include="SkeletonPose.h" />
+    <ClInclude Include="SkySphere.h" />
+    <ClInclude Include="SSAOPass.h" />
+    <ClInclude Include="StateMachine.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="stb_image_write.h" />
+    <ClInclude Include="sTOB.h" />
+    <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="TextureViewer.h" />
+    <ClInclude Include="ToneMapPass.h" />
+    <ClInclude Include="ToolShelf.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="UIControl.h" />
+    <ClInclude Include="UIWindow.h" />
+    <ClInclude Include="Unit.h" />
+    <ClInclude Include="Utility.h" />
+    <ClInclude Include="VehicleActor.h" />
+    <ClInclude Include="Vendors\DX12\d3dx12.h" />
+    <ClInclude Include="Vendors\DX12\DX12.h" />
+    <ClInclude Include="Vendors\DX12\DX12Vendor.h" />
+    <ClInclude Include="Vendors\OpenGL\OpenGLTexture2D.h" />
+    <ClInclude Include="Vendors\OpenGL\OpenGLVendor.h" />
+    <ClInclude Include="Widgets.h" />
+    <ClInclude Include="WindowBar.h" />
+    <ClInclude Include="World.h" />
+    <ClInclude Include="IVendor.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AssetDefineFile.assets" />
+    <None Include="Axis.mat" />
+    <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
+    <None Include="ClassDiagram3.cd" />
+    <None Include="ClassDiagram4.cd" />
+    <None Include="ClassDiagram5.cd" />
+    <None Include="Default.mat" />
+    <None Include="Engine\Shaders\PostProcessing.mat" />
+    <None Include="imgui_bezier_math.inl" />
+    <None Include="imgui_extra_math.inl" />
+    <None Include="imgui_node_editor_internal.inl" />
+    <None Include="Math2D.inl" />
+    <None Include="PBR.mat" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Tangram.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Icon\Logo.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="Tangram.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

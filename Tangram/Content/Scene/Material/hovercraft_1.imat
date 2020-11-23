@@ -1,0 +1,16 @@
+#material Engine/Shaders/PBR_IBL.mat
+Color baseColor: 255, 255, 255, 255
+Texture colorMap: Content/Scene/textures/Base_Color_0.png
+Scalar metallic: 0.83
+Texture metallicMap: Content/Scene/textures/Metalnes_0.png
+Scalar roughness: 1
+Texture roughnessMap: Content/Scene/textures/Roughtnes_0.png
+Scalar ao: 1.0
+Texture aoMap: Content/Scene/textures/AO_0.png
+Color reflectionColor: 255, 255, 255, 255
+Texture reflectionMap: Engine/Textures/env.jpg
+Scalar normalScale: 1
+Texture normalMap: Content/Scene/textures/NornalGL_0.png
+Scalar emission: 0.0
+Texture emissionMap: Content/Scene/textures/Base_Color_0.png
+Texture brdfLUT: Engine/Textures/ibl_brdf_lut.png

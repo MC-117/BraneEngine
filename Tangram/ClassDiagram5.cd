@@ -1,0 +1,291 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="IRendering" Collapsed="true">
+    <Position X="5.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QgAAAAAAAAAAAABAQAAAAACAiAAAAAAAAAAQAAQAREA=</HashCode>
+      <FileName>IRendering.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Material" Collapsed="true">
+    <Position X="14.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BEDAgAACEAAcBqAgBQQgQUQAAGAgAA4sAIAAqFAMAAA=</HashCode>
+      <FileName>Material.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Render" Collapsed="true">
+    <Position X="5.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QgJAgAAAAAACCEBAQAAAAATAiAAACAAAABQQBAQQRUA=</HashCode>
+      <FileName>Render.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderCommandList" Collapsed="true">
+    <Position X="18.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQCAQAIAAAAAAACAAAAIAAEAAAAAAAAgAAAACg=</HashCode>
+      <FileName>RenderCommandList.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderPool" Collapsed="true">
+    <Position X="14.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAIAAABAAgAAAAAEAgAAAQAAAAAAAAAgAAgAAAISAAA=</HashCode>
+      <FileName>RenderPool.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderTarget" Collapsed="true">
+    <Position X="16.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BgAEAAAAEMFEKgQMZBAkBAAAAAAAggAggQAAAAAEAQo=</HashCode>
+      <FileName>RenderTarget.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shader" Collapsed="true">
+    <Position X="18.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wAAAAAKACIAAAAAAAAAAIABAAAgEAIAIBAAACAACAgA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Texture" Collapsed="true">
+    <Position X="1.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAIAAqAQAQAAAEAAAAAACSAAAAQIAAAABAAQ=</HashCode>
+      <FileName>Texture.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DirectLight" Collapsed="true">
+    <Position X="7.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgIABAAAAAAAAEAAAAAAAAAAAAAAAABAAAAAAQAQBAA=</HashCode>
+      <FileName>DirectLight.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Light" Collapsed="true">
+    <Position X="8.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QgBAAAAAIAAAAEBAACAEAgQAAAIACACBgAAQAASQAAA=</HashCode>
+      <FileName>Light.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PointLight" Collapsed="true">
+    <Position X="9.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAACAAAAAAAAAAAAAAIAAIAARAAA=</HashCode>
+      <FileName>PointLight.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CameraRender" Collapsed="true">
+    <Position X="2" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAEAgCEhAAIAAAAAAEAAAAAAAAAAAIABYAAI=</HashCode>
+      <FileName>CameraRender.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshRender" Collapsed="true">
+    <Position X="5.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QABAAAgIAAAAAEBAAAAUAASAgAQBBAAAAAAAAARQQAA=</HashCode>
+      <FileName>MeshRender.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PostProcessCameraRender" Collapsed="true">
+    <Position X="0.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gIAgAAAQgBAIBAgAgAEBgAAAEDACggAABAgAAAAYAAw=</HashCode>
+      <FileName>PostProcessCameraRender.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ShadowCameraRender" Collapsed="true">
+    <Position X="3" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAQAAAAAIAAAAAAAAAAAAAAASAAA=</HashCode>
+      <FileName>ShadowCameraRender.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SkeletonMeshRender" Collapsed="true">
+    <Position X="5.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgBAAAAEABAAAABAAAAAAAAACAAAAACgAAQAEA=</HashCode>
+      <FileName>SkeletonMeshRender.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Texture2D" Collapsed="true">
+    <Position X="2.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAEMAEKAAQBAAAAEAAcAAACAAARQAUAABBACA=</HashCode>
+      <FileName>Texture2D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Texture3D" Collapsed="true">
+    <Position X="0.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAACAAABAAAAEAAIAAACAAAQQAQAAAAAAA=</HashCode>
+      <FileName>Texture3D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Geometry" Collapsed="true">
+    <Position X="5.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Geometry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Box" Collapsed="true">
+    <Position X="3.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAACIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sphere" Collapsed="true">
+    <Position X="5.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAQAAAAAACAAAAAAAIAABAAAAAA=</HashCode>
+      <FileName>Geometry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Column" Collapsed="true">
+    <Position X="7.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAABAAAAAACAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Geometry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cone" Collapsed="true">
+    <Position X="10" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAgAAAAACAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Geometry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Capsule" Collapsed="true">
+    <Position X="1" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAIAAAAAAAASAAAAAAAIAABAAAAAA=</HashCode>
+      <FileName>Geometry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshData" Collapsed="true">
+    <Position X="8.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAIAAAAIAwFiABAAAAAAAAAAQICAAACACAAAACgA=</HashCode>
+      <FileName>Mesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mesh" Collapsed="true">
+    <Position X="12.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAUAAAAAAACAAAEIAAAAIAQAASAgAAAACBI=</HashCode>
+      <FileName>Mesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shape" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAEAAAACAAABAAAAAAAIAABACAAYCQASAAyBAAgABA=</HashCode>
+      <FileName>Shape.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MorphMeshData" Collapsed="true">
+    <Position X="16.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAQAACAQEAAAAAQAAAAAIABAAAAAAAABA=</HashCode>
+      <FileName>SkeletonMesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SkeletonMeshData" Collapsed="true">
+    <Position X="8.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAQAAAAAABCABAAAAAAIAEAAQYAAAQAAAAAAQAAA=</HashCode>
+      <FileName>SkeletonMesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SkeletonData" Collapsed="true">
+    <Position X="14.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAIAAAAAAAAAAAAAAAAAgAIAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>SkeletonMesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SkeletonMesh" Collapsed="true">
+    <Position X="12.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAABAAAAEAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SkeletonMesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="RenderInfo" Collapsed="true">
+    <Position X="18.25" Y="3.75" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="RenderInfo::RenderMode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Render.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>CBAQAAAAAkAAAACAiAAAAAEAMAAACAAAAAAhABAAAAI=</HashCode>
+      <FileName>Render.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="RenderCommand" Collapsed="true">
+    <Position X="16.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAABAAAAAAAAAABAAAA=</HashCode>
+      <FileName>RenderCommandList.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="TransTag" Collapsed="true">
+    <Position X="18.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>RenderCommandList.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Texture2DInfo" Collapsed="true">
+    <Position X="14.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQAAAABAAACAAgAAAIAAAAAAAEAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Texture2D.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Texture3DInfo" Collapsed="true">
+    <Position X="16.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQAAAABAAACAAAAAAIEEAAAAAEAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Texture3D.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MeshPart" Collapsed="true">
+    <Position X="5.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAEAAAACAAEAQAAAAgIAAEBIAAAAAACAAAAAgA=</HashCode>
+      <FileName>Mesh.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SkeletonMeshPart" Collapsed="true">
+    <Position X="5.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAQAAIBAAAAIAAAAgAAAAAAAAAEA=</HashCode>
+      <FileName>SkeletonMesh.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="BoneData" Collapsed="true">
+    <Position X="14.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RAAAAAAAAAAAAARAABAAAAACgAgEABAAAAACAABBAAQ=</HashCode>
+      <FileName>SkeletonMesh.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="ShapeComplexType" Collapsed="true">
+    <Position X="14.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Shape.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

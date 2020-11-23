@@ -1,0 +1,200 @@
+#material
+Scalar gamma: 0.25
+Scalar exposure: 3
+Scalar G_SCATTERING: 1
+Scalar fogDistance: 1000
+Scalar volumnicFogStep: 20
+Scalar volumnicFogBlurIter: 5
+Scalar bloomLightIntensity: 5
+Scalar bloomDarkIntensity: 2.5
+Scalar bloomThreshold: 0.9
+Scalar bloomIter: 5
+Scalar blurIter: 20
+Scalar width: 1280
+Scalar height: 720
+Color volumnicLightColor: 255, 255, 255, 255
+Texture screenMap
+Texture depthMap
+Texture volumnicFogMap
+Texture bloomMap_0
+Texture bloomMap_1
+Texture bloomMap_2
+Texture bloomMap_3
+Texture bloomMap_4
+Texture bloomMap_5
+#vertex
+#version 410 core
+const vec2 quadVertices[4] = vec2[](vec2(-1.0, -1.0), vec2(1.0, -1.0), vec2(-1.0, 1.0), vec2(1.0, 1.0));
+const vec2 quadUV[4] = vec2[](vec2(0.0, 0.0), vec2(1.0, 0.0), vec2(0.0, 1.0), vec2(1.0, 1.0));
+out vec2 UV;
+void main()
+{
+    gl_Position = vec4(quadVertices[gl_VertexID], 0.0, 1.0);
+    UV = quadUV[gl_VertexID];
+}
+#fragment
+#version 410 core
+layout (location = 0) out vec4 oCol0;
+layout (location = 1) out vec4 oCol1;
+in vec2 UV;
+uniform vec3 camPos;
+uniform mat4 tmat;
+uniform mat4 lmat;
+uniform float fovy;
+uniform float gamma;
+uniform float exposure;
+uniform vec4 volumnicLightColor;
+uniform float G_SCATTERING;
+uniform float fogDistance;
+uniform float volumnicFogStep;
+uniform float volumnicFogBlurIter;
+uniform float bloomLightIntensity;
+uniform float bloomDarkIntensity;
+uniform float bloomThreshold;
+uniform float bloomIter;
+uniform float blurIter;
+uniform float width;
+uniform float height;
+uniform sampler2D depthMap;
+uniform sampler2D screenMap;
+uniform sampler2D volumnicFogMap;
+uniform sampler2D bloomMap_0;
+uniform sampler2D bloomMap_1;
+uniform sampler2D bloomMap_2;
+uniform sampler2D bloomMap_3;
+uniform sampler2D bloomMap_4;
+uniform sampler2D bloomMap_5;
+uniform int pass;
+
+const float PI = 3.14159265359;
+
+vec3 getRayDir() {
+    vec2 zy = (gl_FragCoord.xy - vec2(width, height) / 2.0) / (height * 2 * tan(fovy / 2.0));
+    vec3 wp = (tmat * vec4(1.0, zy.y, zy.x, 1.0)).xyz;
+    return normalize(wp - camPos);
+}
+
+float computeScattering(float lightDotView)
+{
+    float result = 1.0 - G_SCATTERING * G_SCATTERING;
+    result /= (4.0 * PI * pow(1.0 + G_SCATTERING * G_SCATTERING - (2.0 * G_SCATTERING) * lightDotView, 1.5));
+    return result;
+}
+
+void main()
+{
+    if (pass == 0) {
+        vec3 rayDir = getRayDir();
+        vec3 sunDir = normalize((lmat * vec4(1.0, 0, 0, 1.0)).xyz);
+        vec3 step = rayDir * (fogDistance / floor(volumnicFogStep));
+        vec3 curPos = camPos;
+        float fog = 0;
+        for (int i = 0; i < volumnicFogStep; i++) {
+            vec4 fragPosLightSpace = lmat * vec4(curPos, 1.0);
+            vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+            projCoords = projCoords * 0.5 + 0.5;
+            if (projCoords.z > 1.0)
+                continue;
+            float depthVal = texture(depthMap, projCoords.xy).r;
+            if (depthVal > projCoords.z ) {
+                fog += computeScattering(dot(rayDir, sunDir));
+            }
+            curPos += step;
+        }
+        fog /= floor(volumnicFogStep);
+        oCol0 = volumnicLightColor * fog;
+        oCol0.a = 1.0;
+    }
+    else if (pass == 1) {
+        vec4 c = vec4(0);
+        int n = clamp(int(volumnicFogBlurIter), 0, 30);
+        float volumnicFogOffset = -0.02 * n + 0.6;
+        for (int i = 0; i < n; i++) {
+            c += texture(screenMap, UV - vec2(0, volumnicFogOffset / height * i));
+            c += texture(screenMap, UV + vec2(0, volumnicFogOffset / height * i));
+        }
+        oCol0 = c / (n * 2.0);
+        oCol0.a = 1.0;
+    }
+    else if (pass == 2) {
+        vec4 f = vec4(0);
+        int n = clamp(int(volumnicFogBlurIter), 0, 30);
+        float volumnicFogOffset = -0.02 * n + 0.6;
+        for (int i = 0; i < n; i++) {
+            f += texture(volumnicFogMap, UV - vec2(volumnicFogOffset / width * i, 0));
+            f += texture(volumnicFogMap, UV + vec2(volumnicFogOffset / width * i, 0));
+        }
+        vec3 col = vec3(texture(screenMap, UV)) + f.xyz;
+        oCol0 = vec4(col, 1.0);
+        vec3 rate = smoothstep(bloomThreshold, bloomThreshold + 0.1, col) * col - vec3(bloomThreshold);
+        oCol1.rgb = mix(bloomDarkIntensity * col, bloomLightIntensity * col, rate);
+        oCol1.a = 1.0;
+    }
+    else if (pass == 3) {
+        vec4 c = texture(screenMap, UV);
+        oCol0 = c;
+        oCol0.a = 1.0;
+    }
+    else if (pass == 4) {
+        vec4 c = vec4(0);
+        int n = clamp(int(bloomIter), 0, 30);
+        float bloomOffset = -0.02 * n + 0.6;
+        for (int i = 0; i < n; i++) {
+            c += texture(screenMap, UV - vec2(0, bloomOffset / height * i));
+            c += texture(screenMap, UV + vec2(0, bloomOffset / height * i));
+        }
+        oCol0.rgb = (c / (n * 2.0)).rgb;
+        oCol0.a = 1.0;
+    }
+    else if (pass == 5) {
+        vec4 c = vec4(0);
+        int n = clamp(int(bloomIter), 0, 30);
+        float bloomOffset = -0.02 * n + 0.6;
+        for (int i = 0; i < n; i++) {
+            c += texture(screenMap, UV - vec2(bloomOffset / width * i, 0));
+            c += texture(screenMap, UV + vec2(bloomOffset / width * i, 0));
+        }
+        oCol0.rgb = (c / (n * 2.0)).rgb;
+        oCol0.a = 1.0;
+    }
+    else if (pass == 6) {
+        //vec4 c = texture(bloomMap_0, UV);
+        vec4 c = texture(screenMap, UV) +
+                 texture(bloomMap_0, UV) +
+                 texture(bloomMap_1, UV) * 0.9 +
+                 texture(bloomMap_2, UV) * 0.8 +
+                 texture(bloomMap_3, UV) * 0.7 +
+                 texture(bloomMap_4, UV) * 0.6 +
+                 texture(bloomMap_5, UV) * 0.5;
+        c = clamp(c, 0.0, 1.0);
+        c.rgb = vec3(1.0) - exp(-c.rgb * exposure);
+        c.rgb = pow(c.rgb, vec3(1.0/gamma));
+        oCol0 = c;
+        oCol0.a = 1.0;
+    }
+    else if (pass == 7) {
+        vec4 c = vec4(0);
+        int n = int(blurIter);
+        float blurOffset = n / 400.0;
+        for (int i = 0; i < n; i++) {
+            c += texture(screenMap, UV - vec2(0, blurOffset / height * i)) * (n - i);
+            c += texture(screenMap, UV + vec2(0, blurOffset / height * i)) * (n - i);
+        }
+        oCol0.rgb = c.rgb / ((1 + n) * n);//(c / (n * 2.0)).rgb;
+        oCol0.a = 1.0;
+    }
+    else if (pass == 8) {
+        vec4 c = vec4(0);
+        int n = int(blurIter);
+        float blurOffset = n / 400.0;
+        for (int i = 0; i < n; i++) {
+            c += texture(screenMap, UV - vec2(blurOffset / width * i, 0)) * (n - i);
+            c += texture(screenMap, UV + vec2(blurOffset / width * i, 0)) * (n - i);
+        }
+        oCol0.rgb = c.rgb / ((1 + n) * n);//(c / (n * 2.0)).rgb;
+        oCol0.a = 1.0;
+    }
+    else if (pass == 9) {
+        oCol0 = vec4(texture(screenMap, UV).xyz, 1.0);
+    }
+}

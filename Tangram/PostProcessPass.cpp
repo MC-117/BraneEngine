@@ -1,0 +1,125 @@
+#include "PostProcessPass.h"
+#include "Camera.h"
+
+bool PostProcessResource::setTexture(const string & passName, const string & name, Texture & texture, bool overwrite)
+{
+	auto iter = textures.find(name);
+	if (iter == textures.end())
+		textures.insert(make_pair(name, &texture));
+	else if (overwrite)
+		iter->second = &texture;
+	else
+		return false;
+	return true;
+}
+
+Texture * PostProcessResource::getTexture(const string & name)
+{
+	auto iter = textures.find(name);
+	if (iter == textures.end())
+		return NULL;
+	else
+		return iter->second;
+}
+
+void PostProcessResource::reset()
+{
+	screenTexture = NULL;
+	screenRenderTarget = NULL;
+	depthTexture = NULL;
+	depthRenderTarget = NULL;
+	bloomTexture = NULL;
+	bloomRenderTarget = NULL;
+	ssaoTexture = NULL;
+	ssaoRenderTarget = NULL;
+	volumetricFogTexture = NULL;
+	volumetricFogRenderTarget = NULL;
+}
+
+PostProcessPass::PostProcessPass(const string & name, Material * material)
+	: name(name), material(material)
+{
+}
+
+PostProcessPass::~PostProcessPass()
+{
+}
+
+void PostProcessPass::setResource(PostProcessResource & resource)
+{
+	this->resource = &resource;
+}
+
+void PostProcessPass::setMaterial(Material * material)
+{
+	this->material = material;
+}
+
+Material * PostProcessPass::getMaterial()
+{
+	return material;
+}
+
+void PostProcessPass::setEnable(bool enable)
+{
+	this->enable = enable;
+}
+
+bool PostProcessPass::getEnable()
+{
+	return enable;
+}
+
+string PostProcessPass::getName()
+{
+	return name;
+}
+
+bool PostProcessPass::mapMaterialParameter(RenderInfo & info)
+{
+	return material != NULL;
+}
+
+void PostProcessPass::render(RenderInfo & info)
+{
+	if (!enable)
+		return;
+	if (!mapMaterialParameter(info))
+		return;
+	if (size.x == 0 || size.y == 0)
+		return;
+	ShaderProgram* program = material->getShader()->getProgram(Shader_Postprocess);
+	if (program == NULL) {
+		Console::error("PostProcessPass: Shader_Postprocess not found in shader '%s'", material->getShaderName());
+		return;
+	}
+	if (program->isComputable()) {
+		program->bind();
+		material->processInstanceData();
+		Unit2Du localSize = material->getLocalSize();
+		localSize.x = ceilf(size.x / (float)localSize.x);
+		localSize.y = ceilf(size.y / (float)localSize.y);
+		for (int i = 0; i < material->getPassNum(); i++) {
+			material->setPass(i);
+			material->processBaseData();
+			program->dispatchCompute(localSize.x, localSize.y, 1);
+		}
+		material->setPass(0);
+	}
+	else {
+		program->bind();
+		material->processInstanceData();
+		DrawElementsIndirectCommand cmd = { 4, 1, 0, 0 };
+		for (int i = 0; i < material->getPassNum(); i++) {
+			material->setPass(i);
+			material->processBaseData();
+			glDrawArraysIndirect(GL_TRIANGLE_STRIP, &cmd);
+		}
+		material->setPass(0);
+	}
+}
+
+void PostProcessPass::resize(const Unit2Di & size)
+{
+	this->size = size;
+}

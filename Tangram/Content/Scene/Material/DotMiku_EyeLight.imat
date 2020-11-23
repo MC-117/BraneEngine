@@ -1,0 +1,13 @@
+#material Engine/Shaders/PBR_Transparent_Skeleton.mat
+Color baseColor: 255, 255, 255, 255
+Texture colorMap: Content/Scene/DotMikuTex/Dif_EyeLight.png
+Scalar metallic: 0.5
+Texture metallicMap: Engine/Textures/White.png
+Scalar roughness: 0.5
+Texture roughnessMap: Engine/Textures/White.png
+Scalar ao: 1.0
+Texture aoMap: Engine/Textures/White.png
+Scalar normalScale: 1
+Texture normalMap: Engine/Textures/Default_N.png
+Scalar emission: 0.1
+Texture emissionMap: Content/Scene/DotMikuTex/Dif_EyeLight.png

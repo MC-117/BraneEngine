@@ -1,0 +1,805 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Geometry">
+    <Position X="6.5" Y="24" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Geometry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Box">
+    <Position X="3.75" Y="26.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Geometry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sphere">
+    <Position X="8.75" Y="26.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAIAABAAAAAA=</HashCode>
+      <FileName>Geometry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Column">
+    <Position X="1" Y="26.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Geometry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cone">
+    <Position X="6" Y="26.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Geometry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Capsule">
+    <Position X="11.5" Y="26.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Geometry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mesh">
+    <Position X="14.25" Y="24" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Mesh::ObjReader">
+        <TypeIdentifier>
+          <NewMemberFileName>Mesh.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAEAQFgAAAAAAAAAAIAQIAQAAQAgAgAAChA=</HashCode>
+      <FileName>Mesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shape">
+    <Position X="7.5" Y="19.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>QAAEAAAACAAAAAAAAAAAAAABAAAAYCQACAAyBAAgAAA=</HashCode>
+      <FileName>Shape.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Texture2D">
+    <Position X="29" Y="5.5" Width="2" />
+    <InheritanceLine Type="Texture" FixedFromPoint="true">
+      <Path>
+        <Point X="30" Y="4.221" />
+        <Point X="30" Y="5.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAMAACAAABAAAAEAAIAAACAAAQQAUAABAACA=</HashCode>
+      <FileName>Texture2D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Actor">
+    <Position X="23.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABQAAACAAAAgAAAAABAAAAQAAAAAABAAABAAAAAAAA=</HashCode>
+      <FileName>Actor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollisionActor">
+    <Position X="21" Y="14" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>CollisionActor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshActor">
+    <Position X="23.5" Y="14" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAYAAAAAAQAAAAAAABAAAAAAAABAAAAAARQEAAAAAA=</HashCode>
+      <FileName>MeshActor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SkySphere">
+    <Position X="26.25" Y="14" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AEBRAAAEMAAAhAAAAABABICAAAgQiAIAAARwAEBABAA=</HashCode>
+      <FileName>SkySphere.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Delegate&lt;...T&gt;">
+    <Position X="46.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Delegate.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Object">
+    <Position X="15" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gABAAZWCATAAAARgABAIAHASAoAEAABAAgAYEABIAAQ=</HashCode>
+      <FileName>Object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ObjectIterator">
+    <Position X="50.25" Y="6" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEABAAAAAAAAAgAAgAgAAAAAAAAAAAAAIEACA=</HashCode>
+      <FileName>Object.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Transform">
+    <Position X="11.75" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Transform::UpdateState">
+        <TypeIdentifier>
+          <NewMemberFileName>Transform.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>BACSMoEAAAAABAAhAACQJAQSCAAAAABCAAAAAFAABYA=</HashCode>
+      <FileName>Transform.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="World">
+    <Position X="18.25" Y="10.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAJEAABGAlACIAISAwAkA4AQEgACABTgAAARAAAAAGA=</HashCode>
+      <FileName>World.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Camera">
+    <Position X="14.25" Y="10.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Camera::CameraMode">
+        <TypeIdentifier>
+          <NewMemberFileName>Camera.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>CAACAgAgQAAAABiYRKIgIAgAAAAIAABgAAEAAAAAgAI=</HashCode>
+      <FileName>Camera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PostProcessingCamera">
+    <Position X="14.75" Y="17.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAgAABAAAAAABAAAAACAhEAAAAAACAAAAA=</HashCode>
+      <FileName>PostProcessingCamera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Input">
+    <Position X="18.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>DohQBAADJxAACEEAAGAgAwIQUIAAMQUFEAEAAAsAAAA=</HashCode>
+      <FileName>Input.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUI">
+    <Position X="53.25" Y="6.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgAEAAAAAICAAgACAAAAgQEABBAAFAAAAAEAggIwACA=</HashCode>
+      <FileName>GUI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UIControl">
+    <Position X="32.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAEAAAABEAAAAAQACA=</HashCode>
+      <FileName>UIControl.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Asset">
+    <Position X="34.75" Y="21.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAIAAAAAAAAADAAAAAACMACQAAQAgAAIgAAA=</HashCode>
+      <FileName>Asset.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Agent">
+    <Position X="35.25" Y="25.75" Width="1.5" />
+    <InheritanceLine Type="Asset" FixedFromPoint="true">
+      <Path>
+        <Point X="36" Y="25.036" />
+        <Point X="36" Y="25.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAEAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Asset.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AssetInfo">
+    <Position X="23.25" Y="19.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAgAAIAAAAAAQAAAIAAAgAARICAgAABAAAAAAAA=</HashCode>
+      <FileName>Asset.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AgentInfo">
+    <Position X="20.75" Y="23.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAABAAQAAAAAAAAAA=</HashCode>
+      <FileName>Asset.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IAssetable">
+    <Position X="38.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Asset.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Texture2DAssetInfo">
+    <Position X="23.25" Y="23.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAIAAAAAAAAAAAAAAAAAAAAQBAAAAAAAAAAA=</HashCode>
+      <FileName>Asset.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MaterialAssetInfo">
+    <Position X="25.75" Y="23.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAIAAAAAAAAAAAQAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Asset.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshAssetInfo">
+    <Position X="28.25" Y="23.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAIAAAAAAAAAAAAAAAAAAAAQAgAAAAAAAAAA=</HashCode>
+      <FileName>Asset.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshActorAssetInfo">
+    <Position X="20.75" Y="26.5" Width="1.75" />
+    <InheritanceLine Type="AgentInfo" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="21.625" Y="25.07" />
+        <Point X="21.625" Y="25.488" />
+        <Point X="21.625" Y="25.488" />
+        <Point X="21.625" Y="26.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAIAAAAAAAAAAAAAAAABAAgQAAAAAAAAAAAA=</HashCode>
+      <FileName>Asset.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollisionActorAssetInfo">
+    <Position X="18" Y="23.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAIAAAAAAAAAAAAAAAAAAEAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Asset.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AssetManager">
+    <Position X="38.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAEAAQAQAAAAAAAgAARAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Asset.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Brane">
+    <Position X="41.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAACAAAEAAAAAAACAAAAAAACQA=</HashCode>
+      <FileName>Brane.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhysicalBodyMotionState">
+    <Position X="38.5" Y="10.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACEAAAAAAAAAAAAAAAAAgAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PhysicalBody.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhysicalBody">
+    <Position X="17.5" Y="26.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="PhysicalBody::BodyType">
+        <TypeIdentifier>
+          <NewMemberFileName>PhysicalBody.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>EBAAAAAAEEAABAAAAAAgAAAAAAAIAAIAACAAAABEAAg=</HashCode>
+      <FileName>PhysicalBody.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhysicalMaterial">
+    <Position X="43.75" Y="5.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AIQAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>PhysicalMaterial.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BulletDebugDrawer_DeprecatedOpenGL">
+    <Position X="46.75" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAACEAACAABQAAAAgAAAACAAAA=</HashCode>
+      <FileName>PhysicalWorld.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhysicalWorld">
+    <Position X="46.75" Y="14.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgQgABAAAABAKCABAAASAAIEAAAAAABAQA=</HashCode>
+      <FileName>PhysicalWorld.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RigidBody">
+    <Position X="17.5" Y="32.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAABAAAAAAAAAAAAAAAAAAAACAAAAAACAA=</HashCode>
+      <FileName>RigidBody.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FbxLoader">
+    <Position X="50.25" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BACACAAAEIAAAAAAAAAAAIBEAAAAAAACAAAAAAAAAIA=</HashCode>
+      <FileName>FbxLoader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DirectLight">
+    <Position X="6" Y="16.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AgIABAAAAAAAAEAAAAAAAAAAAAAAAABAAAAAAQAQBAA=</HashCode>
+      <FileName>DirectLight.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Light">
+    <Position X="8" Y="10.75" Width="1.5" />
+    <InheritanceLine Type="Render" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="6.25" Y="5.25" />
+        <Point X="8.75" Y="5.25" />
+        <Point X="8.75" Y="10.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>QgBAAAAAIAAAAEBAACAEAgQAAAAACACBgAAQAASQAAA=</HashCode>
+      <FileName>Light.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PointLight">
+    <Position X="10" Y="16.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAACAAAAAAAAAAAAAAIAAIAARAAA=</HashCode>
+      <FileName>PointLight.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRendering">
+    <Position X="0.5" Y="0.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="IRendering::RenderType">
+        <TypeIdentifier>
+          <NewMemberFileName>IRendering.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>QgAAAAAAAAAAAABAQAAAAACAiAAAAAAAAAAQAAQARAA=</HashCode>
+      <FileName>IRendering.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Material">
+    <Position X="46.75" Y="4.75" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Material::MaterialLoader">
+        <TypeIdentifier>
+          <NewMemberFileName>Material.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AEDAgAACEAAcBoAABQAgQUQAAGAgAAgoAIAAqEAMAAA=</HashCode>
+      <FileName>Material.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Render">
+    <Position X="4" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>QgJAgAAAAAACCEBAQAAAAATAiAAAAAAAABQQBAQQRQA=</HashCode>
+      <FileName>Render.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderPool">
+    <Position X="53.25" Y="12" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="RenderPool::render_order">
+        <TypeIdentifier>
+          <NewMemberFileName>RenderPool.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAIAAABAAgAAAAAEAgAAAQAAAAAAAAAgAAgAAAISAAA=</HashCode>
+      <FileName>RenderPool.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderTarget">
+    <Position X="38.5" Y="12.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgAEAAAAAEFEKgQMZBAgBAAAAAAAggAggQAAAAAEAQg=</HashCode>
+      <FileName>RenderTarget.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shader">
+    <Position X="43.75" Y="7.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>wAAAAAKACIAAAAAAAAAAIABAAAgEAIAABAAACAACAgA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Texture">
+    <Position X="29" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAIAAqAQAQAAAEAAAAAACSAAAAQIAAAABAAA=</HashCode>
+      <FileName>Texture.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CameraRender">
+    <Position X="0.5" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAgCEhAAIAAAAAAEAAAAAAAAAAAIABYAAI=</HashCode>
+      <FileName>CameraRender.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MeshRender">
+    <Position X="5.5" Y="10.75" Width="2" />
+    <InheritanceLine Type="Render" ManuallyRouted="true">
+      <Path>
+        <Point X="5.125" Y="6.198" />
+        <Point X="5.125" Y="6.605" />
+        <Point X="6.5" Y="6.605" />
+        <Point X="6.5" Y="10.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>QABAAAAAAAAAAEBAAAAQAASAgAABBAAAAAAAAARQQAA=</HashCode>
+      <FileName>MeshRender.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Color">
+    <Position X="53.25" Y="0.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Color::__unnamed_enum_0481_1" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>c:\Program Files (x86)\Windows Kits\8.1\Include\um\gdipluscolor.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Color::__unnamed_enum_0481_2" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>c:\Program Files (x86)\Windows Kits\8.1\Include\um\gdipluscolor.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Color::__unnamed_enum_0481_3" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>c:\Program Files (x86)\Windows Kits\8.1\Include\um\gdipluscolor.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ABAQgAAAIAAAAgAAAAQAAAAiAAAAQAAAAAABqgEAAAA=</HashCode>
+      <FileName>c:\Program Files (x86)\Windows Kits\8.1\Include\um\gdipluscolor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ShadowCamera">
+    <Position X="12.5" Y="17.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAACAAAAAABAABAAAAAAAAAAAIAAAAABAAAAAAA=</HashCode>
+      <FileName>ShadowCamera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CDlgTemplate">
+    <Position X="50.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAEAEAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>LoadingUI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoadingUI">
+    <Position X="43.75" Y="0.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="LoadingUI::__unnamed_enum_0476_1" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>LoadingUI.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AACCAAEAAAEAEAAAAIAAACAAAAEAAUAIAAAEAACQAAA=</HashCode>
+      <FileName>LoadingUI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AssetLoadWindow">
+    <Position X="29.25" Y="16.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAACAAAAAAAEAAAAAAAEAAAAQAA=</HashCode>
+      <FileName>AssetLoadWindow.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConsoleWindow">
+    <Position X="31.75" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAEIBAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>ConsoleWindow.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EditorWindow">
+    <Position X="34" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAACA=</HashCode>
+      <FileName>EditorWindow.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InspectorWindow">
+    <Position X="36.25" Y="16.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEEAAAAAIAAAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>InspectorWindow.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UIWindow">
+    <Position X="32.75" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BACAAAIAAAAAAAAAAAAAAAAgAAAEAAiAAAAkAAAQAAg=</HashCode>
+      <FileName>UIWindow.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Console">
+    <Position X="38.5" Y="3.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Console::LogState" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Console.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Struct Name="Console::_LOG">
+        <TypeIdentifier>
+          <NewMemberFileName>Console.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AASAAAAAgAAAEAAABAEACAAAAAQAAAAAQCABAAAAAAA=</HashCode>
+      <FileName>Console.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PostProcessCameraRender">
+    <Position X="0.5" Y="12.75" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="PostProcessCameraRender::BloomItem">
+        <TypeIdentifier>
+          <NewMemberFileName>PostProcessCameraRender.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <InheritanceLine Type="CameraRender" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.375" Y="10.666" />
+        <Point X="1.375" Y="12.626" />
+        <Point X="1.375" Y="12.626" />
+        <Point X="1.375" Y="12.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>gIAAAAAQgBAIBAgAAAABgAAAEDACgAAABAgAAAAYAAw=</HashCode>
+      <FileName>PostProcessCameraRender.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ShadowCameraRender">
+    <Position X="3" Y="12.75" Width="2" />
+    <InheritanceLine Type="CameraRender" ManuallyRouted="true">
+      <Path>
+        <Point X="1.375" Y="10.666" />
+        <Point X="1.375" Y="11.688" />
+        <Point X="4" Y="11.688" />
+        <Point X="4" Y="12.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAQAAAAAIAAAAAAAAAAAAAAASAAA=</HashCode>
+      <FileName>ShadowCameraRender.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConsolePy">
+    <Position X="38.5" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PythonManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vec3Py">
+    <Position X="38.5" Y="26.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="Vec3Py::Vec3">
+        <TypeIdentifier>
+          <NewMemberFileName>PythonManager.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAgAAAABAAAAAAAAAAACAAQAAAgAAAAAAA=</HashCode>
+      <FileName>PythonManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ShapePy">
+    <Position X="38.5" Y="23" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="ShapePy::Shape">
+        <TypeIdentifier>
+          <NewMemberFileName>PythonManager.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>PythonManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PythonManager">
+    <Position X="40.25" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAoAQAAAAAAAAAAAABAAEAAAAAAAAAAAAQgAAAAA=</HashCode>
+      <FileName>PythonManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="ContactInfo">
+    <Position X="41.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAgCAAAAABAAAAAAoAAAAAA=</HashCode>
+      <FileName>Transform.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Unit2D&lt;T&gt;">
+    <Position X="25.75" Y="28.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAQAACAAAAAAAAABgQABAACA=</HashCode>
+      <FileName>Unit.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MatAttribute&lt;T&gt;">
+    <Position X="43.75" Y="15" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Unit.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="RenderInfo">
+    <Position X="50.25" Y="9" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="RenderInfo::RenderMode">
+        <TypeIdentifier>
+          <NewMemberFileName>Render.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ABAQAAAAAEAAAACAiAAAAAEAMAAAAAAAAAAhABAAAAI=</HashCode>
+      <FileName>Render.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Time">
+    <Position X="41.25" Y="6" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>CAAgAAIAIAAAIAAAAAEgJAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Unit.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="GUIRenderInfo">
+    <Position X="43.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAIAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UIControl.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="TextureInfo">
+    <Position X="50.25" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQAAAABAAACAAAAAAIAAAAAAAEAAAAAAAAAACAAAAQ=</HashCode>
+      <FileName>Texture2D.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Typedef Name="Unit2Di" Collapsed="true">
+    <Position X="29.25" Y="31.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Unit.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="Unit2Df" Collapsed="true">
+    <Position X="29.25" Y="30.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Unit.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="Unit2Dd" Collapsed="true">
+    <Position X="29.25" Y="29.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Unit.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="TypeID" Collapsed="true">
+    <Position X="41.25" Y="11.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Brane.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Enum Name="TransformSpace">
+    <Position X="41.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAQAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Unit.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MouseButtonEnum">
+    <Position X="43.75" Y="13.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACACQAAAAAAA=</HashCode>
+      <FileName>Input.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="InputStateEnum">
+    <Position X="41.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Input.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PhysicalType">
+    <Position X="41.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAQAAAAAAABAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>PhysicalMaterial.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>
