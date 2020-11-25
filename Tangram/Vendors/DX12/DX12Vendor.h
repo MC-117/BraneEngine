@@ -8,7 +8,7 @@
 #ifndef _DX12VENDOR_H_
 #define _DX12VENDOR_H_
 
-#include "DX12.h"
+#include "DX12Texture2D.h"
 
 struct DX12FrameContext
 {
