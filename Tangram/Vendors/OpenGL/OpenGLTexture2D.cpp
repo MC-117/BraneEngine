@@ -1,5 +1,7 @@
 #include "OpenGLTexture2D.h"
 
+#ifdef VENDOR_USE_OPENGL
+
 OpenGLTexture2D::OpenGLTexture2D(Texture2DDesc& desc) : ITexture2D(desc), info(desc.info)
 {
 	if (desc.bindType == 0)
@@ -126,8 +128,8 @@ GLenum OpenGLTexture2D::getColorType(unsigned int channel, GLenum& internalType)
 	}
 	else if (internalType == GL_DEPTH_COMPONENT24)
 		return GL_DEPTH_COMPONENT;
-	else if (internalType == GL_SRGB)
-		return GL_RGB;
+	else if (internalType == GL_SRGB8_ALPHA8)
+		return GL_RGBA;
 	return internalType;
 }
 
@@ -181,12 +183,10 @@ GLenum OpenGLTexture2DInfo::toGLInternalType(const TexInternalType & type)
 		return GL_RED;
 	case TIT_RG:
 		return GL_RG;
-	case TIT_RGB:
-		return GL_RGB;
 	case TIT_RGBA:
 		return GL_RGBA;
-	case TIT_SRGB:
-		return GL_SRGB;
+	case TIT_SRGBA:
+		return GL_SRGB8_ALPHA8;
 	case TIT_Depth:
 		return GL_DEPTH_COMPONENT24;
 	}
@@ -202,3 +202,5 @@ OpenGLTexture2DInfo::OpenGLTexture2DInfo(const Texture2DInfo & info)
 	internalType = toGLInternalType(info.internalType);
 	borderColor = info.borderColor;
 }
+
+#endif // VENDOR_USE_OPENGL

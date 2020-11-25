@@ -1,8 +1,11 @@
 #pragma once
-#ifndef _OPENGLTEXTURE2D_H_
-#define _OPENGLTEXTURE2D_H_
 
 #include "../../ITexture.h"
+
+#ifdef VENDOR_USE_OPENGL
+
+#ifndef _OPENGLTEXTURE2D_H_
+#define _OPENGLTEXTURE2D_H_
 
 struct OpenGLTexture2DInfo {
 	GLenum wrapSType;
@@ -40,3 +43,5 @@ public:
 };
 
 #endif // !_OPENGLTEXTURE2D_H_
+
+#endif // VENDOR_USE_OPENGL
