@@ -5,6 +5,19 @@
 #include <fstream>
 #include "Asset.h"
 
+unsigned char* rgb2rgba(unsigned char* data, unsigned char* dst, unsigned int pixles, bool discard = true)
+{
+	int size = pixles * 4;
+	unsigned char* p = new unsigned char[size];
+	for (unsigned char *bp = dst, *ep = dst + size, *bd = data; bp < ep; bp += 4, bd += 3) {
+		memcpy(bp, bd, sizeof(unsigned char) * 3);
+		bp[3] = 255;
+	}
+	if (discard)
+		delete[] data;
+	return dst;
+}
+
 unsigned char* loadMip(const string& file, int& channel, vector<pair<int, int>>& mips) {
 	ifstream iff = ifstream(file, ios::binary);
 	if (iff.fail())
@@ -26,17 +39,30 @@ unsigned char* loadMip(const string& file, int& channel, vector<pair<int, int>>&
 			iff.close();
 			return NULL;
 		}
-		psize += channel * mips[i].first * mips[i].second;
+		psize += (channel == 3 ? 4 : channel) * mips[i].first * mips[i].second;
 		w /= 2, h /= 2;
 	}
 	unsigned char* data = new unsigned char[psize];
+	unsigned char* temp = NULL;
+	if (channel == 3)
+		temp = new unsigned char[mips.front().first * mips.front().second * 3];
 	int pos = 0;
 	for (int i = 0; i < count; i++) {
-		int ps = channel * mips[i].first * mips[i].second;
-		iff.read((char*)(data + pos), sizeof(unsigned char) * ps);
-		pos += ps;
+		int ps = mips[i].first * mips[i].second;
+		int size = channel * ps;
+		if (channel == 3) {
+			iff.read((char*)temp, sizeof(unsigned char) * size);
+			rgb2rgba(temp, data + pos, ps, false);
+		}
+		else
+			iff.read((char*)(data + pos), sizeof(unsigned char) * size);
+		pos += size + (channel == 3 ? ps : 0);
 	}
 	iff.close();
+	if (channel == 3) {
+		channel = 4;
+		delete[] temp;
+	}
 	return data;
 }
 
@@ -175,6 +201,12 @@ bool Texture2D::load(const string & file)
 	}
 	else {
 		desc.data = stbi_load(file.c_str(), &desc.width, &desc.height, &desc.channel, 0);
+		if (desc.channel == 3) {
+			unsigned int pixles = desc.width * desc.height;
+			unsigned char* data = new unsigned char[pixles * 4];
+			desc.data = rgb2rgba(desc.data, data, pixles);
+			desc.channel = 4;
+		}
 	}
 	if (desc.data == NULL)
 		return false;
