@@ -39,7 +39,7 @@ bool Importer::load(const string & file, unsigned int flag)
 	aiSetImportPropertyInteger(props, AI_CONFIG_PP_SBP_REMOVE, aiPrimitiveType_LINE | aiPrimitiveType_POINT);
 	aiSetImportPropertyInteger(props, AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, 0);
 	aiSetImportPropertyInteger(props, AI_CONFIG_IMPORT_REMOVE_EMPTY_BONES, 1);
-	scene = aiImportFileExWithProperties(file.c_str(), flag, NULL, props);
+	scene = aiImportFileExWithProperties(file.c_str(), flag ^ aiProcess_RemoveRedundantMaterials, NULL, props);
 	aiReleasePropertyStore(props);
 	if (scene == NULL) {
 		errorString = aiGetErrorString();
