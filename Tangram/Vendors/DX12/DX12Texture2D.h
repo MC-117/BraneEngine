@@ -8,7 +8,7 @@
 
 #include "DX12.h"
 
-struct DX12Texture2DInfo : public D3D12_RESOURCE_DESC
+struct DX12Texture2DInfo
 {
 	D3D12_RESOURCE_DESC texture2DDesc;
 	D3D12_SAMPLER_DESC samplerDesc;

@@ -591,6 +591,9 @@
     <ClCompile Include="Vendors\OpenGL\OpenGLTexture2D.cpp">
       <Filter>源文件\Vendor\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="Vendors\DX12\DX12Texture2D.cpp">
+      <Filter>源文件\Vendor\DX12</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Unit.h">
@@ -1003,6 +1006,9 @@
     </ClInclude>
     <ClInclude Include="Vendors\OpenGL\OpenGLTexture2D.h">
       <Filter>头文件\Vendor\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Vendors\DX12\DX12Texture2D.h">
+      <Filter>头文件\Vendor\DX12</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

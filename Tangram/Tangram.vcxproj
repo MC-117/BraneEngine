@@ -321,6 +321,7 @@
     <ClCompile Include="Unit.cpp" />
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="VehicleActor.cpp" />
+    <ClCompile Include="Vendors\DX12\DX12Texture2D.cpp" />
     <ClCompile Include="Vendors\DX12\DX12Vendor.cpp" />
     <ClCompile Include="Vendors\OpenGL\OpenGLTexture2D.cpp" />
     <ClCompile Include="Vendors\OpenGL\OpenGLVendor.cpp" />
@@ -459,6 +460,7 @@
     <ClInclude Include="VehicleActor.h" />
     <ClInclude Include="Vendors\DX12\d3dx12.h" />
     <ClInclude Include="Vendors\DX12\DX12.h" />
+    <ClInclude Include="Vendors\DX12\DX12Texture2D.h" />
     <ClInclude Include="Vendors\DX12\DX12Vendor.h" />
     <ClInclude Include="Vendors\OpenGL\OpenGLTexture2D.h" />
     <ClInclude Include="Vendors\OpenGL\OpenGLVendor.h" />

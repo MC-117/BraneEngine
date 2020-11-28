@@ -107,6 +107,8 @@ DXGI_FORMAT DX12Texture2DInfo::toGLInternalType(const TexInternalType & type)
 
 DX12Texture2D::DX12Texture2D(Texture2DDesc & desc) : ITexture2D(desc), info(desc.info)
 {
+	info.texture2DDesc.Width = desc.width;
+	info.texture2DDesc.Height = desc.height;
 }
 
 DX12Texture2D::~DX12Texture2D()
