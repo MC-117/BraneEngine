@@ -19,10 +19,15 @@ void UIWindow::setStyle(ImGuiWindowFlags style)
 	this->style = style;
 }
 
-void UIWindow::setForce()
+bool UIWindow::isFocus() const
+{
+	return _isFocus;
+}
+
+void UIWindow::setFocus()
 {
 	show = true;
-	nextForce = true;
+	nextFocus = true;
 }
 
 void UIWindow::render(GUIRenderInfo& info)
@@ -38,10 +43,11 @@ void UIWindow::render(GUIRenderInfo& info)
 		ImGui::PopStyleVar(styleCount);
 		return;
 	}
-	if (nextForce) {
+	if (nextFocus) {
 		ImGui::SetWindowFocus();
-		nextForce = false;
+		nextFocus = false;
 	}
+	_isFocus = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
 	//if (blurBackground) {
 	//	if (info.sceneBlurTex != NULL) {
 	//		ImGuiStyle& style = ImGui::GetStyle();

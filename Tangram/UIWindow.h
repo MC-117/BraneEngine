@@ -17,13 +17,15 @@ public:
 	void setBackgroundImg(Texture2D& img);
 	void setBackgroundColor(Color color);
 	void setStyle(ImGuiWindowFlags style);
-	void setForce();
+	bool isFocus() const;
+	void setFocus();
 
 	virtual void render(GUIRenderInfo& info);
 	virtual void onRenderWindow(GUIRenderInfo& info);
 protected:
 	Texture2D* backgroundTex = NULL;
-	bool nextForce = false;
+	bool nextFocus = false;
+	bool _isFocus = false;
 	map<ImGuiStyleVar_, ImVec2> styleVars;
 	map<ImGuiStyleVar_, float> styleFVars;
 };

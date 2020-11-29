@@ -21,7 +21,7 @@ void ToolShelf::onRenderWindow(GUIRenderInfo & info)
 			tools[i].first->show = false;
 		}
 		if (ImGui::Button(tools[i].first->name.c_str(), { -1, 40 })) {
-			tools[i].first->setForce();
+			tools[i].first->setFocus();
 		}
 	}
 }
