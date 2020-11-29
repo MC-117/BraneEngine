@@ -136,6 +136,7 @@ void AssetBrowser::onRenderWindow(GUIRenderInfo & info)
 			if (e != NULL)
 				e->call("assignAsset", asset);
 		}
+		bool canPreview = isFocus() && ImGui::IsMouseDoubleClicked(0) && seletedIndex == index;
 		if (assets[i]->assetInfo.type == "Mesh" || assets[i]->assetInfo.type == "SkeletonMesh") {
 			if (ImGui::BeginPopupContextItem("MeshContext")) {
 				static int selectedId = 0;
@@ -202,7 +203,7 @@ void AssetBrowser::onRenderWindow(GUIRenderInfo & info)
 			}
 		}
 		else if (assets[i]->assetInfo.type == "Material") {
-			if (ImGui::IsMouseDoubleClicked(0) && seletedIndex == index) {
+			if (canPreview) {
 				MaterialWindow *win = dynamic_cast<MaterialWindow*>(info.gui.getUIControl("MaterialWindow"));
 				if (win == NULL) {
 					win = new MaterialWindow();
@@ -213,7 +214,7 @@ void AssetBrowser::onRenderWindow(GUIRenderInfo & info)
 			}
 		}
 		else if (assets[i]->assetInfo.type == "PythonScript") {
-			if (ImGui::IsMouseDoubleClicked(0) && seletedIndex == index) {
+			if (canPreview) {
 				PythonGraphWindow *win = dynamic_cast<PythonGraphWindow*>(info.gui.getUIControl("PythonGraphWindow"));
 				if (win == NULL) {
 					win = new PythonGraphWindow(world);
@@ -223,7 +224,7 @@ void AssetBrowser::onRenderWindow(GUIRenderInfo & info)
 			}
 		}
 		else if (assets[i]->assetInfo.type == "AssetFile") {
-			if (ImGui::IsMouseDoubleClicked(0) && seletedIndex == index) {
+			if (canPreview) {
 				SerializationEditor::showSerializationInfo(info.gui, *(SerializationInfo*)assets[i]->load());
 			}
 			if (ImGui::BeginPopupContextItem("AssetContext")) {
@@ -253,7 +254,7 @@ void AssetBrowser::onRenderWindow(GUIRenderInfo & info)
 			}
 		}
 		else if (assets[i]->assetInfo.type == "Texture2D") {
-			if (ImGui::IsMouseDoubleClicked(0) && seletedIndex == index) {
+			if (canPreview) {
 				TextureViewer::showTexture(info.gui, *(Texture2D*)assets[i]->load());
 			}
 		}
