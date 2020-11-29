@@ -5,6 +5,8 @@
 #include "Unit.h"
 #include "UIControl.h"
 
+
+
 class GUI
 {
 public:
@@ -35,6 +37,7 @@ public:
 	void showAllUIControl();
 	void hideAllUIControl();
 	bool isShowUIControl(const string& name);
+	bool isAnyWindowFocus();
 
 	void setParameter(const string& name, void* data);
 	void* getParameter(const string& name);
@@ -44,6 +47,7 @@ public:
 protected:
 	static bool mouseOnUI;
 	static bool anyItemFocus;
+	UIControl* focusControl = NULL;
 };
 
 #endif // !_GUI_H_

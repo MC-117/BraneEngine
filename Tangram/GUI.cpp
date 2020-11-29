@@ -1,5 +1,5 @@
 #include "GUI.h"
-#include "UIControl.h"
+#include "UIWindow.h"
 #include "Camera.h"
 #include "Engine.h"
 
@@ -94,10 +94,20 @@ void GUI::render(RenderInfo& info)
 	uiHandler(*this);
 	
 	GUIRenderInfo _info = { viewSize, sceneBlurTex, info.cmdList, *this };
+	focusControl = NULL;
 
-	for (auto b = uiControls.begin(), e = uiControls.end(); b != e; b++)
+	for (auto b = uiControls.begin(), e = uiControls.end(); b != e; b++) {
 		if (b->second->show)
 			b->second->render(_info);
+		UIWindow* win = dynamic_cast<UIWindow*>(b->second);
+		if (win->isFocus())
+			focusControl = win;
+	}
+
+	GUIPostInfo postInfo = { focusControl, *this };
+
+	for (auto b = uiControls.begin(), e = uiControls.end(); b != e; b++)
+		b->second->onPostAction(postInfo);
 
 	mouseOnUI = ImGui::IsWindowHovered();
 	anyItemFocus = ImGui::IsAnyItemFocused();
@@ -202,6 +212,11 @@ bool GUI::isShowUIControl(const string & name)
 	if (re == uiControls.end())
 		return false;
 	return re->second->show;
+}
+
+bool GUI::isAnyWindowFocus()
+{
+	return focusControl != NULL;
 }
 
 void GUI::setParameter(const string & name, void * data)
