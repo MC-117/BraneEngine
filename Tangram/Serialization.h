@@ -194,9 +194,14 @@ inline bool SerializationInfo::get(const Path & path, T & object) const
 		auto iter = subfeilds.find(path[0]);
 		if (iter == subfeilds.end())
 			return false;
-		if (sublists[iter->second].serialization == NULL)
-			return false;
-		return sublists[iter->second].serialization->deserialize(object, sublists[iter->second]);
+		const SerializationInfo& sub = sublists[iter->second];
+		const Serialization* factory = sub.serialization;
+		if (factory == NULL) {
+			factory = SerializationManager::getSerialization(sub.type);
+			if (factory == NULL)
+				return false;
+		}
+		return factory->deserialize(object, sub);
 	}
 	else {
 		auto _iter = subfeilds.find(path[0]);
@@ -215,9 +220,13 @@ inline bool SerializationInfo::get(const Path & path, T & object)
 		auto iter = subfeilds.find(path[0]);
 		if (iter == subfeilds.end())
 			return false;
-		if (sublists[iter->second].serialization == NULL)
-			return false;
-		return sublists[iter->second].serialization->deserialize(object, sublists[iter->second]);
+		SerializationInfo& sub = sublists[iter->second];
+		if (sub.serialization == NULL) {
+			sub.serialization = SerializationManager::getSerialization(sub.type);
+			if (sub.serialization == NULL)
+				return false;
+		}
+		return sub.serialization->deserialize(object, sub);
 	}
 	else {
 		auto _iter = subfeilds.find(path[0]);
