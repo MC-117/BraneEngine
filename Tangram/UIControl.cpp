@@ -12,6 +12,10 @@ void UIControl::render(GUIRenderInfo& info)
 {
 }
 
+void UIControl::onPostAction(GUIPostInfo& info)
+{
+}
+
 void UIControl::onSceneResize(Unit2Di size)
 {
 }

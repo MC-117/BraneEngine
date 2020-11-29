@@ -5,12 +5,19 @@
 #include "Object.h"
 
 extern class GUI;
+class UIControl;
 
 struct GUIRenderInfo
 {
 	Unit2Di viewSize;
 	Texture* sceneBlurTex;
 	RenderCommandList* renderCommandList;
+	GUI& gui;
+};
+
+struct GUIPostInfo
+{
+	UIControl* focusControl;
 	GUI& gui;
 };
 
@@ -25,6 +32,7 @@ public:
 	UIControl(Object& object, string name = "UIControl", bool defaultShow = false);
 
 	virtual void render(GUIRenderInfo& info);
+	virtual void onPostAction(GUIPostInfo& info);
 	virtual void onSceneResize(Unit2Di size);
 	virtual void onAttech(GUI& gui);
 };
