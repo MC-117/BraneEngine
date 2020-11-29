@@ -529,11 +529,11 @@ bool ::Transform::deserialize(const SerializationInfo & from)
 	if (!Object::deserialize(from))
 		return false;
 	SVector3f pos, rot, sca;
-	if (from.get(Path("position"), pos))
+	if (from.get("position", pos))
 		setPosition(pos.x, pos.y, pos.z);
-	if (from.get(Path("rotation"), rot))
+	if (from.get("rotation", rot))
 		setRotation(rot.x, rot.y, rot.z);
-	if (from.get(Path("scale"), sca))
+	if (from.get("scale", sca))
 		setScale(sca.x, sca.y, sca.z);
 	const SerializationInfo* cinfo = from.get("collision");
 	if (cinfo != NULL) {
