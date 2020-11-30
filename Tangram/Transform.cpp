@@ -484,6 +484,22 @@ void ::Transform::scaling(const Vector3f& v)
 	invalidate(Sca);
 }
 
+void ::Transform::attachTo(::Transform & target, const ::Transform::AttachRuleEnum & rule)
+{
+	TransformSpace space = rule == KeepWorld ? WORLD : RELATE;
+	Matrix4f mat = getMatrix(space);
+	Object::setParent(target);
+	setMatrix(mat, space);
+}
+
+void ::Transform::setParent(Object & parent)
+{
+	if (isClassOf<::Transform>(&parent))
+		attachTo(*(::Transform*)&parent);
+	else
+		Object::setParent(parent);
+}
+
 void ::Transform::apply(const PTransform & tran)
 {
 #ifdef PHYSICS_USE_BULLET
