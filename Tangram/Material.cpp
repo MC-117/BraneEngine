@@ -804,7 +804,7 @@ bool Material::MaterialLoader::saveMaterialInstance(const string & file, Materia
 		string texP = Texture2DAssetInfo::getPath(b->second.val);
 		text += "Texture " + b->first + ": " + (texP.empty() ? "white" : texP) + '\n';
 	}
-	ofstream f = ofstream(file, ofstream::out | ios::binary);
+	ofstream f = ofstream(file);
 	f << text;
 	f.close();
 	return true;
