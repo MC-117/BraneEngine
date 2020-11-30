@@ -3,6 +3,7 @@
 #include "AssetLoadWindow.h"
 #include "ConsoleWindow.h"
 #include "AssetBrowser.h"
+#include "imgui_stdlib.h"
 
 EditorWindow::EditorWindow(Object & object, Material& baseMat, string name, bool defaultShow) : UIWindow(object, name, defaultShow), baseMat(baseMat)
 {
@@ -145,10 +146,27 @@ void EditorWindow::onRenderWindow(GUIRenderInfo& info)
 	}
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Objects");
 	ImGui::BeginChild("ObjectsView", { -0.1f, -0.1f });
+
 	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 	if (selectedObj == &world)
 		node_flags |= ImGuiTreeNodeFlags_Selected;
+
+	// ObjectTree
 	if (ImGui::TreeNodeEx("world", node_flags)) {
+		Object *dragObj = NULL, *targetObj = NULL;
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("EDITOR_DRAG"))
+			{
+				if (payload->DataSize == sizeof(Object*)) {
+					dragObj = *(Object**)payload->Data;
+					targetObj = &world;
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+
 		if (ImGui::IsItemClicked()) {
 			selectedObj = &world;
 			UIControl* uc = gui.getUIControl("Inspector");
@@ -169,10 +187,33 @@ void EditorWindow::onRenderWindow(GUIRenderInfo& info)
 				world += win;
 			}
 		}
-		traverse(world, gui);
+		traverse(world, gui, dragObj, targetObj);
+
+		if (dragObj != NULL && targetObj != NULL &&
+			targetObj != dragObj && targetObj != dragObj->parent) {
+			dragObj->setParent(*targetObj);
+		}
 		ImGui::TreePop();
 	}
-	
+
+	// NewObjectContext
+	if (ImGui::BeginPopupContextWindow("NewObjectContext")) {
+		if (ImGui::BeginMenu("Transform")) {
+			ImGui::InputText("Name", &newObjectName);
+			if (Brane::find(typeid(Object).hash_code(), newObjectName) == NULL) {
+				if (ImGui::Button("Create", { -1, 36 })) {
+					::Transform* t = new ::Transform(newObjectName);
+					world += t;
+				}
+			}
+			else {
+				ImGui::Text("Name exists");
+			}
+			ImGui::EndMenu();
+		}
+		ImGui::EndPopup();
+	}
+
 	ImGui::EndChild();
 }
 
@@ -221,7 +262,7 @@ void EditorWindow::onPostAction(GUIPostInfo & info)
 	}
 }
 
-void EditorWindow::traverse(Object & obj, GUI& gui)
+void EditorWindow::traverse(Object & obj, GUI& gui, Object*& dragObj, Object*& targetObj)
 {
 	for (auto b = obj.children.begin(), e = obj.children.end(); b != e; b++) {
 		Object& obj = **b;
@@ -231,11 +272,29 @@ void EditorWindow::traverse(Object & obj, GUI& gui)
 		if (selectedObj == &obj)
 			node_flags |= ImGuiTreeNodeFlags_Selected;
 		bool isOpen = ImGui::TreeNodeEx(obj.name.c_str(), node_flags);
+		if (ImGui::BeginDragDropSource())
+		{
+			Object* p = *b;
+			ImGui::SetDragDropPayload("EDITOR_DRAG", &p, sizeof(Object*));
+			ImGui::Text("Reparent %s", obj.name.c_str());
+			ImGui::EndDragDropSource();
+		}
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("EDITOR_DRAG"))
+			{
+				if (payload->DataSize == sizeof(Object*)) {
+					dragObj = *(Object**)payload->Data;
+					targetObj = *b;
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
 		if (ImGui::IsItemClicked()) {
 			select(&obj, gui);
 		}
 		if (isOpen) {
-			traverse(obj, gui);
+			traverse(obj, gui, dragObj, targetObj);
 			ImGui::TreePop();
 		}
 	}

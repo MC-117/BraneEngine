@@ -18,8 +18,10 @@ public:
 	virtual void onRenderWindow(GUIRenderInfo& info);
 	virtual void onPostAction(GUIPostInfo& info);
 protected:
-	void traverse(Object& obj, GUI& gui);
+	void traverse(Object& obj, GUI& gui, Object*& dragObj, Object*& targetObj);
 	void select(Object* obj, GUI& gui);
+
+	string newObjectName;
 };
 
 #endif // !_EDITORWINDOW_H_
