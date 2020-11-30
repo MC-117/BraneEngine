@@ -78,6 +78,7 @@ void InspectorWindow::onRenderWindow(GUIRenderInfo& info)
 					SerializationInfoWriter writer = SerializationInfoWriter(f);
 					writer.write(info);
 					f.close();
+					MessageBox(NULL, _T("Complete"), _T("Info"), MB_OK);
 				}
 			}, &obj);
 			td.detach();
@@ -1080,11 +1081,13 @@ void InspectorWindow::showMaterial(multimap<string, unsigned int>& meshPartNames
 						thread td = thread([](Material* mat) {
 #ifdef UNICODE
 							CFileDialog dialog(false, L"imat", NULL, 6UL, _T("imat(*.imat)|*.imat"));
-#else
-							CFileDialog dialog(false, "imat", NULL, 6UL, "imat(*.imat)|*.imat");
-#endif // UNICODE
 							experimental::filesystem::path ep = Engine::windowContext.executionPath;
 							dialog.m_ofn.lpstrInitialDir = ep.replace_filename(L"Content").c_str();
+#else
+							CFileDialog dialog(false, "imat", NULL, 6UL, "imat(*.imat)|*.imat");
+							experimental::filesystem::path ep = Engine::windowContext.executionPath;
+							dialog.m_ofn.lpstrInitialDir = ep.replace_filename("Content").generic_u8string().c_str();
+#endif // UNICODE
 							dialog.m_ofn.Flags = OFN_DONTADDTORECENT;
 							if (dialog.DoModal() == IDOK) {
 								string s = CT2A(dialog.GetPathName().GetString());

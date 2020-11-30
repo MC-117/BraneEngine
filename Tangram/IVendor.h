@@ -26,7 +26,11 @@ struct WindowContext
 	HINSTANCE _hinstance;
 	void* window;
 	bool _fullscreen;
+#ifdef UNICODE
 	wstring executionPath;
+#else
+	string executionPath;
+#endif // UNICODE
 };
 
 class VendorManager;

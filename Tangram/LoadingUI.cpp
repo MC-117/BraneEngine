@@ -146,7 +146,7 @@ INT_PTR LoadingUI::DoModal()
 	return IDOK;
 }
 
-void LoadingUI::SetText(CStringW text)
+void LoadingUI::SetText(CString text)
 {
 	if (this->text == text)
 		return;

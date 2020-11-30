@@ -33,7 +33,7 @@ public:
 
 	INT_PTR DoModal();
 
-	void SetText(CStringW text);
+	void SetText(CString text);
 	void Close();
 
 	static void threadFunc(LoadingUI* ui);

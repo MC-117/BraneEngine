@@ -193,8 +193,8 @@ void loadAssets(const char* path, LoadingUI& log, vector<string>& delayLoadAsset
 				ignore = true;
 			}
 			else {
-				CStringW str;
-				str.Format(L"%s unknown file type", pathwc);
+				CString str;
+				str.Format("%s unknown file type", pathwc);
 				log.SetText(str);
 				Console::warn("%s unknown file type", path.c_str());
 				
@@ -202,14 +202,14 @@ void loadAssets(const char* path, LoadingUI& log, vector<string>& delayLoadAsset
 			if (!delay && !ignore) {
 				if (asset == NULL) {
 					wchar_t* namewc = A2W(name.c_str());
-					CStringW str;
-					str.Format(L"%s %s load failed", pathwc, namewc);
+					CString str;
+					str.Format("%s %s load failed", pathwc, namewc);
 					log.SetText(str);
 					Console::error("%s %s load failed", path.c_str(), name.c_str());
 				}
 				else {
-					CStringW str;
-					str.Format(L"%s load", pathwc);
+					CString str;
+					str.Format("%s load", pathwc);
 					log.SetText(str);
 					Console::log("%s load", path.c_str());
 				}
@@ -218,8 +218,8 @@ void loadAssets(const char* path, LoadingUI& log, vector<string>& delayLoadAsset
 				delete ini;
 		}
 		else {
-			CStringW str;
-			str.Format(L"%s folder", pathwc);
+			CString str;
+			str.Format("%s folder", pathwc);
 			log.SetText(str);
 			Console::log("%s folder", path.c_str());
 		}
@@ -271,22 +271,22 @@ void loadAssets(LoadingUI& log, bool loadDefaultAsset, bool loadEngineAsset, boo
 			asset = AssetManager::loadAsset("Material", name, path, { "" }, {});
 		}
 		else {
-			CStringW str;
-			str.Format(L"%s unknown file type", p.c_str());
+			CString str;
+			str.Format("%s unknown file type", p.c_str());
 			log.SetText(str);
 			Console::warn("%s unknown file type", path.c_str());
 			continue;
 		}
 		if (asset == NULL) {
 			const wchar_t* namewc = p.filename().c_str();
-			CStringW str;
-			str.Format(L"%s %s load failed", p.c_str(), namewc);
+			CString str;
+			str.Format("%s %s load failed", p.c_str(), namewc);
 			log.SetText(str);
 			Console::error("%s %s load failed", path.c_str(), name.c_str());
 		}
 		else {
-			CStringW str;
-			str.Format(L"%s load", p.c_str());
+			CString str;
+			str.Format("%s load", p.c_str());
 			log.SetText(str);
 			Console::log("%s load", path.c_str());
 		}
@@ -490,7 +490,12 @@ void SetStyleColors(ImGuiStyle* dst = 0)
 void Engine::setup()
 {
 	{
+
+#ifdef UNICODE
 		wchar_t execPath[MAX_PATH];
+#else
+		char execPath[MAX_PATH];
+#endif // UNICODE
 		GetModuleFileName(NULL, execPath, MAX_PATH);
 		windowContext.executionPath = execPath;
 	}

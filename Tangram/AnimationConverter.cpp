@@ -357,7 +357,11 @@ void AnimationConverter::showPmxLoad()
 			BROWSEINFOA bi;
 			bi.hwndOwner = NULL;
 			experimental::filesystem::path p = Engine::windowContext.executionPath;
+#ifdef UNICODE
 			LPITEMIDLIST rlist = ILCreateFromPath(p.replace_filename("Content\\").c_str());
+#else
+			LPITEMIDLIST rlist = ILCreateFromPath(p.replace_filename("Content\\").generic_u8string().c_str());
+#endif // UNICODE
 			bi.pidlRoot = rlist;
 			bi.pszDisplayName = NULL;
 			bi.lpszTitle = "Choose Target Folder";
