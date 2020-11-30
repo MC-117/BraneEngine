@@ -51,9 +51,9 @@ public:
 	Object* getSibling() const;
 	Object* getChild() const;
 	Object* findChild(const string& name);
-	void setParent(Object& parent);
-	void unparent();
-	void addChild(Object& child);
+	virtual void setParent(Object& parent);
+	virtual void unparent();
+	virtual void addChild(Object& child);
 	void clearChild();
 
 	void traverse(void(*preFunc)(Object& object), void(*postFunc)(Object& object));

@@ -169,8 +169,8 @@ void Object::unparent()
 {
 	if (parent != NULL) {
 		if (siblingIdx != -1) {
-			auto b = parent->children.erase(parent->children.begin() += siblingIdx);
-			for (auto e = parent->children.end(); b < e; b++)
+			auto b = parent->children.erase(parent->children.begin() + siblingIdx);
+			for (auto e = parent->children.end(); b != e; b++)
 				(*b)->siblingIdx--;
 			onDistacted(*parent);
 		}
