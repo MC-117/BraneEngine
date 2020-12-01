@@ -1366,22 +1366,24 @@ void InitialWorld() {
 	Mesh* grassMesh = getAssetByPath<Mesh>("Content/Scene/Mesh/Grass.fbx");
 	
 	if (grassM1 != NULL && grassM2 != NULL && grassM3 != NULL && grassMesh != NULL) {
-		GrassMeshActor &grass = *new GrassMeshActor(*grassMesh, *grassM1, "Grass");
 		grassM1->setTwoSide(true);
 		grassM2->setTwoSide(true);
 		grassM3->setTwoSide(true);
-		grass.meshRender.setMaterial(0, *grassM1);
-		grass.meshRender.setMaterial(1, *grassM2);
-		grass.meshRender.setMaterial(2, *grassM3);
-		grass.set(120, Vector2i(1000, 1000));
-		grass.setPosition(0, 0, 0);
-		grass.bindTick([](Object* obj, float dt) {
-			float time = Engine::getCurrentWorld()->getEngineTime() / 1000.f;
-			obj->getRender()->getMaterial(0)->setScalar("time", time);
-			obj->getRender()->getMaterial(1)->setScalar("time", time);
-			obj->getRender()->getMaterial(2)->setScalar("time", time);
-		});
-		world += grass;
+		for (int i = 0; i < 2; i++) {
+			GrassMeshActor &grass = *new GrassMeshActor(*grassMesh, *grassM1, "Grass" + (i == 0 ? "" : to_string(i)));
+			grass.meshRender.setMaterial(0, *grassM1);
+			grass.meshRender.setMaterial(1, *grassM2);
+			grass.meshRender.setMaterial(2, *grassM3);
+			grass.set(120, Vector2i(1000, 1000));
+			grass.setPosition(0, 0, 0);
+			grass.bindTick([](Object* obj, float dt) {
+				float time = Engine::getCurrentWorld()->getEngineTime() / 1000.f;
+				obj->getRender()->getMaterial(0)->setScalar("time", time);
+				obj->getRender()->getMaterial(1)->setScalar("time", time);
+				obj->getRender()->getMaterial(2)->setScalar("time", time);
+			});
+			world += grass;
+		}
 	}
 
 	Material &pbr_mat = *getAssetByPath<Material>("Engine/Shaders/PBR.mat");
