@@ -227,7 +227,6 @@ void EditorWindow::onPostAction(GUIPostInfo & info)
 		if (world.input.getKeyDown(VK_CONTROL)) {
 			if (selectedObj != NULL &&
 				world.input.getKeyPress('C')) {
-				Console::log("Ctrl+C");
 				copyInfo.clear();
 				if (selectedObj->serialize(copyInfo)) {
 					parentObj = selectedObj->parent;
@@ -242,7 +241,6 @@ void EditorWindow::onPostAction(GUIPostInfo & info)
 				world.input.getKeyPress('V')) {
 				string oldName = copyInfo.name;
 				string newName = getNextName(copyInfo.name);
-				Console::log("Ctrl+V: %s", newName.c_str());
 				copyInfo.name = newName;
 				Serializable* ser = copyInfo.serialization->instantiate(copyInfo);
 				if (ser != NULL) {
