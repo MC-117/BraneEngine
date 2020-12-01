@@ -79,6 +79,11 @@ bool RenderCommandList::MeshTransformData::clean(unsigned int base, unsigned int
 	return true;
 }
 
+void RenderCommandList::MeshTransformDataPack::setUpdateStatic()
+{
+	willStaticUpdate = true;
+}
+
 unsigned int RenderCommandList::MeshTransformDataPack::setMeshTransform(const Matrix4f & transformMat)
 {
 	return meshTransformData.setMeshTransform(transformMat);
@@ -149,12 +154,18 @@ RenderCommandList::MeshTransformIndex * RenderCommandList::MeshTransformDataPack
 
 unsigned int RenderCommandList::MeshTransformDataPack::setStaticMeshTransform(const Matrix4f & transformMat)
 {
-	return staticMeshTransformData.setMeshTransform(transformMat);
+	if (staticUpdate)
+		return staticMeshTransformData.setMeshTransform(transformMat);
+	else
+		return -1;
 }
 
 unsigned int RenderCommandList::MeshTransformDataPack::setStaticMeshTransform(const vector<Matrix4f>& transformMats)
 {
-	return staticMeshTransformData.setMeshTransform(transformMats);
+	if (staticUpdate)
+		return staticMeshTransformData.setMeshTransform(transformMats);
+	else
+		return -1;
 }
 
 RenderCommandList::MeshTransformIndex * RenderCommandList::MeshTransformDataPack::getStaticMeshPartTransform(MeshPart * meshPart, Material * material)
@@ -170,7 +181,7 @@ RenderCommandList::MeshTransformIndex * RenderCommandList::MeshTransformDataPack
 
 RenderCommandList::MeshTransformIndex * RenderCommandList::MeshTransformDataPack::setStaticMeshPartTransform(MeshPart * meshPart, Material * material, unsigned int transformIndex)
 {
-	if (meshPart == NULL || material == NULL)
+	if (!staticUpdate || meshPart == NULL || material == NULL)
 		return NULL;
 	TransTag tag = { material, meshPart };
 	auto meshIter = staticMeshTransformIndex.find(tag);
@@ -193,7 +204,7 @@ RenderCommandList::MeshTransformIndex * RenderCommandList::MeshTransformDataPack
 
 RenderCommandList::MeshTransformIndex * RenderCommandList::MeshTransformDataPack::setStaticMeshPartTransform(MeshPart * meshPart, Material * material, MeshTransformIndex * transformIndex)
 {
-	if (meshPart == NULL || material == NULL || transformIndex != NULL)
+	if (!staticUpdate || meshPart == NULL || material == NULL || transformIndex != NULL)
 		return NULL;
 	TransTag tag = { material, meshPart };
 	auto meshIter = staticMeshTransformIndex.find(tag);
@@ -217,12 +228,12 @@ RenderCommandList::MeshTransformIndex * RenderCommandList::MeshTransformDataPack
 
 void RenderCommandList::MeshTransformDataPack::uploadTransforms()
 {
-	if (staticUpdate) {
+	/*if (staticUpdate) {
 		staticTotalTransformIndexCount = 0;
 		for (auto b = staticMeshTransformIndex.begin(), e = staticMeshTransformIndex.end(); b != e; b++) {
 			staticTotalTransformIndexCount += b->second.batchCount;
 		}
-	}
+	}*/
 	unsigned int dataSize = meshTransformData.batchCount + staticMeshTransformData.batchCount;
 	unsigned int indexSize = totalTransformIndexCount + staticTotalTransformIndexCount;
 	bool needUpdate = dataSize > transformBuffer.capacity || indexSize > transformIndexBuffer.capacity;
@@ -255,7 +266,12 @@ void RenderCommandList::MeshTransformDataPack::uploadTransforms()
 			b->second.indices.data());
 		transformIndexBase += b->second.batchCount;
 	}
-	staticUpdate = false;
+	if (willStaticUpdate) {
+		staticUpdate = true;
+		willStaticUpdate = false;
+	}
+	else
+		staticUpdate = false;
 }
 
 void RenderCommandList::MeshTransformDataPack::bindTransforms()
@@ -271,6 +287,17 @@ void RenderCommandList::MeshTransformDataPack::clean()
 		b->second.batchCount = 0;
 	}
 	totalTransformIndexCount = 0;
+}
+
+void RenderCommandList::MeshTransformDataPack::cleanStatic()
+{
+	if (staticUpdate) {
+		staticMeshTransformData.clean();
+		for (auto b = staticMeshTransformIndex.begin(), e = staticMeshTransformIndex.end(); b != e; b++) {
+			b->second.batchCount = 0;
+		}
+		staticTotalTransformIndexCount = 0;
+	}
 }
 
 void RenderCommandList::MeshTransformDataPack::cleanStatic(unsigned int base, unsigned int count)
@@ -435,7 +462,7 @@ void * RenderCommandList::getMeshPartTransform(MeshPart * meshPart, Material * m
 void * RenderCommandList::setMeshPartTransform(MeshPart * meshPart, Material * material, unsigned int transformIndex)
 {
 	void* re = meshTransformDataPack.setMeshPartTransform(meshPart, material, transformIndex);
-	if (re != NULL && material->getRenderOrder() >= 1000 && material->getRenderOrder() < 2450)
+	if (re != NULL && material->getRenderOrder() >= 1000 && material->getRenderOrder() < 2450 && material->canCastShadow)
 		meshTransformDataPack.setMeshPartTransform(meshPart, &Material::defaultDepthMaterial, transformIndex);
 	return re;
 }
@@ -443,7 +470,7 @@ void * RenderCommandList::setMeshPartTransform(MeshPart * meshPart, Material * m
 void * RenderCommandList::setMeshPartTransform(MeshPart * meshPart, Material * material, void * transformIndex)
 {
 	void* re = meshTransformDataPack.setMeshPartTransform(meshPart, material, (MeshTransformIndex*)transformIndex);
-	if (re != NULL && material->getRenderOrder() >= 1000 && material->getRenderOrder() < 2450)
+	if (re != NULL && material->getRenderOrder() >= 1000 && material->getRenderOrder() < 2450 && material->canCastShadow)
 		meshTransformDataPack.setMeshPartTransform(meshPart, &Material::defaultDepthMaterial, (MeshTransformIndex*)transformIndex);
 	return re;
 }
@@ -466,7 +493,7 @@ void * RenderCommandList::getStaticMeshPartTransform(MeshPart * meshPart, Materi
 void * RenderCommandList::setStaticMeshPartTransform(MeshPart * meshPart, Material * material, unsigned int transformIndex)
 {
 	void* re = meshTransformDataPack.setStaticMeshPartTransform(meshPart, material, transformIndex);
-	if (re != NULL && material->getRenderOrder() >= 1000 && material->getRenderOrder() < 2450)
+	if (re != NULL && material->getRenderOrder() >= 1000 && material->getRenderOrder() < 2450 && material->canCastShadow)
 		meshTransformDataPack.setStaticMeshPartTransform(meshPart, &Material::defaultDepthMaterial, transformIndex);
 	return re;
 }
@@ -474,7 +501,7 @@ void * RenderCommandList::setStaticMeshPartTransform(MeshPart * meshPart, Materi
 void * RenderCommandList::setStaticMeshPartTransform(MeshPart * meshPart, Material * material, void * transformIndex)
 {
 	void* re = meshTransformDataPack.setStaticMeshPartTransform(meshPart, material, (MeshTransformIndex*)transformIndex);
-	if (re != NULL && material->getRenderOrder() >= 1000 && material->getRenderOrder() < 2450)
+	if (re != NULL && material->getRenderOrder() >= 1000 && material->getRenderOrder() < 2450 && material->canCastShadow)
 		meshTransformDataPack.setStaticMeshPartTransform(meshPart, &Material::defaultDepthMaterial, (MeshTransformIndex*)transformIndex);
 	return re;
 }
@@ -492,6 +519,16 @@ void RenderCommandList::cleanStaticMeshPartTransform(MeshPart * meshPart, Materi
 bool RenderCommandList::setRenderCommand(const RenderCommand & cmd, bool isStatic)
 {
 	return setRenderCommand(cmd, isStatic, true);
+}
+
+void RenderCommandList::setUpdateStatic()
+{
+	meshTransformDataPack.setUpdateStatic();
+}
+
+bool RenderCommandList::willUpdateStatic()
+{
+	return meshTransformDataPack.staticUpdate;
 }
 
 bool RenderCommandList::setRenderCommand(const RenderCommand & cmd, bool isStatic, bool autoFill)
@@ -730,6 +767,7 @@ void RenderCommandList::excuteCommand()
 void RenderCommandList::resetCommand()
 {
 	meshTransformDataPack.clean();
+	meshTransformDataPack.cleanStatic();
 	particleDataPack.clean();
 	lightDataPack.clean();
 	lightRenders.clear();

@@ -52,6 +52,10 @@ public:
 	static void cleanStaticMeshTransform(unsigned int base, unsigned int count);
 	static void cleanStaticMeshPartTransform(MeshPart* meshPart, Material* material);
 	bool setRenderCommand(const RenderCommand& cmd, bool isStatic = false);
+
+	static void setUpdateStatic();
+	static bool willUpdateStatic();
+
 	void excuteCommand();
 	void resetCommand();
 protected:
@@ -109,7 +113,8 @@ protected:
 	{
 		unsigned int totalTransformIndexCount = 0;
 		unsigned int staticTotalTransformIndexCount = 0;
-		bool staticUpdate = false;
+		bool willStaticUpdate = false;
+		bool staticUpdate = true;
 
 		MeshTransformData meshTransformData;
 		map<TransTag, MeshTransformIndex> meshTransformIndex;
@@ -119,6 +124,8 @@ protected:
 
 		GLBuffer transformBuffer = GLBuffer(GL_SHADER_STORAGE_BUFFER, 16 * sizeof(float));
 		GLBuffer transformIndexBuffer = GLBuffer(GL_SHADER_STORAGE_BUFFER, sizeof(unsigned int));
+
+		void setUpdateStatic();
 
 		unsigned int setMeshTransform(const Matrix4f& transformMat);
 		unsigned int setMeshTransform(const vector<Matrix4f>& transformMats);
@@ -134,6 +141,7 @@ protected:
 		void uploadTransforms();
 		void bindTransforms();
 		void clean();
+		void cleanStatic();
 		void cleanStatic(unsigned int base, unsigned int count); // TO-FIX
 		void cleanPartStatic(MeshPart* meshPart = NULL, Material* material = NULL);
 	};
