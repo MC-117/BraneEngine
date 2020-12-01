@@ -271,12 +271,13 @@ void Object::postTraverse(void(*func)(Object &object))
 void Object::destroy(bool applyToChild)
 {
 	tryDestroy = true;
-	/*unparent();
-	if (applyToChild)
+	if (parent == NULL || applyToChild)
 		for (auto b = children.begin(), e = children.end(); b != e; b++)
 			(*b)->destroy(applyToChild);
 	else
-		clearChild();*/
+		while(!children.empty())
+			children[0]->setParent(*parent);
+	//clearChild();
 }
 
 bool Object::isDestroy()
@@ -336,6 +337,8 @@ bool ObjectIterator::next()
 		delay = false;
 		return curObj != NULL;
 	}
+	if (curObj == NULL)
+		return false;
 	Object* o = curObj->getChild();
 	if (o == NULL) {
 		if (curObj == root)
@@ -374,17 +377,24 @@ Object & ObjectIterator::current()
 
 Object * ObjectIterator::unparentCurrent()
 {
-	Object* root = curObj->getRoot();
-	for (auto b = curObj->children.begin(), e = curObj->children.end(); b != e; b++)
-		(*b)->unparent();
-	Object* o = curObj->parent, *bak = curObj;
-	while (o != NULL) {
-		Object* s = o->getSibling();
-		if (s == NULL)
-			o = o->parent;
-		else {
-			o = s;
-			break;
+	if (curObj->parent != NULL)
+		for (auto b = curObj->children.begin(), e = curObj->children.end(); b != e; b++)
+			(*b)->setParent(*curObj->parent);
+	Object* o = curObj->getSibling(), *bak = curObj;
+	if (o == NULL) {
+		o = curObj->parent;
+		while (o != NULL) {
+			if (o == root) {
+				o = NULL;
+				break;
+			}
+			Object* s = o->getSibling();
+			if (s == NULL)
+				o = o->parent;
+			else {
+				o = s;
+				break;
+			}
 		}
 	}
 	curObj->unparent();
