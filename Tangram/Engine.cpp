@@ -62,9 +62,13 @@ void loadAssets(const char* path, LoadingUI& log, vector<string>& delayLoadAsset
 {
 	namespace FS = experimental::filesystem;
 	for (auto& p : FS::recursive_directory_iterator(path)) {
-		string path = p.path().generic_string();
+		string path = p.path().generic_u8string();
+#ifdef UNICODE
 		USES_CONVERSION;
-		wchar_t* pathwc = A2W(path.c_str());
+		wchar_t* pathStr = A2W(path.c_str());
+#else
+		const char* pathStr = path.c_str();
+#endif // UNICODE
 		if (p.status().type() == experimental::filesystem::file_type::regular) {
 			string ext = p.path().extension().generic_string();
 			string name = p.path().filename().generic_string();
@@ -194,22 +198,26 @@ void loadAssets(const char* path, LoadingUI& log, vector<string>& delayLoadAsset
 			}
 			else {
 				CString str;
-				str.Format("%s unknown file type", pathwc);
+				str.Format("%s unknown file type", pathStr);
 				log.SetText(str);
 				Console::warn("%s unknown file type", path.c_str());
 				
 			}
 			if (!delay && !ignore) {
 				if (asset == NULL) {
+#ifdef UNICODE
 					wchar_t* namewc = A2W(name.c_str());
+#else
+					const char* nameStr = name.c_str();
+#endif // UNICODE
 					CString str;
-					str.Format("%s %s load failed", pathwc, namewc);
+					str.Format("%s %s load failed", pathStr, nameStr);
 					log.SetText(str);
 					Console::error("%s %s load failed", path.c_str(), name.c_str());
 				}
 				else {
 					CString str;
-					str.Format("%s load", pathwc);
+					str.Format("%s load", pathStr);
 					log.SetText(str);
 					Console::log("%s load", path.c_str());
 				}
@@ -219,7 +227,7 @@ void loadAssets(const char* path, LoadingUI& log, vector<string>& delayLoadAsset
 		}
 		else {
 			CString str;
-			str.Format("%s folder", pathwc);
+			str.Format("%s folder", pathStr);
 			log.SetText(str);
 			Console::log("%s folder", path.c_str());
 		}
