@@ -100,8 +100,8 @@ protected:
 	if (___child != NULL) { \
 		for (auto b = ___child->sublists.begin(), e = ___child->sublists.end(); b != e; b++) { \
 			if (b->serialization != NULL) { \
-				if (Brane::find(typeid(Object).hash_code(), b->name) != NULL) \
-					continue; \
+				/*if (Brane::find(typeid(Object).hash_code(), b->name) != NULL) \
+					continue; \*/\
 				Serializable * ser = b->serialization->instantiate(*b); \
 				if (ser != NULL) { \
 					Type* cobj = dynamic_cast<Type*>(ser); \
