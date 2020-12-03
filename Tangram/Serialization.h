@@ -390,6 +390,23 @@ public:
 	void write(const SerializationInfo& info, bool showType = true);
 };
 
+class SVector2f : public Serializable
+{
+public:
+	Serialize(SVector2f);
+	float x = 0, y = 0;
+
+	SVector2f(float x = 0, float y = 0);
+	SVector2f(const Vector2f& vec);
+
+	virtual bool deserialize(const SerializationInfo& from);
+	virtual bool serialize(SerializationInfo& to);
+
+	SVector2f& operator=(const Vector2f& v);
+	operator Vector2f();
+	operator Vector2f() const;
+};
+
 class SVector3f : public Serializable
 {
 public:

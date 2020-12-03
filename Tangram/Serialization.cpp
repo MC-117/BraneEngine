@@ -713,6 +713,50 @@ Serialization * SerializationManager::getSerialization(const string & type)
 	return iter->second;
 }
 
+SerializeInstance(SVector2f);
+
+SVector2f::SVector2f(float x, float y) : x(x), y(y)
+{
+}
+
+SVector2f::SVector2f(const Vector2f & vec) : x(vec[0]), y(vec[1])
+{
+}
+
+bool SVector2f::deserialize(const SerializationInfo & from)
+{
+	if (!from.get<float>(Path("x"), x))
+		return false;
+	if (!from.get<float>(Path("y"), y))
+		return false;
+	return true;
+}
+
+bool SVector2f::serialize(SerializationInfo & to)
+{
+	to.type = "SVector2f";
+	to.set("x", x);
+	to.set("y", y);
+	return true;
+}
+
+SVector2f & SVector2f::operator=(const Vector2f & v)
+{
+	x = v[0];
+	y = v[1];
+	return *this;
+}
+
+SVector2f::operator Vector2f()
+{
+	return Vector2f(x, y);
+}
+
+SVector2f::operator Vector2f() const
+{
+	return Vector2f(x, y);
+}
+
 SerializeInstance(SVector3f);
 
 SVector3f::SVector3f(float x, float y, float z)
