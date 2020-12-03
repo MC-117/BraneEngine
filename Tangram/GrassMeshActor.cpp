@@ -1,6 +1,11 @@
 #include "GrassMeshActor.h"
+#include "Utility.h"
+#include "Asset.h"
+#include "Engine.h"
 #undef min
 #undef max
+
+SerializeInstance(GrassMeshActor);
 
 GrassMeshActor::GrassMeshActor(Mesh & mesh, Material & material, string name)
 	: MeshActor(mesh, material, name)
@@ -32,6 +37,21 @@ void GrassMeshActor::set(float density, Vector2i & bound)
 void GrassMeshActor::updateData()
 {
 	RenderCommandList::setUpdateStatic();
+}
+
+void GrassMeshActor::begin()
+{
+	MeshActor::begin();
+	RenderCommandList::setUpdateStatic();
+}
+
+void GrassMeshActor::tick(float delteTime)
+{
+	MeshActor::tick(delteTime);
+	float time = Engine::getCurrentWorld()->getEngineTime() / 1000.f;
+	for (auto b = meshRender.materials.begin(), e = meshRender.materials.end(); b != e; b++)
+		if (*b != NULL)
+			(*b)->setScalar("time", time);
 }
 
 void GrassMeshActor::end()
@@ -69,4 +89,55 @@ void GrassMeshActor::prerender()
 		}
 		update = false;
 	}
+}
+
+Serializable * GrassMeshActor::instantiate(const SerializationInfo & from)
+{
+	const SerializationInfo* minfo = from.get("mesh");
+	if (minfo == NULL)
+		return NULL;
+	string pathType;
+	if (!minfo->get("pathType", pathType))
+		return NULL;
+	string path;
+	if (!minfo->get("path", path))
+		return NULL;
+	Mesh* mesh = NULL;
+	if (pathType == "name") {
+		mesh = getAsset<Mesh>("Mesh", path);
+	}
+	else if (pathType == "path") {
+		mesh = getAssetByPath<Mesh>(path);
+	}
+	if (mesh == NULL)
+		return NULL;
+	GrassMeshActor* gma = new GrassMeshActor(*mesh, *getAssetByPath<Material>("Engine/Shaders/Default.mat"), from.name);
+	ChildrenInstantiate(Object, from, gma);
+	return gma;
+}
+
+bool GrassMeshActor::deserialize(const SerializationInfo & from)
+{
+	if (!MeshActor::deserialize(from))
+		return false;
+	from.get("density", density);
+	SVector2f boundf;
+	if (from.get("bound", boundf)) {
+		bound.x() = boundf.x;
+		bound.y() = boundf.y;
+	}
+	return true;
+}
+
+bool GrassMeshActor::serialize(SerializationInfo & to)
+{
+	if (!MeshActor::serialize(to))
+		return false;
+	to.type = "GrassMeshActor";
+	to.set("density", density);
+	SVector2f boundf;
+	boundf.x = bound.x();
+	boundf.y = bound.y();
+	to.set("bound", boundf);
+	return true;
 }
