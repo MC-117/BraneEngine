@@ -1,9 +1,13 @@
+#define _AFXDLL
+#include <afxdlgs.h>
+#include <fstream>
 #include "EditorWindow.h"
 #include "Engine.h"
 #include "AssetLoadWindow.h"
 #include "ConsoleWindow.h"
 #include "AssetBrowser.h"
 #include "imgui_stdlib.h"
+#include "GrassMeshActor.h"
 
 EditorWindow::EditorWindow(Object & object, Material& baseMat, string name, bool defaultShow) : UIWindow(object, name, defaultShow), baseMat(baseMat)
 {
@@ -147,6 +151,12 @@ void EditorWindow::onRenderWindow(GUIRenderInfo& info)
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Objects");
 	ImGui::BeginChild("ObjectsView", { -0.1f, -0.1f });
 
+	// ObjectContext
+	if (ImGui::BeginPopupContextWindow("WorldContextMenu")) {
+		objectContextMenu(NULL);
+		ImGui::EndPopup();
+	}
+
 	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 	if (selectedObj == &world)
 		node_flags |= ImGuiTreeNodeFlags_Selected;
@@ -194,24 +204,6 @@ void EditorWindow::onRenderWindow(GUIRenderInfo& info)
 			dragObj->setParent(*targetObj);
 		}
 		ImGui::TreePop();
-	}
-
-	// NewObjectContext
-	if (ImGui::BeginPopupContextWindow("NewObjectContext")) {
-		if (ImGui::BeginMenu("Transform")) {
-			ImGui::InputText("Name", &newObjectName);
-			if (Brane::find(typeid(Object).hash_code(), newObjectName) == NULL) {
-				if (ImGui::Button("Create", { -1, 36 })) {
-					::Transform* t = new ::Transform(newObjectName);
-					world += t;
-				}
-			}
-			else {
-				ImGui::Text("Name exists");
-			}
-			ImGui::EndMenu();
-		}
-		ImGui::EndPopup();
 	}
 
 	ImGui::EndChild();
@@ -262,14 +254,20 @@ void EditorWindow::onPostAction(GUIPostInfo & info)
 
 void EditorWindow::traverse(Object & obj, GUI& gui, Object*& dragObj, Object*& targetObj)
 {
-	for (auto b = obj.children.begin(), e = obj.children.end(); b != e; b++) {
+	int i = 0;
+	for (auto b = obj.children.begin(), e = obj.children.end(); b != e; b++, i++) {
 		Object& obj = **b;
 		ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 		if (obj.children.empty())
 			node_flags |= ImGuiTreeNodeFlags_Leaf;
 		if (selectedObj == &obj)
 			node_flags |= ImGuiTreeNodeFlags_Selected;
+		ImGui::PushID(i);
 		bool isOpen = ImGui::TreeNodeEx(obj.name.c_str(), node_flags);
+		if (ImGui::BeginPopupContextItem("ObjectContextMenu")) {
+			objectContextMenu(&obj);
+			ImGui::EndPopup();
+		}
 		if (ImGui::BeginDragDropSource())
 		{
 			Object* p = *b;
@@ -295,6 +293,7 @@ void EditorWindow::traverse(Object & obj, GUI& gui, Object*& dragObj, Object*& t
 			traverse(obj, gui, dragObj, targetObj);
 			ImGui::TreePop();
 		}
+		ImGui::PopID();
 	}
 }
 
@@ -309,4 +308,116 @@ void EditorWindow::select(Object * obj, GUI& gui)
 	}
 	ipw->setTargetObject(*obj);
 	ipw->show = true;
+}
+
+void EditorWindow::meshCombo()
+{
+	vector<Mesh*> meshes;
+	string meshstr;
+	for (auto b = MeshAssetInfo::assetInfo.assets.begin(), e = MeshAssetInfo::assetInfo.assets.end(); b != e; b++) {
+		meshes.push_back((Mesh*)b->second->load());
+		meshstr += b->first + '\0';
+	}
+	if (ImGui::Combo("Mesh", &selectedMeshID, meshstr.c_str())) {
+		selectedMesh = meshes[selectedMeshID];
+	}
+}
+
+void EditorWindow::materialCombo()
+{
+	vector<Material*> materials;
+	string materialstr;
+	for (auto b = MaterialAssetInfo::assetInfo.assets.begin(), e = MaterialAssetInfo::assetInfo.assets.end(); b != e; b++) {
+		materials.push_back((Material*)b->second->load());
+		materialstr += b->first + '\0';
+	}
+	if (ImGui::Combo("Material", &selectedMaterialID, materialstr.c_str())) {
+		selectedMaterial = materials[selectedMaterialID];
+	}
+}
+
+void EditorWindow::objectContextMenu(Object * obj)
+{
+	Object& target = obj == NULL ? object : *obj;
+	ImGui::Text("%s(%s)", target.getSerialization().type.c_str(), target.name.c_str());
+	ImGui::Separator();
+	if (ImGui::BeginMenu("New Object")) {
+
+		// Transform
+		if (ImGui::BeginMenu("Transform")) {
+			ImGui::InputText("Name", &newObjectName);
+			if (Brane::find(typeid(Object).hash_code(), newObjectName) == NULL) {
+				if (ImGui::Button("Create", { -1, 36 })) {
+					::Transform* t = new ::Transform(newObjectName);
+					target.addChild(*t);
+				}
+			}
+			else {
+				ImGui::Text("Name exists");
+			}
+			ImGui::EndMenu();
+		}
+
+		// GrassActor
+		if (ImGui::BeginMenu("GrassActor")) {
+			ImGui::InputText("Name", &newObjectName);
+			if (Brane::find(typeid(Object).hash_code(), newObjectName) == NULL) {
+				meshCombo();
+				materialCombo();
+				if (ImGui::DragFloat("Density", &grassDensity)) {
+					grassDensity = max(0, grassDensity);
+				}
+				if (ImGui::DragInt2("Boundry", grassBound.data())) {
+					grassBound.x() = max(0, grassBound.x());
+					grassBound.y() = max(0, grassBound.y());
+				}
+				if (selectedMesh != NULL && selectedMaterial != NULL && ImGui::Button("Create", { -1, 36 })) {
+					GrassMeshActor* t = new GrassMeshActor(*selectedMesh, *selectedMaterial, newObjectName);
+					t->set(grassDensity, grassBound);
+					target.addChild(*t);
+				}
+			}
+			else {
+				ImGui::Text("Name exists");
+			}
+			ImGui::EndMenu();
+		}
+
+		ImGui::EndMenu();
+	}
+	if (obj != NULL) {
+		if (ImGui::MenuItem("Delete"))
+			target.destroy();
+		if (ImGui::MenuItem("DeleteAll"))
+			target.destroy(true);
+	}
+	const char* serStr = "Save Recursively";
+	if (obj == NULL || isClassOf<World>(obj))
+		serStr = "Save World";
+	else if (ImGui::MenuItem("Save")) {
+
+	}
+	if (ImGui::MenuItem(serStr)) {
+		thread td = thread([](Object* tar) {
+#ifdef UNICODE
+			CFileDialog dialog(false, L"asset", NULL, 6UL, _T("asset(*.asset)|*.asset"));
+#else
+			CFileDialog dialog(false, "asset", NULL, 6UL, "asset(*.asset)|*.asset");
+#endif // UNICODE
+			if (dialog.DoModal() == IDOK) {
+				char* s = CT2A(dialog.GetPathName().GetString());
+				SerializationInfo info;
+				if (!tar->serialize(info)) {
+					MessageBox(NULL, _T("Serialize failed"), _T("Error"), MB_OK);
+					return;
+				}
+				ofstream f = ofstream(s);
+				SerializationInfoWriter writer = SerializationInfoWriter(f);
+				writer.write(info);
+				f.close();
+				MessageBox(NULL, _T("Complete"), _T("Info"), MB_OK);
+			}
+		}, &target);
+		td.detach();
+	}
 }

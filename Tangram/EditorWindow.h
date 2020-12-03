@@ -21,7 +21,19 @@ protected:
 	void traverse(Object& obj, GUI& gui, Object*& dragObj, Object*& targetObj);
 	void select(Object* obj, GUI& gui);
 
+	void objectContextMenu(Object* obj);
+	void meshCombo();
+	void materialCombo();
+
 	string newObjectName;
+	Mesh* selectedMesh = NULL;
+	int selectedMeshID = 0;
+	Material* selectedMaterial = NULL;
+	int selectedMaterialID = 0;
+
+	// GrasActor
+	float grassDensity = 20;
+	Vector2i grassBound = { 100, 100 };
 };
 
 #endif // !_EDITORWINDOW_H_
