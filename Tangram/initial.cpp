@@ -1360,7 +1360,7 @@ void InitialWorld() {
 	//	}
 	//}
 
-	Material* grassM1 = getAssetByPath<Material>("Content/Scene/Material/GrassM1.imat");
+	/*Material* grassM1 = getAssetByPath<Material>("Content/Scene/Material/GrassM1.imat");
 	Material* grassM2 = getAssetByPath<Material>("Content/Scene/Material/GrassM2.imat");
 	Material* grassM3 = getAssetByPath<Material>("Content/Scene/Material/GrassM3.imat");
 	Mesh* grassMesh = getAssetByPath<Mesh>("Content/Scene/Mesh/Grass.fbx");
@@ -1384,7 +1384,7 @@ void InitialWorld() {
 			});
 			world += grass;
 		}
-	}
+	}*/
 
 	Material &pbr_mat = *getAssetByPath<Material>("Engine/Shaders/PBR.mat");
 
