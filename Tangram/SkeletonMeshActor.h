@@ -35,6 +35,8 @@ public:
 
 	virtual void tick(float deltaTime);
 
+	virtual void destroy(bool applyToChild = false);
+
 	virtual void prerender();
 	virtual Render* getRender();
 	virtual unsigned int getRenders(vector<Render*>& renders);

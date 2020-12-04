@@ -132,6 +132,17 @@ void SkeletonMeshActor::tick(float deltaTime)
 	}
 }
 
+void SkeletonMeshActor::destroy(bool applyToChild)
+{
+	if (applyToChild)
+		Actor::destroy(applyToChild);
+	else {
+		tryDestroy = true;
+		for (auto b = bones.begin(), e = bones.end(); b != e; b++)
+			(*b)->destroy(applyToChild);
+	}
+}
+
 void SkeletonMeshActor::prerender()
 {
 	skeletonMeshRender.transformMat = transformMat;

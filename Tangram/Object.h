@@ -62,7 +62,7 @@ public:
 	void preTraverse(bool(*func)(Object& object));
 	void preTraverse(bool(*func)(Object& object, float), float arg);
 	void postTraverse(void(*func)(Object& object));
-	void destroy(bool applyToChild = false);
+	virtual void destroy(bool applyToChild = false);
 	bool isDestroy();
 	bool isinitialized();
 
