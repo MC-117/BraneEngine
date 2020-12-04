@@ -594,6 +594,9 @@
     <ClCompile Include="Vendors\DX12\DX12Texture2D.cpp">
       <Filter>源文件\Vendor\DX12</Filter>
     </ClCompile>
+    <ClCompile Include="DebugLogWindow.cpp">
+      <Filter>源文件\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Unit.h">
@@ -1009,6 +1012,9 @@
     </ClInclude>
     <ClInclude Include="Vendors\DX12\DX12Texture2D.h">
       <Filter>头文件\Vendor\DX12</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugLogWindow.h">
+      <Filter>头文件\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

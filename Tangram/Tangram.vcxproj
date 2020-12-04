@@ -231,6 +231,7 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="ConsoleWindow.cpp" />
     <ClCompile Include="crude_json.cpp" />
+    <ClCompile Include="DebugLogWindow.cpp" />
     <ClCompile Include="DOFPass.cpp" />
     <ClCompile Include="Drawing.cpp" />
     <ClCompile Include="EditorWindow.cpp" />
@@ -353,6 +354,7 @@
     <ClInclude Include="ConsoleWindow.h" />
     <ClInclude Include="crude_json.h" />
     <ClInclude Include="Curve.h" />
+    <ClInclude Include="DebugLogWindow.h" />
     <ClInclude Include="DOFPass.h" />
     <ClInclude Include="Drawing.h" />
     <ClInclude Include="EditorWindow.h" />
