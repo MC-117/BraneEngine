@@ -513,7 +513,7 @@ void Engine::setup()
 
 	IVendor& vendor = VendorManager::getInstance().getVendor();
 
-	//PythonManager::start();
+	PythonManager::start();
 	if (!PhysicalWorld::init())
 		throw runtime_error("Physics Engine init failed");
 
@@ -712,7 +712,7 @@ void Engine::start()
 
 void Engine::clean()
 {
-	//PythonManager::end();
+	PythonManager::end();
 	world.physicalWorld.physicsScene->release();
 	PhysicalWorld::release();
 
