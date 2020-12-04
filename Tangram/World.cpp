@@ -36,6 +36,9 @@ void renderTick(World* w)
 
 World::World() : ::Transform::Transform("RootWorld")
 {
+	if (defaultCamera.parent == NULL)
+		*this += defaultCamera;
+	*this += input;
 }
 
 World::~World()
@@ -45,9 +48,6 @@ World::~World()
 void World::begin()
 {
 	lastTime = currentTime = startTime = getCurrentTime();
-	if (defaultCamera.parent == NULL)
-		*this += defaultCamera;
-	*this += input;
 	physicalWorld.setGravity({ 0.f, 0.f, -10.f });
 	::Transform::begin();
 	iter.reset();
@@ -372,7 +372,7 @@ World & World::operator+=(UIControl * uc)
 
 void World::loadWorld(const SerializationInfo & from)
 {
-	ChildrenInstantiate(Object, from, this);
+	ChildrenInstantiateObject(from, this, IR_ExistUniqueName);
 }
 
 Serializable * World::instantiate(const SerializationInfo & from)
