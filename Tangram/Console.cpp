@@ -2,8 +2,9 @@
 #include <memory>
 #include <fstream>
 
-vector<Console::_LOG> Console::logs;
-vector<Console::_LOG> Console::pyLogs;
+list<Console::_LOG> Console::logs;
+list<Console::_LOG> Console::pyLogs;
+unsigned int Console::maxLog = 1000;
 stringstream Console::STDOUT;
 stringstream Console::STDERR;
 string Console::PYLOGBUF;
@@ -22,7 +23,7 @@ Console::Console()
 	}
 }
 
-void Console::pushLog(vector<_LOG>& buf, LogState state, const std::string fmt_str, va_list ap)
+void Console::pushLog(list<_LOG>& buf, LogState state, const std::string fmt_str, va_list ap, unsigned int maxLog)
 {
 	Time dur = Time::duration();
 	int final_n, n = ((int)fmt_str.size()) * 2; /* Reserve two times as much as the length of the fmt_str */
@@ -36,6 +37,8 @@ void Console::pushLog(vector<_LOG>& buf, LogState state, const std::string fmt_s
 		else
 			break;
 	}
+	while (buf.size() >= maxLog)
+		buf.pop_front();
 	buf.push_back({ state, dur, string(formatted.get()) });
 	_LOG& l = buf.back();
 	string sstr = state == Log_Normal ? "[Log][" : (state == Log_Warning ? "[Warn][" : "[Error][");
@@ -46,7 +49,7 @@ void Console::log(const std::string fmt_str, ...)
 {
 	va_list ap;
 	va_start(ap, fmt_str);
-	pushLog(logs, Log_Normal, fmt_str, ap);
+	pushLog(logs, Log_Normal, fmt_str, ap, maxLog);
 	va_end(ap);
 }
 
@@ -54,7 +57,7 @@ void Console::pyLog(const std::string fmt_str, ...)
 {
 	va_list ap;
 	va_start(ap, fmt_str);
-	pushLog(pyLogs, Log_Normal, fmt_str, ap);
+	pushLog(pyLogs, Log_Normal, fmt_str, ap, maxLog);
 	va_end(ap);
 }
 
@@ -62,7 +65,7 @@ void Console::warn(const std::string fmt_str, ...)
 {
 	va_list ap;
 	va_start(ap, fmt_str);
-	pushLog(logs, Log_Warning, fmt_str, ap);
+	pushLog(logs, Log_Warning, fmt_str, ap, maxLog);
 	va_end(ap);
 }
 
@@ -70,7 +73,7 @@ void Console::error(const std::string fmt_str, ...)
 {
 	va_list ap;
 	va_start(ap, fmt_str);
-	pushLog(logs, Log_Error, fmt_str, ap);
+	pushLog(logs, Log_Error, fmt_str, ap, maxLog);
 	va_end(ap);
 }
 
@@ -78,7 +81,7 @@ void Console::pyError(const std::string fmt_str, ...)
 {
 	va_list ap;
 	va_start(ap, fmt_str);
-	pushLog(pyLogs, Log_Error, fmt_str, ap);
+	pushLog(pyLogs, Log_Error, fmt_str, ap, maxLog);
 	va_end(ap);
 }
 
@@ -130,4 +133,13 @@ void Console::writeToFile(const string & str)
 		return;
 	of << str + '\n';
 	of.close();
+}
+
+void Console::setMaxLog(unsigned int maxLog)
+{
+	Console::maxLog = maxLog;
+	while (logs.size() >= maxLog)
+		logs.pop_front();
+	while (pyLogs.size() >= maxLog)
+		pyLogs.pop_front();
 }

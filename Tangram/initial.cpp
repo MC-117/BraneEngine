@@ -3,6 +3,7 @@
 #include "Engine.h"
 #include "EditorWindow.h"
 #include "WindowBar.h"
+#include "DebugLogWindow.h"
 #include "GrassMeshActor.h"
 #include "FaceTrackerObject.h"
 #include "Character.h"
@@ -1551,6 +1552,9 @@ void InitialWorld() {
 	editorWindow.showCloseButton = false;
 	world += editorWindow;
 
+	DebugLogWindow& debugLogWindow = *new DebugLogWindow("DebugLogWindow", true);
+	world += debugLogWindow;
+
 	/*WindowBar& windowBar = *new WindowBar(world);
 	world += windowBar;*/
 
@@ -1585,7 +1589,7 @@ void InitialWorld() {
 				world.input.setCursorHidden(false);
 			}
 			gui.hideUIControl("Editor");
-			gui.hideUIControl("WindowBar");
+			gui.showUIControl("DebugLogWindow");
 		}
 		else {
 			if (world.input.getKeyPress(VK_ESCAPE)) {
@@ -1593,7 +1597,7 @@ void InitialWorld() {
 				gui.hideAllUIControl();
 			}
 			gui.showUIControl("Editor");
-			gui.showUIControl("WindowBar");
+			gui.showUIControl("DebugLogWindow");
 		}
 	});
 	/*FaceRigObject* faceRigObject = new FaceRigObject();
