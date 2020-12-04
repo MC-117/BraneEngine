@@ -411,3 +411,42 @@ void ObjectIterator::reset(Object * root)
 		curObj = this->root = root;
 	delay = false;
 }
+
+void ChildrenInstantiateObject(const SerializationInfo & from, Object * pObj, InstanceRuleEnum rule)
+{
+	const SerializationInfo* ___child = from.get("children");
+	if (___child != NULL) {
+		set<string> names;
+		if (rule == IR_ExistUniqueName) {
+			for (int i = 0; i < pObj->children.size(); i++)
+				names.insert(pObj->children[i]->name);
+		}
+		for (auto b = ___child->sublists.begin(), e = ___child->sublists.end(); b != e; b++) {
+			if (b->serialization != NULL) {
+				if (rule == IR_Default) { }
+				else if (rule == IR_WorldUniqueName) {
+					if (Brane::find(typeid(Object).hash_code(), b->name) != NULL)
+						continue;
+				}
+				else if (rule == IR_ChildUniqueName) {
+					for (int i = 0; i < pObj->children.size(); i++)
+						if (pObj->children[i]->name == b->name)
+							continue;
+				}
+				else if (rule == IR_ExistUniqueName) {
+					if (names.find(b->name) != names.end())
+						continue;
+				}
+				Serializable * ser = b->serialization->instantiate(*b);
+				if (ser != NULL) {
+					Object* cobj = dynamic_cast<Object*>(ser);
+					if (cobj == NULL) {
+						delete ser;
+					}
+					else
+						pObj->addChild(*cobj);
+				}
+			}
+		}
+	}
+}

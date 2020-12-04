@@ -94,26 +94,13 @@ protected:
 	bool delay = false;
 };
 
-#define ChildrenInstantiate(Type, from, pObj) \
-{ \
-	const SerializationInfo* ___child = from.get("children"); \
-	if (___child != NULL) { \
-		for (auto b = ___child->sublists.begin(), e = ___child->sublists.end(); b != e; b++) { \
-			if (b->serialization != NULL) { \
-				/*if (Brane::find(typeid(Object).hash_code(), b->name) != NULL) \
-					continue; \*/\
-				Serializable * ser = b->serialization->instantiate(*b); \
-				if (ser != NULL) { \
-					Type* cobj = dynamic_cast<Type*>(ser); \
-					if (cobj == NULL) { \
-						delete ser; \
-					} \
-					else \
-						pObj->addChild(*cobj); \
-				} \
-			} \
-		} \
-	} \
-} \
+enum InstanceRuleEnum
+{
+	IR_Default, IR_WorldUniqueName, IR_ChildUniqueName, IR_ExistUniqueName
+};
+
+void ChildrenInstantiateObject(const SerializationInfo& from, Object* pObj, InstanceRuleEnum rule = IR_Default);
+
+#define ChildrenInstantiate(Type, from, pObj) ChildrenInstantiate##Type(from, pObj);
 
 #endif // !_OBJECT_H_
