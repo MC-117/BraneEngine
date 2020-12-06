@@ -1455,7 +1455,7 @@ void InitialWorld() {
 		Camera& cam = *(Camera*)s;
 		if (&world.getCurrentCamera() != &cam)
 			return;
-		if (input.getKeyPress('O'))
+		if (input.getKeyPress('O') && !world.renderPool.gui.isAnyWindowFocus())
 			world.switchCamera(camera);
 		if ((input.getCursorHidden() || input.getMouseButtonDown(MouseButtonEnum::Right))) {
 			Vector3f v(0, 0, 0);
@@ -1477,7 +1477,7 @@ void InitialWorld() {
 		Camera& cam = *(Camera*)s;
 		if (&world.getCurrentCamera() != &cam)
 			return;
-		if (input.getKeyPress('P'))
+		if (input.getKeyPress('P') && !world.renderPool.gui.isAnyWindowFocus())
 			world.switchToDefaultCamera();
 		if ((input.getCursorHidden() || input.getMouseButtonDown(MouseButtonEnum::Right))) {
 			Vector3f v(0, 0, 0);

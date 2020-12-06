@@ -157,7 +157,7 @@ void EditorWindow::onRenderWindow(GUIRenderInfo& info)
 		ImGui::EndPopup();
 	}
 
-	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow;
 	if (selectedObj == &world)
 		node_flags |= ImGuiTreeNodeFlags_Selected;
 
@@ -257,7 +257,7 @@ void EditorWindow::traverse(Object & obj, GUI& gui, Object*& dragObj, Object*& t
 	int i = 0;
 	for (auto b = obj.children.begin(), e = obj.children.end(); b != e; b++, i++) {
 		Object& obj = **b;
-		ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+		ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow;
 		if (obj.children.empty())
 			node_flags |= ImGuiTreeNodeFlags_Leaf;
 		if (selectedObj == &obj)
