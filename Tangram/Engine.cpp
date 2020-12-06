@@ -375,6 +375,9 @@ void Engine::config()
 	conf.get(".vendorName", vendorName);
 	if (!vendorName.empty())
 		engineConfig.vendorName = vendorName;
+	string startMapPath = "Content/world.asset";
+	if (conf.get(".startMapPath", startMapPath))
+		engineConfig.startMapPath = startMapPath;
 	string boolStr;
 	conf.get(".fullscreen", boolStr);
 	if (boolStr == "true")

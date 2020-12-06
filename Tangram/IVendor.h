@@ -7,6 +7,7 @@
 struct EngineConfig
 {
 	string vendorName = "__Auto__";
+	string startMapPath = "Content/world.asset";
 	bool fullscreen = false;
 	bool guiOnly = false;
 	bool loadDefaultAsset = true;

@@ -1603,9 +1603,11 @@ void InitialWorld() {
 	/*FaceRigObject* faceRigObject = new FaceRigObject();
 	world += faceRigObject;*/
 
-	SerializationInfo* info = getAssetByPath<SerializationInfo>("Content/world.asset");
-	if (info == NULL)
+	SerializationInfo* info = getAssetByPath<SerializationInfo>(Engine::engineConfig.startMapPath);
+	if (info == NULL) {
+		Console::error("Can not load map '%s'", Engine::engineConfig.startMapPath.c_str());
 		return;//throw runtime_error("");
+	}
 
 	world.loadWorld(*info);
 	world.deserialize(*info);
