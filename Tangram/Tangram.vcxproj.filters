@@ -238,6 +238,12 @@
     <Filter Include="源文件\Vendor\Base">
       <UniqueIdentifier>{37747c72-449f-4d78-9fa4-d2aaf116c13d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\ThridParty\TextEditor">
+      <UniqueIdentifier>{cf67701b-58f1-4aec-b051-72fba09f24a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\ThridParty\TextEditor">
+      <UniqueIdentifier>{ba13a972-6c03-439c-875f-32669ee844b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -595,6 +601,12 @@
       <Filter>源文件\Vendor\DX12</Filter>
     </ClCompile>
     <ClCompile Include="DebugLogWindow.cpp">
+      <Filter>源文件\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_TextEditor.cpp">
+      <Filter>源文件\ThridParty\TextEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptEditor.cpp">
       <Filter>源文件\GUI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1014,6 +1026,12 @@
       <Filter>头文件\Vendor\DX12</Filter>
     </ClInclude>
     <ClInclude Include="DebugLogWindow.h">
+      <Filter>头文件\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_TextEditor.h">
+      <Filter>头文件\ThridParty\TextEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptEditor.h">
       <Filter>头文件\GUI</Filter>
     </ClInclude>
   </ItemGroup>

@@ -253,6 +253,7 @@
     <ClCompile Include="imgui_node_editor.cpp" />
     <ClCompile Include="imgui_node_editor_api.cpp" />
     <ClCompile Include="imgui_stdlib.cpp" />
+    <ClCompile Include="imgui_TextEditor.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="InspectorWindow.cpp" />
@@ -294,6 +295,7 @@
     <ClCompile Include="RenderPool.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="ScriptEditor.cpp" />
     <ClCompile Include="Serialization.cpp" />
     <ClCompile Include="SerializationEditor.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -378,6 +380,7 @@
     <ClInclude Include="imgui_node_editor.h" />
     <ClInclude Include="imgui_node_editor_internal.h" />
     <ClInclude Include="imgui_stdlib.h" />
+    <ClInclude Include="imgui_TextEditor.h" />
     <ClInclude Include="Importer.h" />
     <ClInclude Include="imstb_rectpack.h" />
     <ClInclude Include="imstb_textedit.h" />
@@ -429,6 +432,7 @@
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="ScriptEditor.h" />
     <ClInclude Include="Serialization.h" />
     <ClInclude Include="SerializationEditor.h" />
     <ClInclude Include="Shader.h" />
