@@ -8,6 +8,8 @@
 class PostProcessingCamera : public Camera
 {
 public:
+	Serialize(PostProcessingCamera);
+
 	PostProcessCameraRender postProcessCameraRender;
 	Texture2D texture = Texture2D(size.x, size.y, 4);
 	RenderTarget renderTarget = RenderTarget(size.x, size.y, 4, true);
@@ -16,6 +18,9 @@ public:
 
 	void setVolumnicLight(DirectLight& light);
 
+	static Serializable* instantiate(const SerializationInfo& from);
+	virtual bool deserialize(const SerializationInfo& from);
+	virtual bool serialize(SerializationInfo& to);
 protected:
 	/*static Shader postProcessingShader;
 	static Material postProcessingMaterial;

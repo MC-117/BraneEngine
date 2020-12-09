@@ -32,9 +32,11 @@ struct PostProcessResource
 	void reset();
 };
 
-class PostProcessPass
+class PostProcessPass : public Serializable
 {
 public:
+	Serialize(PostProcessPass);
+
 	PostProcessPass(const string& name = "None", Material* material = NULL);
 	virtual ~PostProcessPass();
 
@@ -50,6 +52,10 @@ public:
 	virtual bool mapMaterialParameter(RenderInfo& info);
 	virtual void render(RenderInfo& info);
 	virtual void resize(const Unit2Di& size);
+
+	static Serializable* instantiate(const SerializationInfo& from);
+	virtual bool deserialize(const SerializationInfo& from);
+	virtual bool serialize(SerializationInfo& to);
 protected:
 	Unit2Di size = { 1280, 720 };
 	PostProcessResource* resource = NULL;

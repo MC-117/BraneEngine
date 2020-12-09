@@ -4,9 +4,11 @@
 
 #include "PostProcessPass.h"
 
-class PostProcessGraph
+class PostProcessGraph : public Serializable
 {
 public:
+	Serialize(PostProcessGraph);
+
 	PostProcessResource resource;
 
 	list<PostProcessPass*> passes;
@@ -18,6 +20,10 @@ public:
 
 	virtual void render(RenderInfo& info);
 	virtual void resize(Unit2Di size);
+
+	static Serializable* instantiate(const SerializationInfo& from);
+	virtual bool deserialize(const SerializationInfo& from);
+	virtual bool serialize(SerializationInfo& to);
 };
 
 #endif // !_POSTPROCESSGRAPH_H_

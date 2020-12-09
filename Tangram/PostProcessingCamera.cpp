@@ -6,6 +6,8 @@
 //Texture2D PostProcessingCamera::ssaoRandTex;
 //bool PostProcessingCamera::loadedDefaultResource = false;
 
+SerializeInstance(PostProcessingCamera);
+
 PostProcessingCamera::PostProcessingCamera(string name) : postProcessCameraRender(renderTarget, Material::nullMaterial), Camera::Camera(postProcessCameraRender, name)
 {
 	//loadDefaultResource();
@@ -19,6 +21,28 @@ PostProcessingCamera::PostProcessingCamera(Material & material, string name) : p
 void PostProcessingCamera::setVolumnicLight(DirectLight & light)
 {
 	postProcessCameraRender.setVolumnicLight(light);
+}
+
+Serializable * PostProcessingCamera::instantiate(const SerializationInfo & from)
+{
+	return new PostProcessingCamera(from.name);
+}
+
+bool PostProcessingCamera::deserialize(const SerializationInfo & from)
+{
+	if (!Camera::deserialize(from))
+		return false;
+	from.get("postProcessingGraph", postProcessCameraRender.graph);
+	return true;
+}
+
+bool PostProcessingCamera::serialize(SerializationInfo & to)
+{
+	if (!Camera::serialize(to))
+		return false;
+	to.type = "PostProcessingCamera";
+	to.set("postProcessingGraph", postProcessCameraRender.graph);
+	return true;
 }
 
 //void PostProcessingCamera::loadDefaultResource()

@@ -5,6 +5,8 @@
 #include "BlitPass.h"
 #include "DOFPass.h"
 
+SerializeInstance(PostProcessGraph);
+
 PostProcessGraph::~PostProcessGraph()
 {
 	for (auto b = passes.begin(), e = passes.end(); b != e; b++) {
@@ -40,4 +42,28 @@ void PostProcessGraph::resize(Unit2Di size)
 	for (auto b = passes.begin(), e = passes.end(); b != e; b++) {
 		(*b)->resize(size);
 	}
+}
+
+Serializable * PostProcessGraph::instantiate(const SerializationInfo & from)
+{
+	return new PostProcessGraph();
+}
+
+bool PostProcessGraph::deserialize(const SerializationInfo & from)
+{
+	for (auto b = passes.begin(), e = passes.end(); b != e; b++) {
+		if (!isClassOf<BlitPass>(*b))
+			from.get((*b)->getName(), *(PostProcessPass*)(*b));
+	}
+	return true;
+}
+
+bool PostProcessGraph::serialize(SerializationInfo & to)
+{
+	to.type = "PostProcessGraph";
+	for (auto b = passes.begin(), e = passes.end(); b != e; b++) {
+		if (!isClassOf<BlitPass>(*b))
+			to.set((*b)->getName(), **b);
+	}
+	return true;
 }

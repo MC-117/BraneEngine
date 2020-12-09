@@ -1,5 +1,8 @@
 #include "PostProcessPass.h"
 #include "Camera.h"
+#include "Asset.h"
+
+SerializeInstance(PostProcessPass);
 
 bool PostProcessResource::setTexture(const string & passName, const string & name, Texture & texture, bool overwrite)
 {
@@ -122,4 +125,35 @@ void PostProcessPass::render(RenderInfo & info)
 void PostProcessPass::resize(const Unit2Di & size)
 {
 	this->size = size;
+}
+
+Serializable * PostProcessPass::instantiate(const SerializationInfo & from)
+{
+	return nullptr;
+}
+
+bool PostProcessPass::deserialize(const SerializationInfo & from)
+{
+	string code;
+	string enableStr;
+	from.get("enable", enableStr);
+	enable = enableStr != "false";
+	if (from.get("material", code) && !code.empty()) {
+		stringstream codeStream(code);
+		material = Material::MaterialLoader::loadMaterialInstance(codeStream, "Memory");
+	}
+	return true;
+}
+
+bool PostProcessPass::serialize(SerializationInfo & to)
+{
+	to.type = "PostProcessPass";
+	to.set("name", name);
+	to.set("enable", enable ? "true" : "false");
+	if (material == NULL)
+		return true;
+	string code;
+	if (Material::MaterialLoader::saveMaterialInstanceToString(code, *material) && !code.empty())
+		to.set("material", code);
+	return true;
 }
