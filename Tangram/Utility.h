@@ -192,7 +192,7 @@ public:
 
 	Iterator find(const K& key)
 	{
-		return Iterator(key.find(key), &values);
+		return Iterator(keys.find(key), &values);
 	}
 
 	V& at(size_t index)
