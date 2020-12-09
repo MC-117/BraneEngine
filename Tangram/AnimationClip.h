@@ -122,9 +122,11 @@ public:
 	virtual void reset();
 };
 
-class BlendSpaceAnimation : public AnimationBase
+class BlendSpaceAnimation : public AnimationBase, public Serializable
 {
 public:
+	Serialize(BlendSpaceAnimation);
+
 	SkeletonData* skeletonData = NULL;
 	Vector2f blendWeight;
 	vector<pair<unsigned int, float>> animationWeights;
@@ -155,6 +157,10 @@ public:
 	virtual bool playing();
 	virtual void setSpeed(float speed);
 	virtual void reset();
+
+	static Serializable* instantiate(const SerializationInfo& from);
+	virtual bool deserialize(const SerializationInfo& from);
+	virtual bool serialize(SerializationInfo& to);
 };
 
 class AnimationLoader

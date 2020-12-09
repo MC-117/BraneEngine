@@ -1,5 +1,6 @@
 #include "AnimationClip.h"
 #include <fstream>
+#include "Asset.h"
 
 string readString(istream& in)
 {
@@ -622,6 +623,8 @@ void AnimationClip::reset()
 	}
 }
 
+SerializeInstance(BlendSpaceAnimation);
+
 BlendSpaceAnimation::BlendSpaceAnimation()
 {
 }
@@ -894,6 +897,46 @@ void BlendSpaceAnimation::reset()
 {
 	for (int i = 0; i < animationClipWrap.size(); i++)
 		animationClipWrap[i].second->reset();
+}
+
+Serializable * BlendSpaceAnimation::instantiate(const SerializationInfo & from)
+{
+	return new BlendSpaceAnimation();
+}
+
+bool BlendSpaceAnimation::deserialize(const SerializationInfo & from)
+{
+	const SerializationInfo* clipWrapInfo = from.get("clipWrap");
+	if (clipWrapInfo == NULL)
+		return false;
+	removeAllAnimationClipData();
+	for (auto b = clipWrapInfo->sublists.begin(), e = clipWrapInfo->sublists.end(); b != e; b++) {
+		SVector2f pos;
+		if (!b->get("pos", pos))
+			continue;
+		string clipDataPath;
+		if (!b->get("clipData", clipDataPath))
+			continue;
+		AnimationClipData* clipData = getAssetByPath<AnimationClipData>(clipDataPath);
+		if (clipData != NULL)
+			addAnimationClipData(pos, *clipData);
+	}
+	return true;
+}
+
+bool BlendSpaceAnimation::serialize(SerializationInfo & to)
+{
+	to.type = "BlendSpaceAnimation";
+	SerializationInfo* clipWrapInfo = to.add("clipWrap");
+	clipWrapInfo->type = "Array";
+	clipWrapInfo->arrayType = "Clip";
+	for (auto b = animationClipWrap.begin(), e = animationClipWrap.end(); b != e; b++) {
+		SerializationInfo* data = clipWrapInfo->push();
+		data->set("pos", (SVector2f)b->first);
+		string clipDataPath = AssetInfo::getPath(b->second->animationClipData);
+		data->set("clipData", clipDataPath);
+	}
+	return true;
 }
 
 AnimationClipData * AnimationLoader::loadCameraAnimation(const string & file)
