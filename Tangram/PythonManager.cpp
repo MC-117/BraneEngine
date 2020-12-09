@@ -38,7 +38,7 @@ void PythonManager::start()
 	PyImport_ImportModule("BraneEngineLog");
 	PyImport_ImportModule("BraneEngineErr");
 	PyRun_SimpleString("from BraneEngine import *");
-	pyMainMod = PyImport_AddModule("__main__");
+	pyMainMod = PyImport_ImportModule("__main__");
 	PyObject* mod = PyState_FindModule(&engineMod);
 }
 
@@ -1739,10 +1739,11 @@ ActorPy::ActorPy()
 	PythonManager::typeObjects.push_back(make_pair("Actor", &instance.Type));
 }
 
-PyMethodDef SkeletonMeshActorPy::Methods[4] = {
+PyMethodDef SkeletonMeshActorPy::Methods[5] = {
 	{ "playAnimation", SkeletonMeshActorPy::playAnimation, METH_VARARGS, "play animation of this actor" },
 	{ "pauseAnimation", SkeletonMeshActorPy::pauseAnimation, METH_VARARGS, "pause animation of this actor" },
 	{ "stopAnimation", SkeletonMeshActorPy::stopAnimation, METH_VARARGS, "stop animation of this actor" },
+	{ "setBlendSpaceWeight", SkeletonMeshActorPy::setBlendSpaceWeight, METH_VARARGS, "set weight of blendspace" },
 	{ NULL }
 };
 
@@ -1870,7 +1871,190 @@ PyObject * SkeletonMeshActorPy::stopAnimation(PyObject * self, PyObject * args)
 	Py_RETURN_NONE;
 }
 
+PyObject * SkeletonMeshActorPy::setBlendSpaceWeight(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	int index = 0;
+	char* name = NULL;
+	PyObject* hobj = NULL;
+	BlendSpaceAnimation* bsa = NULL;
+	Vec3Py::Vec3* vec = NULL;
+	SkeletonMeshActor* ptr = ObjectPy::cast<SkeletonMeshActor>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	if (PyArg_ParseTuple(args, "O", &hobj) && ptr->animationClip != NULL) {
+		bsa = dynamic_cast<BlendSpaceAnimation*>(ptr->animationClip);
+	}
+	else if (PyArg_ParseTuple(args, "iO", &index, &hobj)) {
+	}
+	else if (PyArg_ParseTuple(args, "sO", &name, &hobj)) {
+	}
+	else {
+		PyErr_SetString(PyExc_TypeError, "setBlendSpaceWeight(Vec3), setBlendSpaceWeight(int, Vec3) or setBlendSpaceWeight(String, Vec3)");
+		return NULL;
+	}
+	if (name == NULL) {
+		bsa = dynamic_cast<BlendSpaceAnimation*>(ptr->animationClips[index]);
+	}
+	else {
+		auto iter = ptr->animationClipList.find(name);
+		if (iter != ptr->animationClipList.end()) {
+			bsa = dynamic_cast<BlendSpaceAnimation*>(ptr->animationClips[iter->second]);
+		}
+	}
+	vec = Vec3Py::cast(hobj);
+	if (bsa != NULL && vec != NULL) {
+		bsa->setBlendWeight({ vec->x, vec->y });
+		Py_RETURN_TRUE;
+	}
+	Py_RETURN_FALSE;
+}
+
 SkeletonMeshActorPy::SkeletonMeshActorPy()
 {
 	PythonManager::typeObjects.push_back(make_pair("SkeletonMeshActor", &instance.Type));
+}
+
+PyMethodDef CharacterPy::Methods[4] = {
+	{ "isFly", CharacterPy::isFly, METH_VARARGS, "test charater if in the air" },
+	{ "move", CharacterPy::move, METH_VARARGS, "move charater by vec3" },
+	{ "jump", CharacterPy::jump, METH_VARARGS, "toggle jump" },
+	{ NULL }
+};
+
+PyTypeObject CharacterPy::Type = {
+	PyVarObject_HEAD_INIT(&PyType_Type, 0)
+	"BraneEngine.Character",            /* tp_name */
+	sizeof(PyCPointer),                    /* tp_basicsize */
+	0,                                          /* tp_itemsize */
+	0,											/* tp_dealloc */
+	0,                               /* tp_print */
+	0,                                          /* tp_getattr */
+	0,                                          /* tp_setattr */
+	0,                                          /* tp_reserved */
+	0,                                          /* tp_repr */
+	0,                                          /* tp_as_number */
+	0,                                          /* tp_as_sequence */
+	0,                                          /* tp_as_mapping */
+	0,                                          /* tp_hash */
+	0,                                          /* tp_call */
+	(reprfunc)CharacterPy::__str__,               /* tp_str */
+	0,                                          /* tp_getattro */
+	0,                                          /* tp_setattro */
+	0,                                          /* tp_as_buffer */
+	Py_TPFLAGS_DEFAULT |
+	Py_TPFLAGS_BASETYPE,                         /* tp_flags */
+	"Character Class",                              /* tp_doc */
+	0,                                          /* tp_traverse */
+	0,                                          /* tp_clear */
+	0,                                          /* tp_richcompare */
+	0,                                          /* tp_weaklistoffset */
+	0,                                          /* tp_iter */
+	0,                                          /* tp_iternext */
+	CharacterPy::Methods,                                          /* tp_methods */
+	0,										    /* tp_members */
+	0,                                          /* tp_getset */
+	&SkeletonMeshActorPy::Type,                         /* tp_base */
+	0,                                          /* tp_dict */
+	0,                                          /* tp_descr_get */
+	0,                                          /* tp_descr_set */
+	0,                                          /* tp_dictoffset */
+	0,										       /* tp_init */
+	0,                                          /* tp_alloc */
+	0,											  /* tp_new */
+};
+
+CharacterPy CharacterPy::instance;
+
+PyObject * CharacterPy::__str__(PyCPointer * obj)
+{
+	char str[1024];
+	sprintf_s(str, "SkeletonMeshActor(%s)", ((Character*)obj->nativeHandle)->name.c_str());
+	return PyUnicode_FromFormat(str);
+}
+
+PyObject * CharacterPy::isFly(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "isFly()");
+		return NULL;
+	}
+	Character* ptr = ObjectPy::cast<Character>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	if (ptr->isFly())
+		Py_RETURN_TRUE;
+	else
+		Py_RETURN_FALSE;
+}
+
+PyObject * CharacterPy::move(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	float x = 0, y = 0, z = 0;
+	bool err = false;
+	if (s == 1) {
+		PyObject* hobj = NULL;
+		if (!PyArg_Parse(args, "O", &hobj))
+			err = true;
+		else {
+			Vec3Py::Vec3* vec = Vec3Py::cast(hobj);
+			if (vec == NULL)
+				err = true;
+			else {
+				x = vec->x;
+				y = vec->y;
+				z = vec->z;
+			}
+		}
+	}
+	else if (s == 3) {
+		err = !PyArg_ParseTuple(args, "fff", &x, &y, &z);
+	}
+	else
+		err = true;
+	if (err) {
+		PyErr_SetString(PyExc_TypeError, "move(Vec3) or move(float, float, float)");
+		return NULL;
+	}
+	Character* ptr = ObjectPy::cast<Character>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	ptr->move({ x, y, z });
+	Py_RETURN_NONE;
+}
+
+PyObject * CharacterPy::jump(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	float impulse = 0;
+	bool err = false;
+	if (s == 1) {
+		err = !PyArg_ParseTuple(args, "f", &impulse);
+	}
+	else
+		err = true;
+	if (err) {
+		PyErr_SetString(PyExc_TypeError, "move(Vec3) or move(float, float, float)");
+		return NULL;
+	}
+	Character* ptr = ObjectPy::cast<Character>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	ptr->jump(impulse);
+	Py_RETURN_NONE;
+}
+
+CharacterPy::CharacterPy()
+{
+	PythonManager::typeObjects.push_back(make_pair("Character", &instance.Type));
 }

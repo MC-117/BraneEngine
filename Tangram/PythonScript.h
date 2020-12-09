@@ -13,13 +13,20 @@ public:
 	bool isValid();
 	bool load(const string& file);
 
+	bool ErrorFetch(const char* funcName);
+
 	string getName();
 	string getCodePath();
 	string getSourceCode();
 
+	bool setSourceCode(const string& code);
+	bool refresh();
+
+	bool saveSourceCode();
+
 	PyObject* construct(void* ptr);
 protected:
-	PyTypeObject* pytype;
+	PyTypeObject* pytype = NULL;
 	string sourceCode;
 	string codePath;
 	string name;

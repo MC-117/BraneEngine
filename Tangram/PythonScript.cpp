@@ -30,19 +30,36 @@ bool PythonScript::load(const string & file)
 	sourceCode = sin.str();
 	f.close();
 	f.clear();
-	if (sourceCode.empty())
-		return false;
-	sourceCode += '\n';
-	if (PyRun_SimpleString(sourceCode.c_str()) == -1)
-		return false;
-	PyObject* obj = PyObject_GetAttrString(PythonManager::getMainModule(), name.c_str());
-	if (obj == NULL || !PyObject_TypeCheck(obj, &PyType_Type))
-		return false;
 	this->name = name;
 	codePath = file;
-	pytype = (PyTypeObject*)obj;
-	Py_INCREF(pytype);
+	if (!refresh())
+		return false;
 	return true;
+}
+
+bool PythonScript::ErrorFetch(const char * funcName)
+{
+	PyObject * extype, *exvalue, *extraceback;
+	PyErr_Fetch(&extype, &exvalue, &extraceback);
+	PyErr_NormalizeException(&extype, &exvalue, &extraceback);
+	if (extype != NULL) {
+		PyObject* extypestr = PyObject_Str(extype);
+		PyObject* valuestr = PyObject_Str(exvalue);
+		const char* type = extypestr->ob_type->tp_name;
+		const char* value = PyUnicode_AsUTF8(valuestr);
+		Console::error(
+			"Traceback(most recent call last)\n"
+			"\tFile \"%s\", method \"%s\", in __main__\n"
+			"%s: %s", codePath.c_str(),
+			funcName, type, value);
+		Console::pyError(
+			"Traceback(most recent call last)\n"
+			"\tFile \"%s\", method \"%s\", in __main__\n"
+			"%s: %s", codePath.c_str(),
+			funcName, type, value);
+		return true;
+	}
+	return false;
 }
 
 string PythonScript::getName()
@@ -60,8 +77,48 @@ string PythonScript::getSourceCode()
 	return sourceCode;
 }
 
+bool PythonScript::setSourceCode(const string & code)
+{
+	if (code.empty())
+		return false;
+	else {
+		sourceCode = code;
+		return true;
+	}
+}
+
+bool PythonScript::refresh()
+{
+	if (sourceCode.empty())
+		return false;
+	if (PyRun_SimpleString(sourceCode.c_str()) == -1)
+		return false;
+	/*if (!ErrorFetch(("class" + name).c_str()))
+		return false;*/
+	PyObject* obj = PyObject_GetAttrString(PythonManager::getMainModule(), name.c_str());
+	if (obj == NULL || !PyObject_TypeCheck(obj, &PyType_Type))
+		return false;
+	if (pytype != NULL)
+		Py_DECREF(pytype);
+	pytype = (PyTypeObject*)obj;
+	Py_INCREF(pytype);
+	return true;
+}
+
+bool PythonScript::saveSourceCode()
+{
+	ofstream f(codePath);
+	if (!f) {
+		f << sourceCode;
+		f.close();
+	}
+	return false;
+}
+
 PyObject * PythonScript::construct(void* ptr)
 {
+	/*if (pytype == NULL)
+		refresh();*/
 	if (!isValid())
 		return NULL;
 	//PyObject *argList = Py_BuildValue("i", (int)ptr);
@@ -180,6 +237,11 @@ bool PythonRuntimeObject::ErrorFetch(const char* funcName)
 		PyObject* valuestr = PyObject_Str(exvalue);
 		const char* type = extypestr->ob_type->tp_name;
 		const char* value = PyUnicode_AsUTF8(valuestr);
+		Console::error(
+			"Traceback(most recent call last)\n"
+			"\tFile \"%s\", method \"%s\", in __main__\n"
+			"%s: %s", script == NULL ? "" : script->getCodePath().c_str(),
+			funcName, type, value);
 		Console::pyError(
 			"Traceback(most recent call last)\n"
 			"\tFile \"%s\", method \"%s\", in __main__\n"

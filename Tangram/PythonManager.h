@@ -226,7 +226,7 @@ public:
 class SkeletonMeshActorPy
 {
 public:
-	static PyMethodDef Methods[4];
+	static PyMethodDef Methods[5];
 	static PyTypeObject Type;
 	static SkeletonMeshActorPy instance;
 
@@ -235,8 +235,25 @@ public:
 	static PyObject * playAnimation(PyObject * self, PyObject * args);
 	static PyObject * pauseAnimation(PyObject * self, PyObject * args);
 	static PyObject * stopAnimation(PyObject * self, PyObject * args);
+	static PyObject * setBlendSpaceWeight(PyObject * self, PyObject * args);
 
 	SkeletonMeshActorPy();
+};
+
+class CharacterPy
+{
+public:
+	static PyMethodDef Methods[4];
+	static PyTypeObject Type;
+	static CharacterPy instance;
+
+	static PyObject* __str__(PyCPointer *obj);
+
+	static PyObject * isFly(PyObject * self, PyObject * args);
+	static PyObject * move(PyObject * self, PyObject * args);
+	static PyObject * jump(PyObject * self, PyObject * args);
+
+	CharacterPy();
 };
 
 #endif // !_PYTHONMANAGER_H_
