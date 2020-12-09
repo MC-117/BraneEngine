@@ -3,7 +3,7 @@
 #include "Engine.h"
 #include "imgui_internal.h"
 #include "MaterialWindow.h"
-#include "PythonGraphWindow.h"
+#include "ScriptEditor.h"
 #include "TextureViewer.h"
 #include "SerializationEditor.h"
 
@@ -30,6 +30,18 @@ AssetBrowser::AssetBrowser(Object & object, string name, bool defaultShow)
 		if (handle != NULL)
 			*handle = ((AssetBrowser*)browser)->getSelectedAsset();
 	});
+	vector<AssetTypeInfo> assetTypeList = {
+		{ "Mesh", modelTex }, { "SkeletonMesh", skeletonMeshTex },
+		{ "AnimationClipData", animationTex }, { "Material", materialTex },
+		{ "AudioData", audioTex }, { "AssetFile", assetFileTex },
+		{ "PythonScript", pythonTex }, { "Texture2D", NULL }
+	};
+	for (int i = 0; i < assetTypeList.size(); i++) {
+		AssetTypeInfo& info = assetTypeList[i];
+		info.typeID = 1 << assetTypes.size();
+		assetTypes.insert(info.name, info);
+		assetTypeFilter |= info.typeID;
+	}
 }
 
 void AssetBrowser::setCurrentPath(const string & path)
@@ -71,6 +83,50 @@ void AssetBrowser::onRenderWindow(GUIRenderInfo & info)
 		}
 		topath += '/';
 	}
+	ImGui::Text("Filter: ");
+	ImGui::SameLine();
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0);
+	ImGui::BeginChild("AssetFilterView", { 0, 36 }, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoDecoration |
+		ImGuiWindowFlags_NoScrollbar);
+	for (int i = 0; i < assetTypes.size(); i++) {
+		ImGui::PushID(i);
+		unsigned int enumID = assetTypes.at(i).typeID;
+		bool has = assetTypeFilter & enumID;
+		ImVec4 btcol = ImGui::GetStyleColorVec4(ImGuiCol_Button);
+		if (has)
+			ImGui::PushStyleColor(ImGuiCol_Button, { 0.00f, 0.68f, 0.84f, 1.00f });
+		else
+			ImGui::PushStyleColor(ImGuiCol_Button, btcol);
+		if (ImGui::Button(assetTypes.at(i).name.c_str())) {
+			if (assetTypeFilterBackup != 0) {
+				assetTypeFilter = assetTypeFilterBackup | enumID;
+				assetTypeFilterBackup = 0;
+			}
+			else {
+				if (!has)
+					assetTypeFilter |= enumID;
+				else
+					assetTypeFilter ^= enumID;
+			}
+		}
+		if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
+			if (assetTypeFilterBackup == 0) {
+				assetTypeFilterBackup = assetTypeFilter;
+				assetTypeFilter = enumID;
+			}
+			else {
+				assetTypeFilter = assetTypeFilterBackup;
+				assetTypeFilterBackup = 0;
+			}
+		}
+		ImGui::PopStyleColor();
+		ImGui::SameLine();
+		ImGui::PopID();
+	}
+	ImGui::EndChild();
+	ImGui::PopStyleVar(2);
+
 	ImGui::BeginChild("AssetsView", { -1, -1 });
 	ImGui::Indent(16);
 	float width = ImGui::GetWindowWidth();
@@ -98,33 +154,15 @@ void AssetBrowser::onRenderWindow(GUIRenderInfo & info)
 		ImGui::NextColumn();
 	}
 	for (int i = 0; i < assets.size(); i++, index++) {
-		Texture2D* tex;
-		if (assets[i]->assetInfo.type == "Mesh") {
-			tex = modelTex;
-		}
-		else if (assets[i]->assetInfo.type == "SkeletonMesh") {
-			tex = skeletonMeshTex;
-		}
-		else if (assets[i]->assetInfo.type == "AnimationClipData") {
-			tex = animationTex;
-		}
-		else if (assets[i]->assetInfo.type == "Material") {
-			tex = materialTex;
-		}
-		else if (assets[i]->assetInfo.type == "AudioData") {
-			tex = audioTex;
-		}
-		else if (assets[i]->assetInfo.type == "AssetFile") {
-			tex = assetFileTex;
-		}
-		else if (assets[i]->assetInfo.type == "PythonScript") {
-			tex = pythonTex;
-		}
-		else if (assets[i]->assetInfo.type == "Texture2D") {
-			tex = (Texture2D*)assets[i]->load();
-		}
-		else
+		auto iter = assetTypes.find(assets[i]->assetInfo.type);
+		if (iter == assetTypes.end())
 			continue;
+		if (!(assetTypeFilter & iter->typeID)) {
+			if (seletedIndex == index)
+				seletedIndex = -1;
+			continue;
+		}
+		Texture2D* tex = iter->typeTex == NULL ? (Texture2D*)assets[i]->load() : iter->typeTex;
 		if (tex == NULL)
 			continue;
 		ImGui::PushID(index);
@@ -215,12 +253,13 @@ void AssetBrowser::onRenderWindow(GUIRenderInfo & info)
 		}
 		else if (assets[i]->assetInfo.type == "PythonScript") {
 			if (canPreview) {
-				PythonGraphWindow *win = dynamic_cast<PythonGraphWindow*>(info.gui.getUIControl("PythonGraphWindow"));
+				ScriptEditor *win = dynamic_cast<ScriptEditor*>(info.gui.getUIControl("ScriptEditor"));
 				if (win == NULL) {
-					win = new PythonGraphWindow(world);
+					win = new ScriptEditor();
 					info.gui.addUIControl(*win);
 				}
 				win->show = true;
+				win->setScript(*(PythonScript*)assets[i]->load());
 			}
 		}
 		else if (assets[i]->assetInfo.type == "AssetFile") {

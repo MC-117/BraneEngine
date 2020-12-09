@@ -34,6 +34,18 @@ protected:
 	Texture2D* assetFileTex;
 	Texture2D* pythonTex;
 
+	struct AssetTypeInfo
+	{
+		string name;
+		Texture2D* typeTex;
+		unsigned int typeID;
+	};
+
+	ArrayMap<string, AssetTypeInfo> assetTypes;
+
+	unsigned int assetTypeFilter = 0;
+	unsigned int assetTypeFilterBackup = 0;
+
 	bool updatePath(const string& path, bool force = false);
 	bool Item(const string& name, Texture2D& tex, float pad, bool isSelected);
 };
