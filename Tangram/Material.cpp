@@ -670,10 +670,9 @@ bool Material::MaterialLoader::loadMaterial(Material& material, const string & f
 	return successed;
 }
 
-Material * Material::MaterialLoader::loadMaterialInstance(const string & file)
+Material * Material::MaterialLoader::loadMaterialInstance(istream & is, const string & matName)
 {
-	ifstream f(file, ios::in);
-	if (!f)
+	if (!is)
 		return false;
 	string clip, line;
 	unsigned int type = 0;
@@ -684,7 +683,7 @@ Material * Material::MaterialLoader::loadMaterialInstance(const string & file)
 	bool castShadow = true;
 	while (1)
 	{
-		if (!getline(f, line)) {
+		if (!getline(is, line)) {
 			success = true;
 			break;
 		}
@@ -744,7 +743,7 @@ Material * Material::MaterialLoader::loadMaterialInstance(const string & file)
 						auto p = parseTexture(v[1]);
 						Texture2D* tex = getAssetByPath<Texture2D>(p.second.val);
 						if (tex == NULL)
-							Console::warn("When loading %s, '%s' is not found.", file.c_str(), p.second.val.c_str());
+							Console::warn("When loading %s, '%s' is not found.", matName.c_str(), p.second.val.c_str());
 						else
 							material->setTexture(p.first, *tex);
 					}
@@ -771,7 +770,13 @@ Material * Material::MaterialLoader::loadMaterialInstance(const string & file)
 	return material;
 }
 
-bool Material::MaterialLoader::saveMaterialInstance(const string & file, Material & material)
+Material* Material::MaterialLoader::loadMaterialInstance(const string& file)
+{
+	ifstream f(file);
+	return loadMaterialInstance(f, file);
+}
+
+bool Material::MaterialLoader::saveMaterialInstanceToString(string & text, Material& material)
 {
 	if (material.isNull())
 		return false;
@@ -781,7 +786,6 @@ bool Material::MaterialLoader::saveMaterialInstance(const string & file, Materia
 	Asset* shd = AssetManager::getAsset("Material", name[0]);
 	if (shd == NULL)
 		return false;
-	string text;
 	text += "#material " + shd->path + '\n';
 	text += "#twoside ";
 	text += (material.isTwoSide ? "true\n" : "false\n");
@@ -804,6 +808,14 @@ bool Material::MaterialLoader::saveMaterialInstance(const string & file, Materia
 		string texP = Texture2DAssetInfo::getPath(b->second.val);
 		text += "Texture " + b->first + ": " + (texP.empty() ? "white" : texP) + '\n';
 	}
+	return true;
+}
+
+bool Material::MaterialLoader::saveMaterialInstance(const string & file, Material & material)
+{
+	string text;
+	if (!saveMaterialInstanceToString(text, material))
+		return false;
 	ofstream f = ofstream(file);
 	f << text;
 	f.close();

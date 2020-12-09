@@ -120,7 +120,9 @@ public:
 	{
 	public:
 		static bool loadMaterial(Material& material, const string& file);
+		static Material* loadMaterialInstance(istream& is, const string& matName);
 		static Material* loadMaterialInstance(const string& file);
+		static bool saveMaterialInstanceToString(string& text, Material& material);
 		static bool saveMaterialInstance(const string& file, Material& material);
 	protected:
 		static pair<string, MatAttribute<float>> parseScalar(const string& src);
