@@ -1,3 +1,6 @@
+#define _AFXDLL
+#include <afxdlgs.h>
+#include <fstream>
 #include "BlendSpaceWindow.h"
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
@@ -28,6 +31,56 @@ void BlendSpaceWindow::onRenderWindow(GUIRenderInfo & info)
 {
 	if (blendSpace == NULL)
 		return;
+	if (ImGui::Button("LoadBlendSpace")) {
+		thread td = thread([](BlendSpaceAnimation* tar) {
+#ifdef UNICODE
+			CFileDialog dialog(true, L"asset", NULL, 6UL, _T("asset(*.asset)|*.asset"));
+#else
+			CFileDialog dialog(true, "asset", NULL, 6UL, "asset(*.asset)|*.asset");
+#endif // UNICODE
+			if (dialog.DoModal() == IDOK) {
+				char* s = CT2A(dialog.GetPathName().GetString());
+				ifstream f = ifstream(s);
+				SerializationInfoParser parser = SerializationInfoParser(f);
+				if (!parser.parse()) {
+					MessageBox(NULL, _T("Load failed"), _T("Error"), MB_OK);
+					Console::error("SerializationInfoParser error: %s", parser.parseError.c_str());
+				}
+				else if (!parser.infos.empty()) {
+					if (!tar->deserialize(parser.infos[0])) {
+						MessageBox(NULL, _T("Deserialize failed"), _T("Error"), MB_OK);
+						Console::error("SerializationInfoParser error: %s", parser.parseError.c_str());
+					}
+				}
+				f.close();
+			}
+		}, blendSpace);
+		td.detach();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("SaveBlendSpace")) {
+		thread td = thread([](BlendSpaceAnimation* tar) {
+#ifdef UNICODE
+			CFileDialog dialog(true, L"asset", NULL, 6UL, _T("asset(*.asset)|*.asset"));
+#else
+			CFileDialog dialog(false, "asset", NULL, 6UL, "asset(*.asset)|*.asset");
+#endif // UNICODE
+			if (dialog.DoModal() == IDOK) {
+				SerializationInfo info;
+				if (tar->serialize(info)) {
+					char* s = CT2A(dialog.GetPathName().GetString());
+					ofstream f = ofstream(s);
+					SerializationInfoWriter writer = SerializationInfoWriter(f);
+					writer.write(info);
+					f.close();
+				}
+				else {
+					MessageBox(NULL, _T("Serialize failed"), _T("Error"), MB_OK);
+				}
+			}
+		}, blendSpace);
+		td.detach();
+	}
 	if (ImGui::DragInt("XStep", (int*)&context.xStep, 1, 0, 100)) {
 		blendSpace->removeAllAnimationClipData();
 		context.points.clear();
