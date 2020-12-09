@@ -1,4 +1,5 @@
 #include "Object.h"
+#include "Asset.h"
 
 SerializeInstance(Object);
 
@@ -299,6 +300,13 @@ Serializable * Object::instantiate(const SerializationInfo & from)
 
 bool Object::deserialize(const SerializationInfo & from)
 {
+	string scriptPath;
+	from.get("scriptPath", scriptPath);
+	if (!scriptPath.empty()) {
+		PythonScript *script = getAssetByPath<PythonScript>(scriptPath);
+		if (script != NULL)
+			pythonRuntimeObject.setScript(*script);
+	}
 	const SerializationInfo* child = from.get("children");
 	if (child != NULL) {
 		for (int i = 0; i < children.size(); i++) {
@@ -314,6 +322,10 @@ bool Object::serialize(SerializationInfo & to)
 {
 	to.type = "Object";
 	to.name = name;
+	PythonScript *script = pythonRuntimeObject.getScript();
+	if (script != NULL) {
+		to.set("scriptPath", script->getCodePath());
+	}
 	SerializationInfo* child = to.add("children");
 	if (child != NULL)
 		for (int i = 0; i < children.size(); i++) {
