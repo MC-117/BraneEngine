@@ -291,6 +291,14 @@ bool SkeletonMeshActor::deserialize(const SerializationInfo & from)
 				addAnimationClip(*acd);
 		}
 	}
+	const SerializationInfo* blendSpaceInfo = from.get("blendSpaces");
+	if (blendSpaceInfo != NULL) {
+		for (auto b = animInfo->subfeilds.begin(), e = animInfo->subfeilds.end(); b != e; b++) {
+			const SerializationInfo& bsinfo = animInfo->sublists[b->second];
+			BlendSpaceAnimation* bsa = addBlendSpaceAnimation(b->first);
+			bsa->deserialize(bsinfo);
+		}
+	}
 	return true;
 }
 
@@ -335,12 +343,22 @@ bool SkeletonMeshActor::serialize(SerializationInfo & to) {
 	asset.collect(*this);
 	asset.serialize(*cinfo);
 	SerializationInfo& animInfo = *to.add("animationClips");
-	for (auto b = animationClips.begin(), e = animationClips.end(); b != e; b++) {
-		AnimationClip* anim = dynamic_cast<AnimationClip*>(*b);
+	animInfo.type = "Array";
+	animInfo.arrayType = "String";
+	SerializationInfo& blendSpaceInfo = *to.add("blendSpaces");
+	for (auto b = animationClipList.begin(), e = animationClipList.end(); b != e; b++) {
+		AnimationBase* ab = animationClips[b->second];
+		AnimationClip* anim = dynamic_cast<AnimationClip*>(ab);
+		BlendSpaceAnimation* bsa = dynamic_cast<BlendSpaceAnimation*>(ab);
 		if (anim) {
 			string path = AssetInfo::getPath(anim->animationClipData);
 			if (!path.empty())
 				animInfo.push(path);
+		}
+		else if (bsa) {
+			SerializationInfo* bsinfo = blendSpaceInfo.add(b->first);
+			if (bsinfo != NULL)
+				bsa->serialize(*bsinfo);
 		}
 	}
 	return true;
