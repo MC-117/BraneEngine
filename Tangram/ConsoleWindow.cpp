@@ -7,6 +7,7 @@
 
 ConsoleWindow::ConsoleWindow(Object & object, string name, bool defaultShow) : UIWindow(object, name, defaultShow)
 {
+	textEditor.SetLanguageDefinition(TextEditor::LanguageDefinition::Python());
 }
 
 void ConsoleWindow::onRenderWindow(GUIRenderInfo & info)
@@ -174,11 +175,17 @@ void ConsoleWindow::onRenderWindow(GUIRenderInfo & info)
 			ImGui::EndTabItem();
 		}
 		if (ImGui::BeginTabItem("Python")) {
-			if (ImGui::ArrowButton("Run", ImGuiDir_Right))
-				PythonManager::run(code);
+			if (ImGui::ArrowButton("Run", ImGuiDir_Right)) {
+				PythonManager::run(textEditor.GetText());
+			}
 			float h = ImGui::GetWindowHeight();
 			ImGui::BeginChild("TextView", { -1, -h * 0.3f - 3});
-			ImGui::InputTextMultiline("##Code", &code, { -1, -1 }, ImGuiInputTextFlags_AllowTabInput);
+			auto cpos = textEditor.GetCursorPosition();
+			ImGui::Text("%6d/%-6d %6d lines  | %s | %s | %s", cpos.mLine + 1, cpos.mColumn + 1, textEditor.GetTotalLines(),
+				textEditor.IsOverwrite() ? "Ovr" : "Ins",
+				textEditor.CanUndo() ? "*" : " ",
+				textEditor.GetLanguageDefinition().mName.c_str());
+			textEditor.Render("##ConsoleCode", { -1, -1 });
 			ImGui::EndChild();
 			ImGui::BeginChild("LogView", { -1, -1 });
 			ImGui::Selectable("PyLog", &showPyLog, 0, { 60, 0 });

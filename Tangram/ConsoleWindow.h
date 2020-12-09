@@ -3,6 +3,7 @@
 #define _CONSOLEWINDOW_H_
 
 #include "UIWindow.h"
+#include "imgui_TextEditor.h"
 
 class ConsoleWindow : public UIWindow
 {
@@ -10,6 +11,7 @@ public:
 	bool showLog = true, showWarning = true, showError = true;
 	bool showPyLog = true, showPyError = true;
 	string code;
+	TextEditor textEditor;
 
 	ConsoleWindow(Object& object, string name = "Console", bool defaultShow = false);
 
