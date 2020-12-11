@@ -81,15 +81,39 @@ UtilityPy UtilityPy::instance;
 PyObject * UtilityPy::getWorld(PyObject * self, PyObject * args)
 {
 	(void)self;
-	(void)args;
-	return PyLong_FromLong((long)&world);
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_BadArgument();
+		return NULL;
+	}
+	World* w = Engine::getCurrentWorld();
+	if (w == NULL) {
+		PyErr_SetString(PyExc_RuntimeError, "no world is load");
+		return NULL;
+	}
+	PyObject* obj = PyObject_CallFunction((PyObject*)&WorldPy::Type, "L", w);
+	if (obj == NULL)
+		PyErr_SetString(PyExc_RuntimeError, "construct World failed");
+	return obj;
 }
 
 PyObject * UtilityPy::getInput(PyObject * self, PyObject * args)
 {
 	(void)self;
-	(void)args;
-	return ObjectPy::New(&InputPy::Type, &world.input);
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_BadArgument();
+		return NULL;
+	}
+	World* w = Engine::getCurrentWorld();
+	if (w == NULL) {
+		PyErr_SetString(PyExc_RuntimeError, "no world is load");
+		return NULL;
+	}
+	PyObject* obj = PyObject_CallFunction((PyObject*)&InputPy::Type, "L", &w->input);
+	if (obj == NULL)
+		PyErr_SetString(PyExc_RuntimeError, "construct Input failed");
+	return obj;
 }
 
 PyObject * UtilityPy::destroyObject(PyObject * self, PyObject * args)
@@ -173,7 +197,7 @@ PyObject * UtilityPy::spawnMeshActor(PyObject * self, PyObject * args)
 	else
 		ma = new MeshActor(*m, mat->instantiate(), name);
 	world += ma;
-	if (PyObject_TypeCheck(_pos, &Vec3Py::PyVec3_Type)) {
+	if (PyObject_TypeCheck(_pos, &Vec3Py::Type)) {
 		Vec3Py::Vec3* pos = (Vec3Py::Vec3*)_pos;
 		ma->setPosition({ pos->x, pos->y, pos->z });
 	}
@@ -186,7 +210,7 @@ PyObject * UtilityPy::setGravity(PyObject * self, PyObject * args)
 	Vector3f v;
 	if (size == 1) {
 		PyObject* g = PyTuple_GetItem(args, 0);
-		if (!PyObject_TypeCheck(g, &Vec3Py::PyVec3_Type)) {
+		if (!PyObject_TypeCheck(g, &Vec3Py::Type)) {
 			PyErr_SetString(PyExc_TypeError, "setGravity(Vec3) or setGravity(num, num, num)");
 			Py_RETURN_NONE;
 		}
@@ -360,9 +384,9 @@ ConsolePy::ConsolePy()
 	});
 }
 
-PyNumberMethods Vec3Py::PyVec3_NumMethods = {
-	(binaryfunc)Vec3Py::Vec3_add, // nb_add
-	(binaryfunc)Vec3Py::Vec3_sub, // nb_subtract
+PyNumberMethods Vec3Py::NumMethods = {
+	(binaryfunc)Vec3Py::__add__, // nb_add
+	(binaryfunc)Vec3Py::__sub__, // nb_subtract
 	(binaryfunc)0, // nb_multiply
 	(binaryfunc)0, // nb_remainder
 	(binaryfunc)0, // nb_divmod
@@ -403,14 +427,23 @@ PyNumberMethods Vec3Py::PyVec3_NumMethods = {
 	(binaryfunc)0 // nb_inplace_matrix_multiply
 };
 
-PyMemberDef Vec3Py::PyVec3_Members[4] = {
+PyMemberDef Vec3Py::Members[4] = {
 	{ "x", T_FLOAT, offsetof(Vec3Py::Vec3, x), 0, "x value" },
 	{ "y", T_FLOAT, offsetof(Vec3Py::Vec3, y), 0, "y value" },
 	{ "z", T_FLOAT, offsetof(Vec3Py::Vec3, z), 0, "z value" },
 	{ NULL }
 };
 
-PyTypeObject Vec3Py::PyVec3_Type = {
+PyMethodDef Vec3Py::Methods[6] = {
+	{ "dot", Vec3Py::dot, METH_VARARGS, "dot(Vec3)" },
+	{ "cross", Vec3Py::cross, METH_VARARGS, "cross(Vec3)" },
+	{ "norm", Vec3Py::norm, METH_VARARGS, "norm() return length of Vec3" },
+	{ "normalize", Vec3Py::normalize, METH_VARARGS, "normalize() return new normalized Vec3" },
+	{ "normalized", Vec3Py::normalized, METH_VARARGS, "normalized() return this normalized Vec3" },
+	{ NULL }
+};
+
+PyTypeObject Vec3Py::Type = {
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
 	"BraneEngine.Vec3",                         /* tp_name */
 	sizeof(Vec3Py::Vec3),                       /* tp_basicsize */
@@ -421,16 +454,16 @@ PyTypeObject Vec3Py::PyVec3_Type = {
 	0,                                          /* tp_setattr */
 	0,                                          /* tp_reserved */
 	0,                                          /* tp_repr */
-	&Vec3Py::PyVec3_NumMethods,                 /* tp_as_number */
+	&Vec3Py::NumMethods,                 /* tp_as_number */
 	0,                                          /* tp_as_sequence */
 	0,                                          /* tp_as_mapping */
 	0,                                          /* tp_hash */
 	0,                                          /* tp_call */
-	(reprfunc)Vec3Py::Vec3_str,                 /* tp_str */
+	(reprfunc)Vec3Py::__str__,                 /* tp_str */
 	0,                                          /* tp_getattro */
 	0,                                          /* tp_setattro */
 	0,                                          /* tp_as_buffer */
-	Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC |
+	Py_TPFLAGS_DEFAULT |
 	Py_TPFLAGS_BASETYPE,                         /* tp_flags */
 	"Vec3 Class",                               /* tp_doc */
 	0,                                          /* tp_traverse */
@@ -439,8 +472,8 @@ PyTypeObject Vec3Py::PyVec3_Type = {
 	0,                                          /* tp_weaklistoffset */
 	0,                                          /* tp_iter */
 	0,                                          /* tp_iternext */
-	0,                                          /* tp_methods */
-	Vec3Py::PyVec3_Members,                     /* tp_members */
+	Vec3Py::Methods,                                          /* tp_methods */
+	Vec3Py::Members,                     /* tp_members */
 	0,                                          /* tp_getset */
 	&PyBaseObject_Type,                         /* tp_base */
 	0,                                          /* tp_dict */
@@ -451,6 +484,7 @@ PyTypeObject Vec3Py::PyVec3_Type = {
 	0,                                          /* tp_alloc */
 	(newfunc)Vec3Py::Vec3_new,                  /* tp_new */
 };
+
 Vec3Py Vec3Py::instance;
 
 void Vec3Py::Vec3_dealloc(Vec3 * self)
@@ -490,17 +524,17 @@ int Vec3Py::Vec3_init(Vec3 * self, PyObject * args, PyObject * kwds)
 	return 0;
 }
 
-PyObject * Vec3Py::Vec3_str(Vec3 * obj)
+PyObject * Vec3Py::__str__(Vec3 * obj)
 {
 	char str[1024];
 	sprintf_s(str, "Vec3(%f, %f, %f)", obj->x, obj->y, obj->z);
 	return PyUnicode_FromFormat(str);
 }
 
-Vec3Py::Vec3 * Vec3Py::Vec3_add(Vec3 * a, Vec3 * b)
+Vec3Py::Vec3 * Vec3Py::__add__(Vec3 * a, Vec3 * b)
 {
 	Vec3 *self;
-	self = (Vec3*)PyVec3_Type.tp_alloc(&PyVec3_Type, 0);
+	self = (Vec3*)Type.tp_alloc(&Type, 0);
 	if (self != NULL) {
 		self->x = a->x + b->x;
 		self->y = a->y + b->y;
@@ -509,10 +543,10 @@ Vec3Py::Vec3 * Vec3Py::Vec3_add(Vec3 * a, Vec3 * b)
 	return self;
 }
 
-Vec3Py::Vec3 * Vec3Py::Vec3_sub(Vec3 * a, Vec3 * b)
+Vec3Py::Vec3 * Vec3Py::__sub__(Vec3 * a, Vec3 * b)
 {
 	Vec3 *self;
-	self = (Vec3*)PyVec3_Type.tp_alloc(&PyVec3_Type, 0);
+	self = (Vec3*)Type.tp_alloc(&Type, 0);
 	if (self != NULL) {
 		self->x = a->x - b->x;
 		self->y = a->y - b->y;
@@ -521,14 +555,96 @@ Vec3Py::Vec3 * Vec3Py::Vec3_sub(Vec3 * a, Vec3 * b)
 	return self;
 }
 
+PyObject * Vec3Py::dot(PyObject * self, PyObject * args)
+{
+	PyObject* obj = NULL;
+	if (!PyArg_ParseTuple(args, "O", &obj)) {
+		PyErr_SetString(PyExc_TypeError, "dot(Vec3)");
+		return NULL;
+	}
+	Vec3* a = (Vec3*)self;
+	Vec3* b = cast(obj);
+	if (b == NULL) {
+		PyErr_SetString(PyExc_TypeError, "dot(Vec3)");
+		return NULL;
+	}
+	return PyFloat_FromDouble(a->x * b->x + a->y * b->y + a->z * b->z);
+}
+
+PyObject * Vec3Py::cross(PyObject * self, PyObject * args)
+{
+	PyObject* obj = NULL;
+	if (!PyArg_ParseTuple(args, "O", &obj)) {
+		PyErr_SetString(PyExc_TypeError, "cross(Vec3)");
+		return NULL;
+	}
+	Vec3* a = (Vec3*)self;
+	Vec3* b = cast(obj);
+	if (b == NULL) {
+		PyErr_SetString(PyExc_TypeError, "cross(Vec3)");
+		return NULL;
+	}
+	Vec3* c = (Vec3*)Type.tp_alloc(&Type, 0);
+	if (c != NULL) {
+		c->x = a->y * b->z - a->z * b->y;
+		c->y = a->z * b->x - a->x * b->z;
+		c->z = a->x * b->y - a->y * b->x;
+	}
+	return (PyObject*)c;
+}
+
+PyObject * Vec3Py::norm(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "norm()");
+		return NULL;
+	}
+	Vec3* a = (Vec3*)self;
+	return PyFloat_FromDouble(sqrt(a->x * a->x + a->y * a->y + a->z * a->z));
+}
+
+PyObject * Vec3Py::normalize(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "normalize()");
+		return NULL;
+	}
+	Vec3* a = (Vec3*)self;
+	Vec3* b = (Vec3*)Type.tp_alloc(&Type, 0);
+	float len = sqrt(a->x * a->x + a->y * a->y + a->z * a->z);
+	if (b != NULL) {
+		b->x = a->x / len;
+		b->y = a->y / len;
+		b->z = a->z / len;
+	}
+	return (PyObject*)b;
+}
+
+PyObject * Vec3Py::normalized(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "normalized()");
+		return NULL;
+	}
+	Vec3* a = (Vec3*)self;
+	float len = sqrt(a->x * a->x + a->y * a->y + a->z * a->z);
+	a->x /= len;
+	a->y /= len;
+	a->z /= len;
+	Py_RETURN_NONE;
+}
+
 Vec3Py::Vec3Py()
 {
-	PythonManager::typeObjects.push_back(make_pair("Vec3", &instance.PyVec3_Type));
+	PythonManager::typeObjects.push_back(make_pair("Vec3", &instance.Type));
 }
 
 PyObject * Vec3Py::New(float x, float y, float z)
 {
-	PyObject *obj = PyObject_CallFunction((PyObject*)&PyVec3_Type, "fff", x, y, z);
+	PyObject *obj = PyObject_CallFunction((PyObject*)&Type, "fff", x, y, z);
 	if (obj == NULL) {
 		Console::pyError("Vec3 instantiate failed");
 	}
@@ -537,7 +653,7 @@ PyObject * Vec3Py::New(float x, float y, float z)
 
 PyObject * Vec3Py::New(const Vector3f & v)
 {
-	PyObject *obj = PyObject_CallFunction((PyObject*)&PyVec3_Type, "fff", v.x(), v.y(), v.z());
+	PyObject *obj = PyObject_CallFunction((PyObject*)&Type, "fff", v.x(), v.y(), v.z());
 	if (obj == NULL) {
 		Console::pyError("Vec3 instantiate failed");
 	}
@@ -546,11 +662,263 @@ PyObject * Vec3Py::New(const Vector3f & v)
 
 Vec3Py::Vec3 * Vec3Py::cast(PyObject * pobj)
 {
-	if (!PyObject_TypeCheck(pobj, &Vec3Py::PyVec3_Type))
+	if (!PyObject_TypeCheck(pobj, &Vec3Py::Type))
 		return NULL;
 	return (Vec3*)pobj;
 }
 
+PyNumberMethods QuatPy::NumMethods = {
+	(binaryfunc)0, // nb_add
+	(binaryfunc)0, // nb_subtract
+	(binaryfunc)QuatPy::__mul__, // nb_multiply
+	(binaryfunc)0, // nb_remainder
+	(binaryfunc)0, // nb_divmod
+	(ternaryfunc)0, // nb_power
+	(unaryfunc)0, // nb_negative
+	(unaryfunc)0, // nb_positive
+	(unaryfunc)0, // nb_absolute
+	(inquiry)0, // nb_bool
+	(unaryfunc)0, // nb_invert
+	(binaryfunc)0, // nb_lshift
+	(binaryfunc)0, // nb_rshift
+	(binaryfunc)0, // nb_and
+	(binaryfunc)0, // nb_xor
+	(binaryfunc)0, // nb_or
+	(unaryfunc)0, // nb_int
+	(void *)0, // nb_reserved
+	(unaryfunc)0, // nb_float
+
+	(binaryfunc)0, // nb_inplace_add
+	(binaryfunc)0, // nb_inplace_subtract
+	(binaryfunc)0, // nb_inplace_multiply
+	(binaryfunc)0, // nb_inplace_remainder
+	(ternaryfunc)0, // nb_inplace_power
+	(binaryfunc)0, // nb_inplace_lshift
+	(binaryfunc)0, // nb_inplace_rshift
+	(binaryfunc)0, // nb_inplace_and
+	(binaryfunc)0, // nb_inplace_xor
+	(binaryfunc)0, // nb_inplace_or
+
+	(binaryfunc)0, // nb_floor_divide
+	(binaryfunc)0, // nb_true_divide
+	(binaryfunc)0, // nb_inplace_floor_divide
+	(binaryfunc)0, // nb_inplace_true_divide
+
+	(unaryfunc)0, // nb_index
+
+	(binaryfunc)0, // nb_matrix_multiply
+	(binaryfunc)0 // nb_inplace_matrix_multiply
+};
+
+PyMemberDef QuatPy::Members[5] = {
+	{ "x", T_FLOAT, offsetof(QuatPy::Quat, x), 0, "x value" },
+	{ "y", T_FLOAT, offsetof(QuatPy::Quat, y), 0, "y value" },
+	{ "z", T_FLOAT, offsetof(QuatPy::Quat, z), 0, "z value" },
+	{ "w", T_FLOAT, offsetof(QuatPy::Quat, w), 0, "w value" },
+	{ NULL }
+};
+
+PyMethodDef QuatPy::Methods[4] = {
+	{ "dot", QuatPy::dot, METH_VARARGS, "dot(Quat)" },
+	{ "slerp", QuatPy::slerp, METH_VARARGS, "slerp(Quat, float)" },
+	{ "toEular", QuatPy::toEular, METH_VARARGS, "toEular() return Vec3" },
+	{ NULL }
+};
+
+PyTypeObject QuatPy::Type = {
+	PyVarObject_HEAD_INIT(&PyType_Type, 0)
+	"BraneEngine.Quat",                         /* tp_name */
+	sizeof(QuatPy::Quat),                       /* tp_basicsize */
+	0,                                          /* tp_itemsize */
+	(destructor)QuatPy::__dealloc__,           /* tp_dealloc */
+	(printfunc)0,                               /* tp_print */
+	0,                                          /* tp_getattr */
+	0,                                          /* tp_setattr */
+	0,                                          /* tp_reserved */
+	0,                                          /* tp_repr */
+	&QuatPy::NumMethods,                 /* tp_as_number */
+	0,                                          /* tp_as_sequence */
+	0,                                          /* tp_as_mapping */
+	0,                                          /* tp_hash */
+	0,                                          /* tp_call */
+	(reprfunc)QuatPy::__str__,                 /* tp_str */
+	0,                                          /* tp_getattro */
+	0,                                          /* tp_setattro */
+	0,                                          /* tp_as_buffer */
+	Py_TPFLAGS_DEFAULT |
+	Py_TPFLAGS_BASETYPE,                         /* tp_flags */
+	"Quat Class",                               /* tp_doc */
+	0,                                          /* tp_traverse */
+	0,                                          /* tp_clear */
+	0,                                          /* tp_richcompare */
+	0,                                          /* tp_weaklistoffset */
+	0,                                          /* tp_iter */
+	0,                                          /* tp_iternext */
+	QuatPy::Methods,                                          /* tp_methods */
+	QuatPy::Members,                     /* tp_members */
+	0,                                          /* tp_getset */
+	&PyBaseObject_Type,                         /* tp_base */
+	0,                                          /* tp_dict */
+	0,                                          /* tp_descr_get */
+	0,                                          /* tp_descr_set */
+	0,                                          /* tp_dictoffset */
+	(initproc)QuatPy::__init__,                /* tp_init */
+	0,                                          /* tp_alloc */
+	(newfunc)QuatPy::__new__,                  /* tp_new */
+};
+
+QuatPy QuatPy::instance;
+
+void QuatPy::__dealloc__(Quat * self)
+{
+	Py_TYPE(self)->tp_free((PyObject*)self);
+}
+
+PyObject * QuatPy::__new__(PyTypeObject * type, PyObject * args, PyObject * kwds)
+{
+	Quat *self;
+
+	self = (Quat *)type->tp_alloc(type, 0);
+	if (self != NULL) {
+		self->x = 0;
+		self->y = 0;
+		self->z = 0;
+		self->w = 0;
+	}
+	else {
+		Console::pyError("Quat New error");
+	}
+
+	return (PyObject *)self;
+}
+
+int QuatPy::__init__(Quat * self, PyObject * args, PyObject * kwds)
+{
+	if (self == NULL) {
+		Console::pyError("Quat Init error");
+	}
+
+	static char *kwlist[] = { "x", "y", "z", "w", NULL };
+
+	if (!PyArg_ParseTupleAndKeywords(args, kwds, "ffff", kwlist,
+		&self->x, &self->y, &self->z, &self->w))
+		return -1;
+
+	return 0;
+}
+
+PyObject * QuatPy::__str__(Quat * obj)
+{
+	char str[1024];
+	sprintf_s(str, "Quat(%f, %f, %f, %f)", obj->x, obj->y, obj->z, obj->w);
+	return PyUnicode_FromFormat(str);
+	return PyUnicode_FromFormat("Quat(%f, %f, %f, %f)", obj->x, obj->y, obj->z, obj->w);
+}
+
+QuatPy::Quat * QuatPy::__mul__(Quat * a, Quat * b)
+{
+	Quat *self;
+	self = (Quat*)Type.tp_alloc(&Type, 0);
+	if (self != NULL) {
+		self->w = a->w * b->w - a->x * b->x - a->y * b->y - a->z * b->z;
+		self->x = a->w * b->x + a->x * b->w + a->y * b->z - a->z * b->y;
+		self->y = a->w * b->y - a->x * b->z + a->y * b->w + a->z * b->x;
+		self->z = a->w * b->z + a->x * b->y - a->y * b->x + a->z * b->w;
+	}
+	return self;
+}
+
+PyObject * QuatPy::dot(PyObject * self, PyObject * args)
+{
+	PyObject* obj;
+	if (!PyArg_ParseTuple(args, "O", &obj)) {
+		PyErr_SetString(PyExc_TypeError, "dot(Quat)");
+		return NULL;
+	}
+	Quat* a = (Quat*)self;
+	Quat* b = cast(obj);
+	if (b == NULL) {
+		PyErr_SetString(PyExc_TypeError, "dot(Quat)");
+		return NULL;
+	}
+	return PyFloat_FromDouble(a->x * b->x + a->y * b->y + a->z * b->z + a->w * b->w);
+}
+
+PyObject * QuatPy::slerp(PyObject * self, PyObject * args)
+{
+	PyObject* obj;
+	float value = 0;
+	if (!PyArg_ParseTuple(args, "Of", &obj, &value)) {
+		PyErr_SetString(PyExc_TypeError, "slerp(Quat, float)");
+		return NULL;
+	}
+	Quat* a = (Quat*)self;
+	Quat* b = cast(obj);
+	if (b == NULL) {
+		PyErr_SetString(PyExc_TypeError, "slerp(Quat, float)");
+		return NULL;
+	}
+	Quaternionf aq = Quaternionf(a->w, a->x, a->y, a->z);
+	Quaternionf bq = Quaternionf(b->w, b->x, b->y, b->z);
+	aq = aq.slerp(value, bq);
+	Quat* c = (Quat*)Type.tp_alloc(&Type, 0);
+	if (c != NULL) {
+		c->x = aq.x();
+		c->y = aq.y();
+		c->z = aq.z();
+		c->w = aq.w();
+	}
+	return (PyObject*)c;
+}
+
+PyObject * QuatPy::toEular(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "toEular()");
+		return NULL;
+	}
+	Quat* a = (Quat*)self;
+	Quaternionf aq = Quaternionf(a->w, a->x, a->y, a->z);
+	Vector3f vec3 = aq.toRotationMatrix().eulerAngles(0, 1, 2) / PI * 180;
+	Vec3Py::Vec3* c = (Vec3Py::Vec3*)Vec3Py::Type.tp_alloc(&Vec3Py::Type, 0);
+	if (c != NULL) {
+		c->x = vec3.x();
+		c->y = vec3.y();
+		c->z = vec3.z();
+	}
+	return (PyObject*)c;
+}
+
+QuatPy::QuatPy()
+{
+	PythonManager::typeObjects.push_back(make_pair("Quat", &instance.Type));
+}
+
+PyObject * QuatPy::New(float x, float y, float z, float w)
+{
+	PyObject *obj = PyObject_CallFunction((PyObject*)&Type, "ffff", x, y, z, w);
+	if (obj == NULL) {
+		Console::pyError("Quat instantiate failed");
+	}
+	return obj;
+}
+
+PyObject * QuatPy::New(const Quaternionf & q)
+{
+	PyObject *obj = PyObject_CallFunction((PyObject*)&Type, "ffff", q.x(), q.y(), q.z(), q.w());
+	if (obj == NULL) {
+		Console::pyError("Quat instantiate failed");
+	}
+	return obj;
+}
+
+QuatPy::Quat * QuatPy::cast(PyObject * pobj)
+{
+	if (!PyObject_TypeCheck(pobj, &QuatPy::Type))
+		return NULL;
+	return (Quat*)pobj;
+}
 
 PyMemberDef ShapePy::PyShape_Members[4] = {
 	{ "minPos", T_OBJECT, offsetof(ShapePy::_Shape, minPos), 0, "min Position" },
@@ -615,7 +983,7 @@ PyObject * ShapePy::Shape_new(PyTypeObject * type, PyObject * args, PyObject * k
 
 	self = (_Shape *)type->tp_alloc(type, 0);
 	if (self != NULL) {
-		self->minPos = (Vec3Py::Vec3*)Vec3Py::PyVec3_Type.tp_alloc(&Vec3Py::PyVec3_Type, 0);
+		self->minPos = (Vec3Py::Vec3*)Vec3Py::Type.tp_alloc(&Vec3Py::Type, 0);
 		if (self->minPos == NULL) {
 			Py_DECREF(self);
 			return NULL;
@@ -623,7 +991,7 @@ PyObject * ShapePy::Shape_new(PyTypeObject * type, PyObject * args, PyObject * k
 		self->minPos->x = 0;
 		self->minPos->y = 0;
 		self->minPos->z = 0;
-		self->maxPos = (Vec3Py::Vec3*)Vec3Py::PyVec3_Type.tp_alloc(&Vec3Py::PyVec3_Type, 0);
+		self->maxPos = (Vec3Py::Vec3*)Vec3Py::Type.tp_alloc(&Vec3Py::Type, 0);
 		if (self->maxPos == NULL) {
 			Py_DECREF(self);
 			return NULL;
@@ -653,7 +1021,7 @@ int ShapePy::Shape_init(_Shape * self, PyObject * args, PyObject * kwds)
 		return -1;
 
 	if (minP) {
-		if (minP->ob_type != &Vec3Py::PyVec3_Type)
+		if (minP->ob_type != &Vec3Py::Type)
 			return -1;
 		tmp = (PyObject*)self->minPos;
 		Py_INCREF(minP);
@@ -662,7 +1030,7 @@ int ShapePy::Shape_init(_Shape * self, PyObject * args, PyObject * kwds)
 	}
 
 	if (maxP) {
-		if (maxP->ob_type != &Vec3Py::PyVec3_Type)
+		if (maxP->ob_type != &Vec3Py::Type)
 			return -1;
 		tmp = (PyObject*)self->maxPos;
 		Py_INCREF(maxP);
@@ -695,8 +1063,11 @@ PyMemberDef ObjectPy::Members[2] = {
 	{ NULL }
 };
 
-PyMethodDef ObjectPy::Methods[3] = {
+PyMethodDef ObjectPy::Methods[6] = {
+	{ "castTo", ObjectPy::castTo, METH_VARARGS, "up cast Object to other class" },
 	{ "getName", ObjectPy::getName, METH_VARARGS, "get name of this object" },
+	{ "getChild", ObjectPy::getChild, METH_VARARGS, "get child of this object by index or name" },
+	{ "getChildCount", ObjectPy::getChildCount, METH_VARARGS, "get the number of childern of this object" },
 	{ "destroy", ObjectPy::destroy, METH_VARARGS, "destroy this object" },
 	{ NULL }
 };
@@ -782,6 +1153,33 @@ PyObject * ObjectPy::__str__(PyCPointer * obj)
 	return PyUnicode_FromFormat(str);
 }
 
+PyObject * ObjectPy::castTo(PyObject * self, PyObject * args)
+{
+	PyObject* classType = NULL;
+	if (!PyArg_ParseTuple(args, "O", &classType)) {
+		PyErr_SetString(PyExc_TypeError, "castTo(Class)");
+		return NULL;
+	}
+	if (!PyObject_TypeCheck(classType, &PyType_Type)) {
+		PyErr_SetString(PyExc_TypeError, "castTo(Class)");
+		return NULL;
+	}
+	if ((PyTypeObject*)classType != &Type && !PyType_IsSubtype((PyTypeObject*)classType, &Type)) {
+		PyErr_SetString(PyExc_TypeError, "only subclass of BraneEngine.Object");
+		return NULL;
+	}
+	Object* ptr = (Object*)((PyCPointer*)self)->nativeHandle;
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	PyObject *obj = PyObject_CallFunction(classType, "L", ptr);
+	if (obj == NULL) {
+		PyErr_SetString(PyExc_TypeError, "cast failed");
+	}
+	return obj;
+}
+
 PyObject * ObjectPy::getName(PyObject * self, PyObject * args)
 {
 	int s = PyTuple_Size(args);
@@ -795,6 +1193,56 @@ PyObject * ObjectPy::getName(PyObject * self, PyObject * args)
 		return NULL;
 	}
 	return PyUnicode_FromString(ptr->name.c_str());
+}
+
+PyObject * ObjectPy::getChild(PyObject * self, PyObject * args)
+{
+	int index = 0;
+	char* name = NULL;
+	if (PyArg_ParseTuple(args, "i", &index)) { }
+	else if (PyArg_ParseTuple(args, "s", &name)) { }
+	else {
+		PyErr_SetString(PyExc_TypeError, "getChild(int) or getChild(string)");
+		return NULL;
+	}
+	Object* ptr = (Object*)((PyCPointer*)self)->nativeHandle;
+	Object* cobj = NULL;
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	if (name == NULL) {
+		if (index < ptr->children.size())
+			cobj = ptr->children[index];
+	}
+	else {
+		for (auto b = ptr->children.begin(), e = ptr->children.end(); b != e; b++) {
+			if ((*b)->name == name)
+				cobj = *b;
+		}
+	}
+	if (cobj == NULL)
+		Py_RETURN_NONE;
+	PyObject *obj = PyObject_CallFunction((PyObject*)&Type, "L", cobj);
+	if (obj == NULL) {
+		PyErr_SetString(PyExc_TypeError, "instantiate failed");
+	}
+	return obj;
+}
+
+PyObject * ObjectPy::getChildCount(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "getChildCount()");
+		return NULL;
+	}
+	Object* ptr = (Object*)((PyCPointer*)self)->nativeHandle;
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	return PyLong_FromLong(ptr->children.size());
 }
 
 PyObject * ObjectPy::destroy(PyObject * self, PyObject * args)
@@ -1143,10 +1591,13 @@ InputPy::InputPy()
 	PythonManager::constInt.insert(make_pair("K_PAGEDOWN", VK_NEXT));
 }
 
-PyMethodDef TransformPy::Methods[10] = {
+PyMethodDef TransformPy::Methods[13] = {
 	{ "getPosition", TransformPy::getPosition, METH_VARARGS, "getPosition(int = 2(RELATE))" },
 	{ "getEulerAngle", TransformPy::getEulerAngle, METH_VARARGS, "getEulerAngle(int = 2(RELATE))" },
 	{ "getScale", TransformPy::getScale, METH_VARARGS, "getScale(int = 2(RELATE))" },
+	{ "getForward", TransformPy::getForward, METH_VARARGS, "getForward(int = 2(RELATE))" },
+	{ "getRightward", TransformPy::getRightward, METH_VARARGS, "getRightward(int = 2(RELATE))" },
+	{ "getUpward", TransformPy::getUpward, METH_VARARGS, "getUpward(int = 2(RELATE))" },
 	{ "setPosition", TransformPy::setPosition, METH_VARARGS, "setPosition(Vec3, int = 2(RELATE)) or setPosition(float, float, float, int = 2(RELATE))" },
 	{ "setRotation", TransformPy::setRotation, METH_VARARGS, "setRotation(Vec3, int = 2(RELATE)) or setRotation(float, float, float, int = 2(RELATE))" },
 	{ "setScale", TransformPy::setScale, METH_VARARGS, "setScale(Vec3) or setScale(float, float, float)" },
@@ -1213,7 +1664,7 @@ PyObject * TransformPy::getPosition(PyObject * self, PyObject * args)
 	TransformSpace space = TransformSpace::RELATE;
 	if (s == 1) {
 		int i = 2;
-		PyArg_Parse(args, "i", &i);
+		PyArg_ParseTuple(args, "i", &i);
 		if (i >= 0 && i <= 2)
 			space = (TransformSpace)i;
 	}
@@ -1235,7 +1686,7 @@ PyObject * TransformPy::getEulerAngle(PyObject * self, PyObject * args)
 	TransformSpace space = TransformSpace::RELATE;
 	if (s == 1) {
 		int i = 2;
-		PyArg_Parse(args, "i", &i);
+		PyArg_ParseTuple(args, "i", &i);
 		if (i >= 0 && i <= 2)
 			space = (TransformSpace)i;
 	}
@@ -1248,8 +1699,7 @@ PyObject * TransformPy::getEulerAngle(PyObject * self, PyObject * args)
 		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
 		return NULL;
 	}
-	Vector3f rot = tran->getEulerAngle(space);
-	return Vec3Py::New(rot.x(), rot.y(), rot.z());
+	return Vec3Py::New(tran->getEulerAngle(space));
 }
 
 PyObject * TransformPy::getScale(PyObject * self, PyObject * args)
@@ -1258,7 +1708,7 @@ PyObject * TransformPy::getScale(PyObject * self, PyObject * args)
 	TransformSpace space = TransformSpace::RELATE;
 	if (s == 1) {
 		int i = 2;
-		PyArg_Parse(args, "i", &i);
+		PyArg_ParseTuple(args, "i", &i);
 		if (i >= 0 && i <= 2)
 			space = (TransformSpace)i;
 	}
@@ -1272,6 +1722,72 @@ PyObject * TransformPy::getScale(PyObject * self, PyObject * args)
 		return NULL;
 	}
 	return Vec3Py::New(tran->scale);
+}
+
+PyObject * TransformPy::getForward(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	TransformSpace space = TransformSpace::RELATE;
+	if (s == 1) {
+		int i = 2;
+		PyArg_ParseTuple(args, "i", &i);
+		if (i >= 0 && i <= 2)
+			space = (TransformSpace)i;
+	}
+	else if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "getForward(int = 2(RELATE))");
+		return NULL;
+	}
+	::Transform* tran = ObjectPy::cast<::Transform>(self);
+	if (tran == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	return Vec3Py::New(tran->getForward(space));
+}
+
+PyObject * TransformPy::getRightward(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	TransformSpace space = TransformSpace::RELATE;
+	if (s == 1) {
+		int i = 2;
+		PyArg_ParseTuple(args, "i", &i);
+		if (i >= 0 && i <= 2)
+			space = (TransformSpace)i;
+	}
+	else if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "getRightward(int = 2(RELATE))");
+		return NULL;
+	}
+	::Transform* tran = ObjectPy::cast<::Transform>(self);
+	if (tran == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	return Vec3Py::New(tran->getRightward(space));
+}
+
+PyObject * TransformPy::getUpward(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	TransformSpace space = TransformSpace::RELATE;
+	if (s == 1) {
+		int i = 2;
+		PyArg_ParseTuple(args, "i", &i);
+		if (i >= 0 && i <= 2)
+			space = (TransformSpace)i;
+	}
+	else if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "getUpward(int = 2(RELATE))");
+		return NULL;
+	}
+	::Transform* tran = ObjectPy::cast<::Transform>(self);
+	if (tran == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	return Vec3Py::New(tran->getUpward(space));
 }
 
 PyObject * TransformPy::setPosition(PyObject * self, PyObject * args)
@@ -1374,7 +1890,7 @@ PyObject * TransformPy::setScale(PyObject * self, PyObject * args)
 	bool err = false;
 	if (s == 1) {
 		PyObject* hobj = NULL;
-		if (!PyArg_Parse(args, "O", &hobj))
+		if (!PyArg_ParseTuple(args, "O", &hobj))
 			err = true;
 		else {
 			Vec3Py::Vec3* vec = Vec3Py::cast(hobj);
@@ -1505,7 +2021,7 @@ PyObject * TransformPy::scale(PyObject * self, PyObject * args)
 	bool err = false;
 	if (s == 1) {
 		PyObject* hobj = NULL;
-		if (!PyArg_Parse(args, "O", &hobj))
+		if (!PyArg_ParseTuple(args, "O", &hobj))
 			err = true;
 		else {
 			Vec3Py::Vec3* vec = Vec3Py::cast(hobj);
@@ -1539,6 +2055,397 @@ PyObject * TransformPy::scale(PyObject * self, PyObject * args)
 TransformPy::TransformPy()
 {
 	PythonManager::typeObjects.push_back(make_pair("Transform", &instance.Type));
+}
+
+PyMethodDef CameraPy::Methods[8] = {
+	{ "getDistance", CameraPy::getDistance, METH_VARARGS, "getDistance() return camera distance from origin" },
+	{ "getFov", CameraPy::getFov, METH_VARARGS, "getFov()" },
+	{ "getMode", CameraPy::getMode, METH_VARARGS, "getMode() 0: perspective 1: orthotropic" },
+	{ "setDistance", CameraPy::setDistance, METH_VARARGS, "setDistance(float)set camera distance from origin" },
+	{ "setFov", CameraPy::setFov, METH_VARARGS, "setFov(float)" },
+	{ "setMode", CameraPy::setMode, METH_VARARGS, "setMode(int) 0: perspective 1: orthotropic" },
+	{ "isActive", CameraPy::isActive, METH_VARARGS, "isActive() return if this camera is current main camera in the world" },
+	{ NULL }
+};
+
+PyTypeObject CameraPy::Type = {
+	PyVarObject_HEAD_INIT(&PyType_Type, 0)
+	"BraneEngine.Camera",            /* tp_name */
+	sizeof(PyCPointer),                    /* tp_basicsize */
+	0,                                          /* tp_itemsize */
+	0,											/* tp_dealloc */
+	0,                               /* tp_print */
+	0,                                          /* tp_getattr */
+	0,                                          /* tp_setattr */
+	0,                                          /* tp_reserved */
+	0,                                          /* tp_repr */
+	0,                                          /* tp_as_number */
+	0,                                          /* tp_as_sequence */
+	0,                                          /* tp_as_mapping */
+	0,                                          /* tp_hash */
+	0,                                          /* tp_call */
+	(reprfunc)CameraPy::__str__,               /* tp_str */
+	0,                                          /* tp_getattro */
+	0,                                          /* tp_setattro */
+	0,                                          /* tp_as_buffer */
+	Py_TPFLAGS_DEFAULT |
+	Py_TPFLAGS_BASETYPE,                         /* tp_flags */
+	"Camera Class",                              /* tp_doc */
+	0,                                          /* tp_traverse */
+	0,                                          /* tp_clear */
+	0,                                          /* tp_richcompare */
+	0,                                          /* tp_weaklistoffset */
+	0,                                          /* tp_iter */
+	0,                                          /* tp_iternext */
+	CameraPy::Methods,                                          /* tp_methods */
+	0,										    /* tp_members */
+	0,                                          /* tp_getset */
+	&TransformPy::Type,                         /* tp_base */
+	0,                                          /* tp_dict */
+	0,                                          /* tp_descr_get */
+	0,                                          /* tp_descr_set */
+	0,                                          /* tp_dictoffset */
+	0,										       /* tp_init */
+	0,                                          /* tp_alloc */
+	0,											  /* tp_new */
+};
+
+CameraPy CameraPy::instance;
+
+PyObject * CameraPy::__str__(PyCPointer * obj)
+{
+	return PyUnicode_FromFormat("Camera(%s)", ((Camera*)obj->nativeHandle)->name.c_str());
+}
+
+PyObject * CameraPy::getDistance(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "getDistance()");
+		return NULL;
+	}
+	Camera* ptr = ObjectPy::cast<Camera>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	return PyFloat_FromDouble(ptr->distance);
+}
+
+PyObject * CameraPy::getFov(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "getFov()");
+		return NULL;
+	}
+	Camera* ptr = ObjectPy::cast<Camera>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	return PyFloat_FromDouble(ptr->fov);
+}
+
+PyObject * CameraPy::getMode(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "getMode()");
+		return NULL;
+	}
+	Camera* ptr = ObjectPy::cast<Camera>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	return PyLong_FromLong(ptr->mode);
+}
+
+PyObject * CameraPy::setDistance(PyObject * self, PyObject * args)
+{
+	float dis = 0;
+	if (!PyArg_ParseTuple(args, "f", &dis)) {
+		PyErr_SetString(PyExc_TypeError, "setDistance(float)");
+		return NULL;
+	}
+	Camera* ptr = ObjectPy::cast<Camera>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	ptr->distance = dis;
+	Py_RETURN_NONE;
+}
+
+PyObject * CameraPy::setFov(PyObject * self, PyObject * args)
+{
+	float fov = 0;
+	if (!PyArg_ParseTuple(args, "f", &fov)) {
+		PyErr_SetString(PyExc_TypeError, "setFov(float)");
+		return NULL;
+	}
+	Camera* ptr = ObjectPy::cast<Camera>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	ptr->fov = fov;
+	Py_RETURN_NONE;
+}
+
+PyObject * CameraPy::setMode(PyObject * self, PyObject * args)
+{
+	int mode = 0;
+	if (!PyArg_ParseTuple(args, "i", &mode)) {
+		PyErr_SetString(PyExc_TypeError, "setMode(int)");
+		return NULL;
+	}
+	if (mode != 0 && mode != 1) {
+		PyErr_SetString(PyExc_TypeError, "mode 0: perspective; mode 1: orthotropic");
+		return NULL;
+	}
+	Camera* ptr = ObjectPy::cast<Camera>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	ptr->mode = (Camera::CameraMode)mode;
+	Py_RETURN_NONE;
+}
+
+PyObject * CameraPy::isActive(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "isActive()");
+		return NULL;
+	}
+	Camera* ptr = ObjectPy::cast<Camera>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	if (ptr->isActive())
+		Py_RETURN_TRUE;
+	else
+		Py_RETURN_FALSE;
+}
+
+CameraPy::CameraPy()
+{
+	PythonManager::typeObjects.push_back(make_pair("Camera", &instance.Type));
+}
+
+PyMethodDef WorldPy::Methods[9] = {
+	{ "getCurrentCamera", WorldPy::getCurrentCamera, METH_VARARGS, "getCurrentCamera() return current camera" },
+	{ "getDefaultCamera", WorldPy::getDefaultCamera, METH_VARARGS, "getDefaultCamera() return default camera" },
+	{ "getInput", WorldPy::getInput, METH_VARARGS, "getInput() return input object" },
+	{ "switchCamera", WorldPy::switchCamera, METH_VARARGS, "switchCamera(Camera)" },
+	{ "switchToDefaultCamera", WorldPy::switchToDefaultCamera, METH_VARARGS, "switchToDefaultCamera()" },
+	{ "setMainVolume", WorldPy::setMainVolume, METH_VARARGS, "setMainVolume(float(0.0 - 1.0))" },
+	{ "quit", WorldPy::quit, METH_VARARGS, "quit() quit the engine next frame" },
+	{ "willQuit", WorldPy::willQuit, METH_VARARGS, "willQuit() return if the engine will quit" },
+	{ NULL }
+};
+
+PyTypeObject WorldPy::Type = {
+	PyVarObject_HEAD_INIT(&PyType_Type, 0)
+	"BraneEngine.World",            /* tp_name */
+	sizeof(PyCPointer),                    /* tp_basicsize */
+	0,                                          /* tp_itemsize */
+	0,											/* tp_dealloc */
+	0,                               /* tp_print */
+	0,                                          /* tp_getattr */
+	0,                                          /* tp_setattr */
+	0,                                          /* tp_reserved */
+	0,                                          /* tp_repr */
+	0,                                          /* tp_as_number */
+	0,                                          /* tp_as_sequence */
+	0,                                          /* tp_as_mapping */
+	0,                                          /* tp_hash */
+	0,                                          /* tp_call */
+	(reprfunc)WorldPy::__str__,               /* tp_str */
+	0,                                          /* tp_getattro */
+	0,                                          /* tp_setattro */
+	0,                                          /* tp_as_buffer */
+	Py_TPFLAGS_DEFAULT |
+	Py_TPFLAGS_BASETYPE,                         /* tp_flags */
+	"World Class",                              /* tp_doc */
+	0,                                          /* tp_traverse */
+	0,                                          /* tp_clear */
+	0,                                          /* tp_richcompare */
+	0,                                          /* tp_weaklistoffset */
+	0,                                          /* tp_iter */
+	0,                                          /* tp_iternext */
+	WorldPy::Methods,                                          /* tp_methods */
+	0,										    /* tp_members */
+	0,                                          /* tp_getset */
+	&TransformPy::Type,                         /* tp_base */
+	0,                                          /* tp_dict */
+	0,                                          /* tp_descr_get */
+	0,                                          /* tp_descr_set */
+	0,                                          /* tp_dictoffset */
+	0,										       /* tp_init */
+	0,                                          /* tp_alloc */
+	0,											  /* tp_new */
+};
+
+WorldPy WorldPy::instance;
+
+PyObject * WorldPy::__str__(PyCPointer * obj)
+{
+	return PyUnicode_FromFormat("World(%s)", ((World*)obj->nativeHandle)->name.c_str());
+}
+
+PyObject * WorldPy::getCurrentCamera(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "getCurrentCamera()");
+		return NULL;
+	}
+	World* ptr = ObjectPy::cast<World>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	PyObject* obj = PyObject_CallFunction((PyObject*)&CameraPy::Type, "L", &ptr->getCurrentCamera());
+	if (obj == NULL)
+		PyErr_SetString(PyExc_RuntimeError, "construct Camera failed");
+	return obj;
+}
+
+PyObject * WorldPy::getDefaultCamera(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "getDefaultCamera()");
+		return NULL;
+	}
+	World* ptr = ObjectPy::cast<World>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	PyObject* obj = PyObject_CallFunction((PyObject*)&CameraPy::Type, "L", &ptr->getDefaultCamera());
+	if (obj == NULL)
+		PyErr_SetString(PyExc_RuntimeError, "construct Camera failed");
+	return obj;
+}
+
+PyObject * WorldPy::getInput(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "getDefaultCamera()");
+		return NULL;
+	}
+	World* ptr = ObjectPy::cast<World>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	PyObject* obj = PyObject_CallFunction((PyObject*)&InputPy::Type, "L", &ptr->input);
+	if (obj == NULL)
+		PyErr_SetString(PyExc_RuntimeError, "construct Input failed");
+	return obj;
+}
+
+PyObject * WorldPy::switchCamera(PyObject * self, PyObject * args)
+{
+	PyObject* pycam = 0;
+	if (!PyArg_ParseTuple(args, "O", &pycam)) {
+		PyErr_SetString(PyExc_TypeError, "switchCamera(Camera)");
+		return NULL;
+	}
+	if (!PyType_Check(pycam, &CameraPy::Type)) {
+		PyErr_SetString(PyExc_TypeError, "switchCamera(Camera)");
+		return NULL;
+	}
+	World* ptr = ObjectPy::cast<World>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	Camera* cam = ObjectPy::cast<Camera>(pycam);
+	if (cam == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "cast c pointer to Camera failed");
+		return NULL;
+	}
+	ptr->switchCamera(*cam);
+	Py_RETURN_NONE;
+}
+
+PyObject * WorldPy::switchToDefaultCamera(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "switchToDefaultCamera()");
+		return NULL;
+	}
+	World* ptr = ObjectPy::cast<World>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	ptr->switchToDefaultCamera();
+	Py_RETURN_NONE;
+}
+
+PyObject * WorldPy::setMainVolume(PyObject * self, PyObject * args)
+{
+	float vol = 0;
+	if (!PyArg_ParseTuple(args, "f", &vol)) {
+		PyErr_SetString(PyExc_TypeError, "setMainVolume(float)");
+		return NULL;
+	}
+	World* ptr = ObjectPy::cast<World>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	ptr->setMainVolume(vol);
+	Py_RETURN_NONE;
+}
+
+PyObject * WorldPy::quit(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "quit()");
+		return NULL;
+	}
+	World* ptr = ObjectPy::cast<World>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	ptr->quit();
+	Py_RETURN_NONE;
+}
+
+PyObject * WorldPy::willQuit(PyObject * self, PyObject * args)
+{
+	int s = PyTuple_Size(args);
+	if (s != 0) {
+		PyErr_SetString(PyExc_TypeError, "willQuit()");
+		return NULL;
+	}
+	World* ptr = ObjectPy::cast<World>(self);
+	if (ptr == NULL) {
+		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
+		return NULL;
+	}
+	if (ptr->willQuit())
+		Py_RETURN_TRUE;
+	else
+		Py_RETURN_FALSE;
+}
+
+WorldPy::WorldPy()
+{
+	PythonManager::typeObjects.push_back(make_pair("World", &instance.Type));
 }
 
 PyMethodDef ActorPy::Methods[6] = {
@@ -1739,6 +2646,64 @@ ActorPy::ActorPy()
 	PythonManager::typeObjects.push_back(make_pair("Actor", &instance.Type));
 }
 
+PyMethodDef MeshActorPy::Methods[1] = {
+	{ NULL }
+};
+
+PyTypeObject MeshActorPy::Type = {
+	PyVarObject_HEAD_INIT(&PyType_Type, 0)
+	"BraneEngine.MeshActor",            /* tp_name */
+	sizeof(PyCPointer),                    /* tp_basicsize */
+	0,                                          /* tp_itemsize */
+	0,											/* tp_dealloc */
+	0,                               /* tp_print */
+	0,                                          /* tp_getattr */
+	0,                                          /* tp_setattr */
+	0,                                          /* tp_reserved */
+	0,                                          /* tp_repr */
+	0,                                          /* tp_as_number */
+	0,                                          /* tp_as_sequence */
+	0,                                          /* tp_as_mapping */
+	0,                                          /* tp_hash */
+	0,                                          /* tp_call */
+	(reprfunc)MeshActorPy::__str__,               /* tp_str */
+	0,                                          /* tp_getattro */
+	0,                                          /* tp_setattro */
+	0,                                          /* tp_as_buffer */
+	Py_TPFLAGS_DEFAULT |
+	Py_TPFLAGS_BASETYPE,                         /* tp_flags */
+	"MeshActor Class",                              /* tp_doc */
+	0,                                          /* tp_traverse */
+	0,                                          /* tp_clear */
+	0,                                          /* tp_richcompare */
+	0,                                          /* tp_weaklistoffset */
+	0,                                          /* tp_iter */
+	0,                                          /* tp_iternext */
+	MeshActorPy::Methods,                                          /* tp_methods */
+	0,										    /* tp_members */
+	0,                                          /* tp_getset */
+	&ActorPy::Type,                         /* tp_base */
+	0,                                          /* tp_dict */
+	0,                                          /* tp_descr_get */
+	0,                                          /* tp_descr_set */
+	0,                                          /* tp_dictoffset */
+	0,										       /* tp_init */
+	0,                                          /* tp_alloc */
+	0,											  /* tp_new */
+};
+
+MeshActorPy MeshActorPy::instance;
+
+PyObject * MeshActorPy::__str__(PyCPointer * obj)
+{
+	return PyUnicode_FromFormat("MeshActor(%s)", ((MeshActor*)obj->nativeHandle)->name.c_str());
+}
+
+MeshActorPy::MeshActorPy()
+{
+	PythonManager::typeObjects.push_back(make_pair("MeshActor", &instance.Type));
+}
+
 PyMethodDef SkeletonMeshActorPy::Methods[5] = {
 	{ "playAnimation", SkeletonMeshActorPy::playAnimation, METH_VARARGS, "play animation of this actor" },
 	{ "pauseAnimation", SkeletonMeshActorPy::pauseAnimation, METH_VARARGS, "pause animation of this actor" },
@@ -1884,7 +2849,7 @@ PyObject * SkeletonMeshActorPy::setBlendSpaceWeight(PyObject * self, PyObject * 
 		PyErr_SetString(PyExc_MemoryError, "access c pointer failed");
 		return NULL;
 	}
-	if (PyArg_ParseTuple(args, "O", &hobj) && ptr->animationClip != NULL) {
+	if (ptr->animationClip != NULL && PyArg_ParseTuple(args, "O", &hobj)) {
 		bsa = dynamic_cast<BlendSpaceAnimation*>(ptr->animationClip);
 	}
 	else if (PyArg_ParseTuple(args, "iO", &index, &hobj)) {
@@ -1895,13 +2860,15 @@ PyObject * SkeletonMeshActorPy::setBlendSpaceWeight(PyObject * self, PyObject * 
 		PyErr_SetString(PyExc_TypeError, "setBlendSpaceWeight(Vec3), setBlendSpaceWeight(int, Vec3) or setBlendSpaceWeight(String, Vec3)");
 		return NULL;
 	}
-	if (name == NULL) {
-		bsa = dynamic_cast<BlendSpaceAnimation*>(ptr->animationClips[index]);
-	}
-	else {
-		auto iter = ptr->animationClipList.find(name);
-		if (iter != ptr->animationClipList.end()) {
-			bsa = dynamic_cast<BlendSpaceAnimation*>(ptr->animationClips[iter->second]);
+	if (bsa == NULL) {
+		if (name == NULL) {
+			bsa = dynamic_cast<BlendSpaceAnimation*>(ptr->animationClips[index]);
+		}
+		else {
+			auto iter = ptr->animationClipList.find(name);
+			if (iter != ptr->animationClipList.end()) {
+				bsa = dynamic_cast<BlendSpaceAnimation*>(ptr->animationClips[iter->second]);
+			}
 		}
 	}
 	vec = Vec3Py::cast(hobj);

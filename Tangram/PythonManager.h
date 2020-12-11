@@ -68,17 +68,24 @@ public:
 		PyObject_HEAD;
 		float x, y, z;
 	};
-	static PyNumberMethods PyVec3_NumMethods;
-	static PyMemberDef PyVec3_Members[4];
-	static PyTypeObject PyVec3_Type;
+	static PyNumberMethods NumMethods;
+	static PyMemberDef Members[4];
+	static PyMethodDef Methods[6];
+	static PyTypeObject Type;
 	static Vec3Py instance;
 
 	static void Vec3_dealloc(Vec3* self);
 	static PyObject* Vec3_new(PyTypeObject *type, PyObject *args, PyObject *kwds);
 	static int Vec3_init(Vec3 *self, PyObject *args, PyObject *kwds);
-	static PyObject* Vec3_str(Vec3 *obj);
-	static Vec3* Vec3_add(Vec3* a, Vec3* b);
-	static Vec3* Vec3_sub(Vec3* a, Vec3* b);
+	static PyObject* __str__(Vec3 *obj);
+	static Vec3* __add__(Vec3* a, Vec3* b);
+	static Vec3* __sub__(Vec3* a, Vec3* b);
+
+	static PyObject* dot(PyObject * self, PyObject * args);
+	static PyObject* cross(PyObject * self, PyObject * args);
+	static PyObject* norm(PyObject * self, PyObject * args);
+	static PyObject* normalize(PyObject * self, PyObject * args);
+	static PyObject* normalized(PyObject * self, PyObject * args);
 
 	Vec3Py();
 
@@ -86,6 +93,38 @@ public:
 	static PyObject* New(const Vector3f& v);
 
 	static Vec3* cast(PyObject* pobj);
+};
+
+class QuatPy
+{
+public:
+	struct Quat
+	{
+		PyObject_HEAD;
+		float x, y, z, w;
+	};
+	static PyNumberMethods NumMethods;
+	static PyMemberDef Members[5];
+	static PyMethodDef Methods[4];
+	static PyTypeObject Type;
+	static QuatPy instance;
+
+	static void __dealloc__(Quat* self);
+	static PyObject* __new__(PyTypeObject *type, PyObject *args, PyObject *kwds);
+	static int __init__(Quat *self, PyObject *args, PyObject *kwds);
+	static PyObject* __str__(Quat *obj);
+	static Quat* __mul__(Quat* a, Quat* b);
+
+	static PyObject* dot(PyObject * self, PyObject * args);
+	static PyObject* slerp(PyObject * self, PyObject * args);
+	static PyObject* toEular(PyObject * self, PyObject * args);
+
+	QuatPy();
+
+	static PyObject* New(float x = 0, float y = 0, float z = 0, float w = 1);
+	static PyObject* New(const Quaternionf& q);
+
+	static Quat* cast(PyObject* pobj);
 };
 
 class ShapePy
@@ -133,7 +172,7 @@ class ObjectPy
 {
 public:
 	static PyMemberDef Members[2];
-	static PyMethodDef Methods[3];
+	static PyMethodDef Methods[6];
 	static PyTypeObject Type;
 	static ObjectPy instance;
 
@@ -142,7 +181,10 @@ public:
 	static int __init__(PyCPointer *self, PyObject *args, PyObject *kwds);
 	static PyObject* __str__(PyCPointer *obj);
 
+	static PyObject * castTo(PyObject * self, PyObject * args);
 	static PyObject * getName(PyObject * self, PyObject * args);
+	static PyObject * getChild(PyObject * self, PyObject * args);
+	static PyObject * getChildCount(PyObject * self, PyObject * args);
 	static PyObject * destroy(PyObject * self, PyObject * args);
 
 	template<class T>
@@ -185,7 +227,7 @@ public:
 class TransformPy
 {
 public:
-	static PyMethodDef Methods[10];
+	static PyMethodDef Methods[13];
 	static PyTypeObject Type;
 	static TransformPy instance;
 
@@ -194,6 +236,9 @@ public:
 	static PyObject* getPosition(PyObject * self, PyObject * args);
 	static PyObject* getEulerAngle(PyObject * self, PyObject * args);
 	static PyObject* getScale(PyObject * self, PyObject * args);
+	static PyObject* getForward(PyObject * self, PyObject * args);
+	static PyObject* getRightward(PyObject * self, PyObject * args);
+	static PyObject* getUpward(PyObject * self, PyObject * args);
 	static PyObject* setPosition(PyObject * self, PyObject * args);
 	static PyObject* setRotation(PyObject * self, PyObject * args);
 	static PyObject* setScale(PyObject * self, PyObject * args);
@@ -202,6 +247,47 @@ public:
 	static PyObject* scale(PyObject * self, PyObject * args);
 
 	TransformPy();
+};
+
+class CameraPy
+{
+public:
+	static PyMethodDef Methods[8];
+	static PyTypeObject Type;
+	static CameraPy instance;
+
+	static PyObject* __str__(PyCPointer *obj);
+
+	static PyObject* getDistance(PyObject * self, PyObject * args);
+	static PyObject* getFov(PyObject * self, PyObject * args);
+	static PyObject* getMode(PyObject * self, PyObject * args);
+	static PyObject* setDistance(PyObject * self, PyObject * args);
+	static PyObject* setFov(PyObject * self, PyObject * args);
+	static PyObject* setMode(PyObject * self, PyObject * args);
+	static PyObject* isActive(PyObject * self, PyObject * args);
+
+	CameraPy();
+};
+
+class WorldPy
+{
+public:
+	static PyMethodDef Methods[9];
+	static PyTypeObject Type;
+	static WorldPy instance;
+
+	static PyObject* __str__(PyCPointer *obj);
+
+	static PyObject* getCurrentCamera(PyObject * self, PyObject * args);
+	static PyObject* getDefaultCamera(PyObject * self, PyObject * args);
+	static PyObject* getInput(PyObject * self, PyObject * args);
+	static PyObject* switchCamera(PyObject * self, PyObject * args);
+	static PyObject* switchToDefaultCamera(PyObject * self, PyObject * args);
+	static PyObject* setMainVolume(PyObject * self, PyObject * args);
+	static PyObject* quit(PyObject * self, PyObject * args);
+	static PyObject* willQuit(PyObject * self, PyObject * args);
+	
+	WorldPy();
 };
 
 class ActorPy
@@ -221,6 +307,18 @@ public:
 	static PyObject * stopAudio(PyObject * self, PyObject * args);
 
 	ActorPy();
+};
+
+class MeshActorPy
+{
+public:
+	static PyMethodDef Methods[1];
+	static PyTypeObject Type;
+	static MeshActorPy instance;
+
+	static PyObject* __str__(PyCPointer *obj);
+
+	MeshActorPy();
 };
 
 class SkeletonMeshActorPy
