@@ -6,7 +6,7 @@ This is a 3D game engine which can be used to make a simple demo showcase or eve
 
 This engine is based on OpenGL graphic library (DX12 support is in prograss) and Eigen math graphic library. **There only have x64 version**
 
-## How to use
+## How to use (Out of date: full python script support)
 Set the ***/include***, ***/lib (have lib of debug and release version in x64/debug and x64/release folder. Make sure configure respectively)*** folder path in the VS project configuration window. And add all the libs in the /lib folder to the linker input configuration window.
 
 After you bulid your own project, make sure you copy all the ***.dll*** files in ***/bin/x64*** folder and ***/Engine*** folder to the same folder as exe file.
