@@ -609,6 +609,9 @@
     <ClCompile Include="ScriptEditor.cpp">
       <Filter>源文件\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="SpringArm.cpp">
+      <Filter>源文件\Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Unit.h">
@@ -1033,6 +1036,9 @@
     </ClInclude>
     <ClInclude Include="ScriptEditor.h">
       <Filter>头文件\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SpringArm.h">
+      <Filter>头文件\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

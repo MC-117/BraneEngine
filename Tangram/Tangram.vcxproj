@@ -310,6 +310,7 @@
     <ClCompile Include="SkeletonPhysicalAsset.cpp" />
     <ClCompile Include="SkeletonPose.cpp" />
     <ClCompile Include="SkySphere.cpp" />
+    <ClCompile Include="SpringArm.cpp" />
     <ClCompile Include="SSAOPass.cpp" />
     <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="Texture2D.cpp" />
@@ -448,6 +449,7 @@
     <ClInclude Include="SkeletonPhysicalAsset.h" />
     <ClInclude Include="SkeletonPose.h" />
     <ClInclude Include="SkySphere.h" />
+    <ClInclude Include="SpringArm.h" />
     <ClInclude Include="SSAOPass.h" />
     <ClInclude Include="StateMachine.h" />
     <ClInclude Include="stb_image.h" />

@@ -186,9 +186,9 @@ void loadAssets(const char* path, LoadingUI& log, vector<string>& delayLoadAsset
 			else if (!_stricmp(ext.c_str(), ".asset")) {
 				asset = AssetManager::loadAsset("AssetFile", name, path, {}, {});
 			}
-			else if (!_stricmp(ext.c_str(), ".py")) {
+			/*else if (!_stricmp(ext.c_str(), ".py")) {
 				asset = AssetManager::loadAsset("PythonScript", name, path, {}, {});
-			}
+			}*/
 			else if (!_stricmp(ext.c_str(), ".imat")) {
 				delayLoadAsset.push_back(path);
 				delay = true;
@@ -516,7 +516,7 @@ void Engine::setup()
 
 	IVendor& vendor = VendorManager::getInstance().getVendor();
 
-	PythonManager::start();
+	//PythonManager::start();
 	if (!PhysicalWorld::init())
 		throw runtime_error("Physics Engine init failed");
 
@@ -715,7 +715,7 @@ void Engine::start()
 
 void Engine::clean()
 {
-	PythonManager::end();
+	//PythonManager::end();
 	world.physicalWorld.physicsScene->release();
 	PhysicalWorld::release();
 
