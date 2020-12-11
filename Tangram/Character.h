@@ -9,6 +9,8 @@
 class Character : public Actor
 {
 public:
+	Serialize(Character);
+
 	PhysicalController physicalController;
 
 	Character(Capsule capsule, string name = "Character");
@@ -22,6 +24,10 @@ public:
 	virtual bool isFly();
 	virtual void move(const Vector3f& v);
 	virtual void jump(float impulse);
+
+	static Serializable* instantiate(const SerializationInfo& from);
+	virtual bool deserialize(const SerializationInfo& from);
+	virtual bool serialize(SerializationInfo& to);
 };
 
 #endif // !_CHARACTER_H_

@@ -1,6 +1,8 @@
 #include "Character.h"
 #include "Asset.h"
 
+SerializeInstance(Character);
+
 Character::Character(Capsule capsule, string name)
 	: Actor(name), physicalController(*this, capsule)
 {
@@ -44,4 +46,22 @@ void Character::move(const Vector3f & v)
 void Character::jump(float impulse)
 {
 	physicalController.jump(impulse);
+}
+
+Serializable * Character::instantiate(const SerializationInfo & from)
+{
+	Capsule capsule;
+	from.get("capsule", capsule);
+	return new Character(capsule, from.name);
+}
+
+bool Character::deserialize(const SerializationInfo & from)
+{
+	return Actor::deserialize(from);
+}
+
+bool Character::serialize(SerializationInfo & to)
+{
+	to.set("capsule", physicalController.capsule);
+	return true;
 }
