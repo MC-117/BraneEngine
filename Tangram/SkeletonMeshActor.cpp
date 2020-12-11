@@ -293,10 +293,9 @@ bool SkeletonMeshActor::deserialize(const SerializationInfo & from)
 	}
 	const SerializationInfo* blendSpaceInfo = from.get("blendSpaces");
 	if (blendSpaceInfo != NULL) {
-		for (auto b = animInfo->subfeilds.begin(), e = animInfo->subfeilds.end(); b != e; b++) {
-			const SerializationInfo& bsinfo = animInfo->sublists[b->second];
-			BlendSpaceAnimation* bsa = addBlendSpaceAnimation(b->first);
-			bsa->deserialize(bsinfo);
+		for (auto b = blendSpaceInfo->sublists.begin(), e = blendSpaceInfo->sublists.end(); b != e; b++) {
+			BlendSpaceAnimation* bsa = addBlendSpaceAnimation(b->name);
+			bsa->deserialize(*b);
 		}
 	}
 	return true;
