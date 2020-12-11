@@ -31,6 +31,7 @@ Material::Material(const Material & material) : shader(material.shader)
 	countField = material.countField;
 	colorField = material.colorField;
 	textureField = material.textureField;
+	imageField = material.imageField;
 }
 
 Material::~Material()
@@ -747,6 +748,12 @@ Material * Material::MaterialLoader::loadMaterialInstance(istream & is, const st
 						else
 							material->setTexture(p.first, *tex);
 					}
+					else if (v[0] == "Image") {
+						auto p = parseImage(v[1]);
+						Image img;
+						img.binding = p.second;
+						material->setImage(p.first, img);
+					}
 				}
 				catch (exception e) {
 					printf("Matertial attribute parsing error: %s\n", e.what());
@@ -807,6 +814,9 @@ bool Material::MaterialLoader::saveMaterialInstanceToString(string & text, Mater
 	for (auto b = material.getTextureField().begin(), e = material.getTextureField().end(); b != e; b++) {
 		string texP = Texture2DAssetInfo::getPath(b->second.val);
 		text += "Texture " + b->first + ": " + (texP.empty() ? "white" : texP) + '\n';
+	}
+	for (auto b = material.getImageField().begin(), e = material.getImageField().end(); b != e; b++) {
+		text += "Image " + b->first + ": binding(" + to_string(b->second.val.binding) + ")\n";
 	}
 	return true;
 }
