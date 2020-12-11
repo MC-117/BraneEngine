@@ -2,7 +2,7 @@
 >by Luo Yizhou
 
 ## Introduction
-This is a 3D graphic engine which can be used to make a simple demo showcase or even make a game.
+This is a 3D game engine which can be used to make a simple demo showcase or even make a game.
 
 This engine is based on OpenGL graphic library (DX12 support is in prograss) and Eigen math graphic library. **There only have x64 version**
 
