@@ -358,6 +358,53 @@ void EditorWindow::objectContextMenu(Object * obj)
 			ImGui::EndMenu();
 		}
 
+		// Camera
+		if (ImGui::BeginMenu("Camera")) {
+			if (ImGui::BeginMenu("Camera")) {
+				ImGui::InputText("Name", &newObjectName);
+				if (Brane::find(typeid(Object).hash_code(), newObjectName) == NULL) {
+					if (ImGui::Button("Create", { -1, 36 })) {
+						::Transform* t = new ::Transform(newObjectName);
+						target.addChild(*t);
+					}
+				}
+				else {
+					ImGui::Text("Name exists");
+				}
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("PostProcessingCamera")) {
+				ImGui::InputText("Name", &newObjectName);
+				if (Brane::find(typeid(Object).hash_code(), newObjectName) == NULL) {
+					if (ImGui::Button("Create", { -1, 36 })) {
+						PostProcessingCamera* t = new PostProcessingCamera(newObjectName);
+						target.addChild(*t);
+					}
+				}
+				else {
+					ImGui::Text("Name exists");
+				}
+				ImGui::EndMenu();
+			}
+		}
+
+		// Character
+		if (ImGui::BeginMenu("Character")) {
+			ImGui::InputText("Name", &newObjectName);
+			ImGui::DragFloat("Radius", &capsuleRadius);
+			ImGui::DragFloat("HalfLength", &capsuleHalfLength);
+			if (Brane::find(typeid(Object).hash_code(), newObjectName) == NULL) {
+				if (ImGui::Button("Create", { -1, 36 })) {
+					Character* t = new Character(Capsule(capsuleRadius, capsuleHalfLength), newObjectName);
+					target.addChild(*t);
+				}
+			}
+			else {
+				ImGui::Text("Name exists");
+			}
+			ImGui::EndMenu();
+		}
+
 		// GrassActor
 		if (ImGui::BeginMenu("GrassActor")) {
 			ImGui::InputText("Name", &newObjectName);

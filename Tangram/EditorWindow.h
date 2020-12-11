@@ -31,6 +31,10 @@ protected:
 	Material* selectedMaterial = NULL;
 	int selectedMaterialID = 0;
 
+	// Character
+	float capsuleRadius = 5;
+	float capsuleHalfLength = 20;
+
 	// GrasActor
 	float grassDensity = 20;
 	Vector2i grassBound = { 100, 100 };
