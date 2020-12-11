@@ -41,6 +41,7 @@ public:
 	float left = 0, right = 0, top = 0, bottom = 0;
 	float zNear = 0.1, zFar = 10000000;
 	float distance = 0;
+	bool active = false;
 
 	Matrix4f projectionViewMat;
 
@@ -63,6 +64,9 @@ public:
 
 	void setSize(Unit2Di size);
 	void setMode(CameraMode mode);
+	void setActive(bool active);
+
+	bool isActive();
 
 	void uploadCameraData();
 	void bindCameraData();

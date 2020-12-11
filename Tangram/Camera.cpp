@@ -99,6 +99,16 @@ void Camera::setMode(CameraMode mode)
 	this->mode = mode;
 }
 
+void Camera::setActive(bool active)
+{
+	this->active = active;
+}
+
+bool Camera::isActive()
+{
+	return active;
+}
+
 void Camera::uploadCameraData()
 {
 	CameraData data;

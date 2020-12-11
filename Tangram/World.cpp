@@ -38,6 +38,7 @@ World::World() : ::Transform::Transform("RootWorld")
 {
 	if (defaultCamera.parent == NULL)
 		*this += defaultCamera;
+	switchToDefaultCamera();
 	*this += input;
 }
 
@@ -242,14 +243,20 @@ Camera & World::getDefaultCamera()
 
 void World::switchCamera(Camera & camera)
 {
+	if (this->camera != NULL)
+		this->camera->setActive(false);
 	this->camera = &camera;
+	camera.setActive(true);
 	camera.setSize(screenSize);
 	renderPool.switchCamera(camera);
 }
 
 void World::switchToDefaultCamera()
 {
+	if (camera != NULL)
+		camera->setActive(false);
 	camera = &defaultCamera;
+	camera->setActive(true);
 	defaultCamera.setSize(screenSize);
 	renderPool.switchToDefaultCamera();
 }
