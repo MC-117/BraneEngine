@@ -16,6 +16,7 @@
 #include "Importer.h"
 #include "SkeletonMeshActor.h"
 #include "Character.h"
+#include "SpringArm.h"
 #include "CapsuleActor.h"
 #include "IKSolver.h"
 #include "ParticleSystem.h"
