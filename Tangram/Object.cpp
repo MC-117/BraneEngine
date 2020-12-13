@@ -159,15 +159,13 @@ Object * Object::findChild(const string & name)
 
 void Object::setParent(Object & parent)
 {
-	unparent();
-	this->parent = &parent;
-	siblingIdx = parent.children.size();
-	parent.children.push_back(this);
-	onAttacted(parent);
+	parent.addChild(*this);
 }
 
 void Object::unparent()
 {
+	if (internalNode)
+		return;
 	if (parent != NULL) {
 		if (siblingIdx != -1) {
 			auto b = parent->children.erase(parent->children.begin() + siblingIdx);
@@ -183,9 +181,12 @@ void Object::unparent()
 void Object::addChild(Object & child)
 {
 	child.unparent();
+	if (child.internalNode)
+		return;
 	child.parent = this;
 	child.siblingIdx = children.size();
 	children.push_back(&child);
+	child.onAttacted(*this);
 }
 
 void Object::clearChild()
@@ -291,6 +292,11 @@ bool Object::isinitialized()
 	return initialized;
 }
 
+bool Object::isInternal()
+{
+	return internalNode;
+}
+
 Serializable * Object::instantiate(const SerializationInfo & from)
 {
 	Object* obj = new Object(from.name);
@@ -335,6 +341,14 @@ bool Object::serialize(SerializationInfo & to)
 			}
 		}
 	return true;
+}
+
+void Object::addInternalNode(Object & object)
+{
+	object.internalNode = true;
+	object.parent = this;
+	object.siblingIdx = children.size();
+	children.push_back(&object);
 }
 
 ObjectIterator::ObjectIterator(Object * root)
@@ -435,19 +449,22 @@ void ChildrenInstantiateObject(const SerializationInfo & from, Object * pObj, In
 		}
 		for (auto b = ___child->sublists.begin(), e = ___child->sublists.end(); b != e; b++) {
 			if (b->serialization != NULL) {
+				for (int i = 0; i < pObj->children.size(); i++) {
+					Object* obj = pObj->children[i];
+					if (obj->isInternal() && obj->name == b->name) {
+						ChildrenInstantiateObject(*b, obj);
+						continue;
+					}
+				}
 				if (rule == IR_Default) { }
 				else if (rule == IR_WorldUniqueName) {
 					if (Brane::find(typeid(Object).hash_code(), b->name) != NULL)
 						continue;
 				}
-				else if (rule == IR_ChildUniqueName) {
+				else if (rule == IR_ExistUniqueName) {
 					for (int i = 0; i < pObj->children.size(); i++)
 						if (pObj->children[i]->name == b->name)
 							continue;
-				}
-				else if (rule == IR_ExistUniqueName) {
-					if (names.find(b->name) != names.end())
-						continue;
 				}
 				Serializable * ser = b->serialization->instantiate(*b);
 				if (ser != NULL) {

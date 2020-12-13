@@ -65,6 +65,7 @@ public:
 	virtual void destroy(bool applyToChild = false);
 	bool isDestroy();
 	bool isinitialized();
+	bool isInternal();
 
 	static Serializable* instantiate(const SerializationInfo& from);
 	virtual bool deserialize(const SerializationInfo& from);
@@ -72,12 +73,15 @@ public:
 protected:
 	bool initialized = false;
 	bool tryDestroy = false;
+	bool internalNode = false; // internal node: can not change its hierarchy
 	int siblingIdx = -1;
 	
 	Delegate<void(Object*)> beginHandler;
 	Delegate<void(Object*, float)> tickHandler;
 	Delegate<void(Object*)> afterTickHandler;
 	Delegate<void(Object*)> endHandler;
+
+	virtual void addInternalNode(Object& object);
 };
 
 class ObjectIterator
@@ -96,7 +100,7 @@ protected:
 
 enum InstanceRuleEnum
 {
-	IR_Default, IR_WorldUniqueName, IR_ChildUniqueName, IR_ExistUniqueName
+	IR_Default, IR_WorldUniqueName, IR_ExistUniqueName
 };
 
 void ChildrenInstantiateObject(const SerializationInfo& from, Object* pObj, InstanceRuleEnum rule = IR_Default);
