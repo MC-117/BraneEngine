@@ -336,6 +336,16 @@ void InspectorWindow::onRenderWindow(GUIRenderInfo& info)
 				}
 			}
 		}
+		SpringArm* springArm = dynamic_cast<SpringArm*>(&obj);
+		if (springArm != NULL) {
+			if (ImGui::CollapsingHeader("SpringArm")) {
+				float r = springArm->getRadius(), l = springArm->getSpringLength();
+				if (ImGui::DragFloat("Radius", &r))
+					springArm->setRadius(r);
+				if (ImGui::DragFloat("SpringLength", &l))
+					springArm->setSpringLength(l);
+			}
+		}
 		Actor* a = dynamic_cast<Actor*>(&obj);
 		if (a != NULL) {
 			if (ImGui::CollapsingHeader("Actor")) {
@@ -619,6 +629,16 @@ void InspectorWindow::onRenderWindow(GUIRenderInfo& info)
 								ImGui::TreePop();
 							}
 						}
+					}
+				}
+				Character* chr = dynamic_cast<Character*>(&obj);
+				if (chr != NULL) {
+					if (ImGui::CollapsingHeader("Character")) {
+						Vector3f gv = chr->physicalController.gravityVelocity;
+						Vector3f mv = chr->physicalController.moveVelocity;
+						ImGui::Text("GravityVelocity: %f, %f, %f", gv.x(), gv.y(), gv.z());
+						ImGui::Text("MoveVelocity: %f, %f, %f", mv.x(), mv.y(), mv.z());
+						ImGui::Text("IsFly: %s", chr->isFly() ? "true" : "false");
 					}
 				}
 				SkeletonMeshActor* sma = dynamic_cast<SkeletonMeshActor*>(&obj);
