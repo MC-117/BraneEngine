@@ -7,6 +7,8 @@
 #include "PythonManager.h"
 #include "imgui_internal.h"
 
+#define ENABLE_PYTHON 1
+
 World world;
 
 void SetTopWindow(HWND hWnd)
@@ -186,9 +188,11 @@ void loadAssets(const char* path, LoadingUI& log, vector<string>& delayLoadAsset
 			else if (!_stricmp(ext.c_str(), ".asset")) {
 				asset = AssetManager::loadAsset("AssetFile", name, path, {}, {});
 			}
-			/*else if (!_stricmp(ext.c_str(), ".py")) {
+#if ENABLE_PYTHON
+			else if (!_stricmp(ext.c_str(), ".py")) {
 				asset = AssetManager::loadAsset("PythonScript", name, path, {}, {});
-			}*/
+			}
+#endif
 			else if (!_stricmp(ext.c_str(), ".imat")) {
 				delayLoadAsset.push_back(path);
 				delay = true;
@@ -515,8 +519,9 @@ void Engine::setup()
 	VendorManager::getInstance().instantiateVendor(engineConfig.vendorName);
 
 	IVendor& vendor = VendorManager::getInstance().getVendor();
-
-	//PythonManager::start();
+#if ENABLE_PYTHON
+	PythonManager::start();
+#endif
 	if (!PhysicalWorld::init())
 		throw runtime_error("Physics Engine init failed");
 
@@ -715,7 +720,9 @@ void Engine::start()
 
 void Engine::clean()
 {
-	//PythonManager::end();
+#if ENABLE_PYTHON
+	PythonManager::end();
+#endif
 	world.physicalWorld.physicsScene->release();
 	PhysicalWorld::release();
 
