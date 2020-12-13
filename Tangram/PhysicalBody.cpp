@@ -29,10 +29,10 @@ PhysicalBody::PhysicalBody(::Transform& targetTransform, const PhysicalMaterial&
 	switch (complexType)
 	{
 	case COMPLEX:
-		collisionShape = shape->generateComplexCollisionShape(targetTransform.scale);
+		collisionShape = shape->generateComplexCollisionShape(targetTransform.getScale(WORLD));
 		break;
 	case SIMPLE:
-		collisionShape = shape->generateCollisionShape(targetTransform.scale);
+		collisionShape = shape->generateCollisionShape(targetTransform.getScale(WORLD));
 		break;
 	case NONESHAPE:
 		break;

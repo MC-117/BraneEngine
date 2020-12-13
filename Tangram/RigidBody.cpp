@@ -32,23 +32,24 @@ RigidBody::RigidBody(::Transform& targetTransform, const PhysicalMaterial& mater
 #endif
 #ifdef PHYSICS_USE_PHYSX
 	PxMaterial* mat = PhysicalWorld::gPhysicsSDK->createMaterial(1, 0.5, 0);
+	Vector3f localSca = targetTransform.getScale();
 	switch (material.physicalType)
 	{
 	case DYNAMIC:
 		rawRigidBody = PxCreateDynamic(*PhysicalWorld::gPhysicsSDK, targetTransform.getWorldTransform(),
-			*collisionShape, *mat, 1, complexType == SIMPLE ? toPTransform(shape->getCenter()) : PxTransform(PxIDENTITY::PxIdentity));
+			*collisionShape, *mat, 1, complexType == SIMPLE ? toPTransform(shape->getCenter().cwiseProduct(localSca)) : PxTransform(PxIDENTITY::PxIdentity));
 		rawRigidBody->setMass(material.mass);
 		break;
 	case STATIC:
 		rawRigidBody = PxCreateKinematic(*PhysicalWorld::gPhysicsSDK, targetTransform.getWorldTransform(),
-			*collisionShape, *mat, 1, complexType == SIMPLE ? toPTransform(shape->getCenter()) : PxTransform(PxIDENTITY::PxIdentity));
+			*collisionShape, *mat, 1, complexType == SIMPLE ? toPTransform(shape->getCenter().cwiseProduct(localSca)) : PxTransform(PxIDENTITY::PxIdentity));
 		rawRigidBody->setMass(material.mass);
 		rawRigidBody->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, true);
 		//rawRigidBody->setRigidBodyFlag(PxRigidBodyFlag::eUSE_KINEMATIC_TARGET_FOR_SCENE_QUERIES, true);
 		break;
 	case NOCOLLISIOIN:
 		rawRigidBody = PxCreateDynamic(*PhysicalWorld::gPhysicsSDK, targetTransform.getWorldTransform(),
-			*collisionShape, *mat, 1, complexType == SIMPLE ? toPTransform(shape->getCenter()) : PxTransform(PxIDENTITY::PxIdentity));
+			*collisionShape, *mat, 1, complexType == SIMPLE ? toPTransform(shape->getCenter().cwiseProduct(localSca)) : PxTransform(PxIDENTITY::PxIdentity));
 		rawRigidBody->setMass(material.mass);
 		rawRigidBody->setRigidBodyFlag(PxRigidBodyFlag::eENABLE_CCD, false);
 		break;
