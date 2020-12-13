@@ -58,6 +58,7 @@ public:
 	virtual Vector3f getPosition(TransformSpace space = RELATE);
 	virtual Quaternionf getRotation(TransformSpace space = RELATE);
 	virtual Vector3f getEulerAngle(TransformSpace space = RELATE);
+	virtual Vector3f getScale(TransformSpace space = RELATE);
 	virtual Vector3f getForward(TransformSpace space = RELATE);
 	virtual Vector3f getRightward(TransformSpace space = RELATE);
 	virtual Vector3f getUpward(TransformSpace space = RELATE);

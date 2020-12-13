@@ -141,6 +141,24 @@ Vector3f(::Transform::getEulerAngle)(TransformSpace space)
 	return getRotation(space).toRotationMatrix().eulerAngles(0, 1, 2) / PI * 180;
 }
 
+Vector3f(::Transform::getScale)(TransformSpace space)
+{
+	if (space == WORLD) {
+		Vector3f sca = scale;
+		Object* obj = this->parent;
+		while (obj != NULL) {
+			::Transform* t = dynamic_cast<::Transform*>(obj);
+			if (t != NULL) {
+				sca = sca.cwiseProduct(t->scale);
+			}
+			obj = obj->parent;
+		}
+		return sca;
+	}
+	else
+		return scale;
+}
+
 Vector3f (::Transform::getForward)(TransformSpace space)
 {
 	if (space == WORLD) {
@@ -569,10 +587,11 @@ bool ::Transform::deserialize(const SerializationInfo & from)
 					}
 			}
 			else if (sinfo->serialization != NULL) {
-				Serializable* ser = sinfo->serialization->deserialize(*sinfo);
+				Serializable* ser = sinfo->serialization->instantiate(*sinfo);
 				shape = dynamic_cast<Shape*>(ser);
 				if (shape == NULL && ser != NULL)
 					delete ser;
+				shape->deserialize(*sinfo);
 			}
 			float complexType = 0;
 			cinfo->get("complexType", complexType);
