@@ -1,22 +1,9 @@
-#order 2450
+#order 2500
+#castshadow false
 #material
 Color baseColor: 255, 255, 255, 0
 Color outlineColor: 255, 255, 255, 44
-#vertex
-#version 460 core
-layout (std430, binding = 0) buffer CB0
-{
-    mat4 Transforms[];
-};
-layout (location = 0) in vec3 pos;
-layout (location = 1) in vec2 uv;
-layout (location = 2) in vec3 norm;
-uniform mat4 pmat;
-
-void main()
-{
-   gl_Position = pmat * Transforms[gl_InstanceID + gl_BaseInstance] * vec4(pos.x, pos.y, pos.z, 1.0);
-}
+#vertex use position
 #geometry
 #version 410 core
 layout (triangles) in;
@@ -54,10 +41,10 @@ void main()
 uniform vec4 baseColor;
 uniform vec4 outlineColor;
 in vec3 dist;
-out vec4 oCol;
+layout (location = 0) out vec4 FragColor;
 void main()
 {
    float d = min(dist[0], min(dist[1], dist[2])) * gl_FragCoord.w * 2;
    float I = exp2(-0.5 * d);
-   oCol = mix(baseColor, outlineColor, I);
+   FragColor = mix(baseColor, outlineColor, I);
 }

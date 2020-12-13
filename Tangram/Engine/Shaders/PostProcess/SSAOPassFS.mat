@@ -1,0 +1,162 @@
+#material
+Scalar ssaoRadius: 0.02
+Scalar ssaoIntensity: 1.0
+Scalar ssaoArea: 0.8
+Scalar ssaoFalloff: 0.2
+Scalar ssaoCutoff: 0.999999
+Scalar ssaobias: 0
+Scalar screenScale: 0.5
+Count ssaoBlurIter: 10
+Texture ssaoMap
+Texture ssaoKernalMap
+Texture depthMap
+#vertex use postprocess
+#fragment postprocess
+#version 460
+
+#include "../lib/CameraData_Def.hmat"
+
+layout (location = 0) out vec4 FragColor;
+in vec2 UV;
+uniform int pass;
+uniform float ssaoRadius;
+uniform float ssaoIntensity;
+uniform float ssaoArea;
+uniform float ssaoFalloff;
+uniform float ssaoCutoff;
+uniform float ssaobias;
+uniform int ssaoBlurIter;
+uniform float screenScale;
+uniform sampler2D ssaoMap;
+uniform sampler2D ssaoKernalMap;
+uniform sampler2D depthMap;
+
+const vec3 sample_sphere[16] = vec3[](
+    vec3( 0.5381, 0.1856,-0.4319), vec3( 0.1379, 0.2486, 0.4430),
+    vec3( 0.3371, 0.5679,-0.0057), vec3(-0.6999,-0.0451,-0.0019),
+    vec3( 0.0689,-0.1598,-0.8547), vec3( 0.0560, 0.0069,-0.1843),
+    vec3(-0.0146, 0.1402, 0.0762), vec3( 0.0100,-0.1924,-0.0344),
+    vec3(-0.3577,-0.5301,-0.4358), vec3(-0.3169, 0.1063, 0.0158),
+    vec3( 0.0103,-0.5869, 0.0046), vec3(-0.0897,-0.4940, 0.3287),
+    vec3( 0.7119,-0.0154,-0.0918), vec3(-0.0533, 0.0596,-0.5411),
+    vec3( 0.0352,-0.0631, 0.5460), vec3(-0.4776, 0.2847,-0.0271)
+);
+
+vec3 normalFromDepth(float depth, vec2 texcoords) 
+{
+	vec2 offset1 = vec2(0.0,0.0001);
+	vec2 offset2 = vec2(0.0001,0.0);
+	vec2 offset3 = vec2(0.0,-0.0001);
+	vec2 offset4 = vec2(-0.0001,0.0);
+
+	float depth1 = texture2D(depthMap, texcoords + offset1).r;
+	float depth2 = texture2D(depthMap, texcoords + offset2).r;
+	float depth3 = texture2D(depthMap, texcoords + offset3).r;
+	float depth4 = texture2D(depthMap, texcoords + offset4).r;
+
+	vec3 p1 = vec3(offset1, depth1 - depth);
+	vec3 p2 = vec3(offset2, depth2 - depth);
+	vec3 p3 = vec3(offset3, depth3 - depth);
+	vec3 p4 = vec3(offset4, depth4 - depth);
+
+	vec3 normal1 = cross(p1, p2);
+	vec3 normal2 = cross(p2, p3);
+	vec3 normal3 = cross(p3, p4);
+	vec3 normal4 = cross(p4, p1);
+
+	vec3 normal = (normal1 + normal2 + normal3 + normal4) / 4;
+	normal.z = -normal.z;
+
+	return normalize(normal);
+}
+
+vec3 reflection(vec3 v1,vec3 v2)
+{
+    vec3 result= 2.0 * dot(v2, v1) * v2;
+    result=v1-result;
+    return result;
+}
+
+void main() {
+	float width = floor(camData.viewSize.x * screenScale);
+	float height = floor(camData.viewSize.y * screenScale);
+    if (pass == 0) {
+        // vec3 pos = reconstructPos();
+        // float AO = 0.0;
+
+        // for (int i = 0 ; i < 16 ; i++) {
+        //     vec3 samplePos = pos + ssaoKernal[i];
+        //     vec4 offset = vec4(samplePos, 1.0);
+        //     offset = camData.pmat * offset;
+        //     offset.xy /= offset.w;
+        //     offset.xy = offset.xy * 0.5 + 0.5;
+
+        //     float sampleDepth = calViewZ(offset.xy);
+
+        //     // float rangeCheck = smoothstep(0.0, 1.0, ssaoRadius / abs(pos.z - sampleDepth));
+        //     // AO += (sampleDepth >= samplePos.z ? 1.0 : 0.0) * rangeCheck;
+
+        //     if (abs(pos.z - sampleDepth) < ssaoRadius) {
+        //         AO += step(sampleDepth,samplePos.z);
+        //     }
+        // }
+        // AO = 1.0 - AO / 16.0;
+        // oCol0.rgb = vec3(AO * AO);
+        // oCol0.a = 1.0;
+        float depth = texture2D(depthMap, UV).r;
+        vec3 normal = normalFromDepth(depth, UV);
+        if (depth < ssaoCutoff && abs(dot(normal, vec3(0, 0, 1))) < (1 - ssaobias)) {
+            vec3 random = normalize(texture2D(ssaoKernalMap, UV * 8.0).rgb);
+            vec3 position = vec3(UV.x,UV.y,depth);
+            float radiusDepth = ssaoRadius/depth;
+            float occlusion = 0.0;
+            //float bias = max(ssaobias * dot(normal, vec3(0, 0, 1)), ssaobias * 0.1);
+
+            int iterations = 16;
+            for (int j = 0; j < iterations; ++j)
+            {
+                vec3 ray = radiusDepth * reflection(sample_sphere[j], random);
+                if (dot(ray,normal) > 0) {
+                    vec3 hemiRay = position + ray;
+                
+                    float occDepth = texture2D(depthMap, clamp(hemiRay.xy,0.0,1.0)).r;
+                    float difference = depth - occDepth;
+
+                    occlusion += smoothstep(ssaoFalloff, ssaoArea, (depth >= occDepth ? 1.0 : 0.0) * (1 - smoothstep(0, 1, abs(difference) / ssaoRadius)));
+                }
+                //occlusion += step(ssaoFalloff, difference) * smoothstep(ssaoFalloff, ssaoArea, difference);
+            }
+
+            float ao = occlusion * (1.0 / iterations);
+            ao = smoothstep(ssaoFalloff, ssaoArea, ao) * ssaoIntensity * ao;
+            ao = 1 - ao;
+            float final = clamp(ao * ao,0.0,1.0);
+
+            FragColor = vec4(final,final,final,1);
+        }
+        else
+            FragColor = vec4(1);
+    }
+    else if (pass == 1) {
+        vec4 c = vec4(0);
+        int n = clamp(ssaoBlurIter, 0, 30);
+        float ssaoOffset = -0.02 * n + 0.6;
+        for (int i = 0; i < n; i++) {
+            c += texture(ssaoMap, UV - vec2(0, ssaoOffset / height * i));
+            c += texture(ssaoMap, UV + vec2(0, ssaoOffset / height * i));
+        }
+        FragColor = c / (n * 2.0);
+        FragColor.a = 1.0;
+    }
+    else if (pass == 2) {
+        vec4 c = vec4(0);
+        int n = clamp(ssaoBlurIter, 0, 30);
+        float ssaoOffset = -0.02 * n + 0.6;
+        for (int i = 0; i < n; i++) {
+            c += texture(ssaoMap, UV - vec2(ssaoOffset / width * i, 0));
+            c += texture(ssaoMap, UV + vec2(ssaoOffset / width * i, 0));
+        }
+        FragColor = c / (n * 2.0);
+        FragColor.a = 1.0;
+    }
+}

@@ -2,9 +2,9 @@
 #material
 Color sunColor: 255, 204, 102, 255
 Color cloudColor: 213, 230, 255, 255
-Color zenithColor: 0, 23, 89, 255
+Color zenithColor: 41, 68, 145, 255
 Color horizonColor: 200, 210, 210, 255
-Color overallColor: 255, 255, 255, 255
+Color overallColor: 140, 140, 140, 255
 Color lightDirection: 1, 0, 0, 1
 Scalar cloudOpacity: 1
 Scalar sunBrightness: 2
@@ -16,40 +16,33 @@ Scalar time: 0
 Scalar cloudSpeed: 2
 Scalar lowNoisePower: 1
 Scalar highNoisePower: 4
-Scalar horizonFalloff: 3
+Scalar horizonFalloff: 8
 Texture cloudNoiseMap: black
 Texture skyMap: black
 Texture starMap: black
 
 #vertex
 #version 460
-// #extension GL_ARB_shader_draw_parameters : require
+#include "../Shaders/lib/TransformData_def.hmat"
+#include "../Shaders/lib/CameraData_Def.hmat"
+#include "../Shaders/lib/MeshData_Def.hmat"
 
-// #extension GL_ARB_shader_storage_buffer_object : require
-layout (std140, binding = 0) buffer CB0
-{
-    mat4 Transforms[];
-};
-
-layout (location = 0) in vec3 pos;
-layout (location = 1) in vec2 uv;
 out vec3 LocalPos;
 out vec3 WorldPos;
 out vec2 TexCoords;
-uniform mat4 pmat;
-//uniform mat4 tmat;
 void main() {
-    // gl_Position = pmat * tmat * vec4(pos.x, pos.y, pos.z, 1.0);
-    gl_Position = pmat * Transforms[gl_InstanceID + gl_BaseInstance] * vec4(pos.x, pos.y, pos.z, 1.0);
+    mat4 fm = Transforms[ObjectIDs[gl_InstanceID + gl_BaseInstance]];
+    gl_Position = camData.pmat * fm * vec4(pos.x, pos.y, pos.z, 1.0);
     LocalPos = pos;
-    vec4 w = Transforms[gl_InstanceID + gl_BaseInstance] * vec4(pos.x, pos.y, pos.z, 1.0);
+    vec4 w = fm * vec4(pos.x, pos.y, pos.z, 1.0);
     WorldPos = w.xyz / w.w;
     TexCoords = uv;
     TexCoords.y = 1 - TexCoords.y;
 }
 
 #fragment
-#version 410
+#version 460
+#include "../Shaders/lib/CameraData_Def.hmat"
 
 uniform vec4 sunColor;
 uniform vec4 cloudColor;
@@ -57,7 +50,6 @@ uniform vec4 zenithColor;
 uniform vec4 horizonColor;
 uniform vec4 overallColor;
 uniform vec4 lightDirection;
-uniform vec3 camPos;
 uniform float cloudOpacity;
 uniform float starBrightness;
 uniform float sunBrightness;
@@ -82,7 +74,7 @@ float sphereMask(float pos, float center, float radius, float hardness) {
 }
 
 void main() {
-    vec3 cameraVector = normalize(WorldPos - camPos);
+    vec3 cameraVector = normalize(WorldPos - camData.camPos);
     float cutoff = clamp(dot(cameraVector, vec3(0, 0, 1)), 0, 1);
     float cloudAlpha = cloudOpacity * (1 - clamp((LocalPos / radius * -10).b, 0, 1));
     float offset = time * cloudSpeed;

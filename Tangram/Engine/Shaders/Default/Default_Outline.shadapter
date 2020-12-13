@@ -1,0 +1,116 @@
+#adapter name outline
+#vertex
+#version 460 core
+#include "../lib/TransformData_def.hmat"
+#include "../lib/CameraData_Def.hmat"
+#include "../lib/MeshData_Def.hmat"
+
+uniform float borderWidth;
+uniform float refenceDistance;
+
+void main()
+{
+    mat4 fm = Transforms[ObjectIDs[gl_InstanceID + gl_BaseInstance]];
+    float sca = 1;
+    if (refenceDistance != 0) {
+        vec3 vec = (fm * vec4(pos, 1.0)).xyz - camData.camPos;
+        float dist = dot(vec, camData.camDir);
+        sca = dist / refenceDistance;
+    }
+    gl_Position = camData.pmat * fm * vec4(pos + borderWidth * sca * normalize(norm), 1.0);
+}
+
+#vertex skeleton
+#version 460 core
+#include "../lib/TransformData_def.hmat"
+#include "../lib/CameraData_Def.hmat"
+#include "../lib/SkeletonMeshData_Def.hmat"
+
+uniform float borderWidth;
+uniform float refenceDistance;
+
+mat4 getFinalMat()
+{
+    float tw = weights[0] + weights[1] + weights[2] + weights[3];
+    uint bid = ObjectIDs[gl_InstanceID + gl_BaseInstance];
+    mat4 fm = Transforms[bid + boneId[0]] * weights[0] / tw;
+    if (weights[1] != 0)
+        fm += Transforms[bid + boneId[1]] * weights[1] / tw;
+    if (weights[2] != 0)
+        fm += Transforms[bid + boneId[2]] * weights[2] / tw;
+    if (weights[3] != 0)
+        fm += Transforms[bid + boneId[3]] * weights[3] / tw;
+    return fm;
+}
+
+void main()
+{
+    mat4 fm = getFinalMat();
+    float sca = 1;
+    if (refenceDistance != 0) {
+        vec3 vec = (fm * vec4(pos, 1.0)).xyz - camData.camPos;
+        float dist = dot(vec, camData.camDir);
+        sca = dist / refenceDistance;
+    }
+    gl_Position = camData.pmat * fm * vec4(pos + borderWidth * sca * normalize(norm), 1.0);
+}
+
+#vertex skeleton morph
+#version 460 core
+#include "../lib/TransformData_def.hmat"
+#include "../lib/CameraData_Def.hmat"
+#include "../lib/SkeletonMeshData_Def.hmat"
+#include "../lib/MorphData_def.hmat"
+
+uniform float borderWidth;
+uniform float refenceDistance;
+
+vec3 morphPos()
+{
+    uint nMorph = uint(nMorphV);
+    uint base = gl_VertexID * nMorph;
+    vec3 w = vec3(0, 0, 0);
+    for (uint i = 0; i < nMorph; i++) {
+        w += morphData[(base + i) * 2].xyz * morphWeight[i];
+    }
+    return pos + w;
+}
+
+vec3 morphNorm()
+{
+    uint nMorph = uint(nMorphV);
+    uint base = gl_VertexID * nMorph;
+    vec3 w = vec3(0, 0, 0);
+    for (uint i = 0; i < nMorph; i++) {
+        w += morphData[(base + i) * 2 + 1].xyz * morphWeight[i];
+    }
+    return norm + w;
+}
+
+mat4 getFinalMat()
+{
+    float tw = weights[0] + weights[1] + weights[2] + weights[3];
+    uint bid = ObjectIDs[gl_InstanceID + gl_BaseInstance];
+    mat4 fm = Transforms[bid + boneId[0]] * weights[0] / tw;
+    if (weights[1] != 0)
+        fm += Transforms[bid + boneId[1]] * weights[1] / tw;
+    if (weights[2] != 0)
+        fm += Transforms[bid + boneId[2]] * weights[2] / tw;
+    if (weights[3] != 0)
+        fm += Transforms[bid + boneId[3]] * weights[3] / tw;
+    return fm;
+}
+
+void main()
+{
+    mat4 fm = getFinalMat();
+    vec3 mpos = morphPos();
+    vec3 mnorm = morphNorm();
+    float sca = 1;
+    if (refenceDistance != 0) {
+        vec3 vec = (fm * vec4(mpos, 1.0)).xyz - camData.camPos;
+        float dist = dot(vec, camData.camDir);
+        sca = dist / refenceDistance;
+    }
+    gl_Position = camData.pmat * fm * vec4(mpos + borderWidth * sca * normalize(mnorm), 1.0);
+}

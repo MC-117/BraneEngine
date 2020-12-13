@@ -1,0 +1,20 @@
+#include "../lib/Bindings_Def.hmat"
+
+struct Particle
+{
+    vec3 pos;
+    float lifetime;
+    vec3 scale;
+    float maxLifetime;
+    vec3 velocity;
+    float type;
+    vec3 acceleration;
+    float extSca;
+    vec4 extVec;
+    vec4 color;
+};
+
+layout (std430, binding = PARTICLE_BIND_INDEX) buffer ParticleBuffer
+{
+    Particle Particles[];
+};

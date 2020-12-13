@@ -1,0 +1,24 @@
+#include "Bindings_Def.hmat"
+
+struct PointLight
+{
+    vec3 pos;
+    float intensity;
+    vec3 color;
+    float attenuation;
+};
+
+struct DirectLight
+{
+    vec3 direction;
+    float intensity;
+    mat4 lmat;
+    vec3 color;
+};
+
+layout (std430, binding = LIGHT_BIND_INDEX) buffer CB6
+{
+    DirectLight directLight;
+    uint pointLightCount;
+    PointLight pointLights[];
+};

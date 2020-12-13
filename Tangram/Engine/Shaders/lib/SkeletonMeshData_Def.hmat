@@ -1,0 +1,3 @@
+#include "MeshData_Def.hmat"
+layout (location = 3) in uvec4 boneId;
+layout (location = 4) in vec4 weights;

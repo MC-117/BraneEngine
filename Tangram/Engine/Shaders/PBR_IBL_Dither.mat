@@ -1,0 +1,119 @@
+#order 1000
+#material
+Color baseColor: 255, 255, 255, 255
+Texture colorMap: white
+Scalar metallic: 0.5
+Texture metallicMap: white
+Scalar roughness: 0.5
+Texture roughnessMap: white
+Scalar ao: 1.0
+Texture aoMap: white
+Color reflectionColor: 255, 255, 255, 255
+Texture reflectionMap: black
+Texture irradianceMap: black
+Scalar normalScale: 1
+Texture normalMap: black
+Scalar emission: 0
+Texture emissionMap: white
+Texture brdfLUT: brdfLUT
+Texture depthMap: white
+#vertex use default
+#fragment
+#version 460 core
+
+#include "lib/Light_Def.hmat"
+#include "lib/CameraData_Def.hmat"
+
+layout (location = 0) out vec4 FragColor;
+in vec2 TexCoords;
+in vec3 WorldPos;
+in vec3 Normal;
+in vec4 lightSpacePos;
+
+uniform vec4 baseColor;
+uniform sampler2D colorMap;
+uniform float metallic;
+uniform sampler2D metallicMap;
+uniform float roughness;
+uniform sampler2D roughnessMap;
+uniform float ao;
+uniform sampler2D aoMap;
+uniform vec4 reflectionColor;
+uniform sampler2D reflectionMap;
+uniform sampler2D irradianceMap;
+uniform float normalScale;
+uniform sampler2D normalMap;
+uniform float emission;
+uniform sampler2D emissionMap;
+uniform sampler2D brdfLUT;
+uniform sampler2D depthMap;
+
+const mat4 thresholdMatrix = mat4(
+1.0 / 17.0,  9.0 / 17.0,  3.0 / 17.0, 11.0 / 17.0,
+13.0 / 17.0,  5.0 / 17.0, 15.0 / 17.0,  7.0 / 17.0,
+4.0 / 17.0, 12.0 / 17.0,  2.0 / 17.0, 10.0 / 17.0,
+16.0 / 17.0,  8.0 / 17.0, 14.0 / 17.0,  6.0 / 17.0
+);
+
+#include "lib/PBR_Lib.hmat"
+#include "lib/Basic_FS_Lib.hmat"
+
+void main() {
+    vec4 _cm = texture(colorMap, TexCoords);
+    vec3 albedo = baseColor.rgb * _cm.rgb;
+    float alpha = baseColor.a * _cm.a;
+
+    ivec2 pos = ivec2(int(gl_FragCoord.x), int(gl_FragCoord.y));
+    if (alpha < thresholdMatrix[(pos.x % 4)][(pos.y % 4)])
+        discard;
+
+    vec3 N = normalize(cotangent(Normal, WorldPos, TexCoords) * ((normalize(texture(normalMap, TexCoords) * 2 - 1)).xyz) * normalScale) ;
+    vec3 V = normalize(camData.camPos - WorldPos);
+    float _roughness = roughness * texture(roughnessMap, TexCoords).r;
+    float _metallic = metallic * texture(metallicMap, TexCoords).r;
+    float _ao = ao * texture(aoMap, TexCoords).r;
+    
+    vec3 F0 = vec3(0.04); 
+    F0 = mix(F0, albedo, _metallic);
+
+    // reflectance equation
+    vec3 Lo = vec3(0.0);
+
+    if (directLight.intensity != 0) {
+        Lo += PBR_Lo_DirectLight(directLight, N, V, albedo, _metallic, _roughness) * ShadowCalculation(depthMap, lightSpacePos, N, directLight.direction);
+    }
+
+    for(int i = 0; i < pointLightCount; ++i) {
+        if (pointLights[i].intensity != 0) {
+            Lo += PBR_Lo_PointLight(pointLights[i], WorldPos, N, V, albedo, _metallic, _roughness);
+        }
+    }
+
+    // IBL
+    vec3 L = normalize(-reflect(-V, N));
+    vec3 H = normalize(L + V);
+    vec3 F = fresnelSchlick(max(dot(H, V), 0.0), F0, _roughness);
+    vec3 kD = 1.0 - F;
+    kD *= 1.0 - metallic;
+    vec2 coord = sphereProj(-L);
+    coord.y = 1 - coord.y;
+    vec3 rel = textureLod(reflectionMap, coord, roughness * (textureQueryLevels(reflectionMap) - 1)).xyz;
+    vec3 irrad = texture(irradianceMap, coord).xyz;
+
+    coord = vec2(max(dot(N, V), 0.0), roughness);
+    coord.y = 1 - coord.y;
+    vec2 envBRDF = texture(brdfLUT, coord).rg;
+    vec3 Le = rel * (F * envBRDF.x + envBRDF.y);
+    vec3 iblAmbient = kD * irrad * albedo + Le;
+    vec3 pbrAmbient = vec3(0.03) * albedo;
+
+    // Combination
+    vec3 ambient = mix(pbrAmbient, iblAmbient, reflectionColor.xyz) * _ao;
+    vec3 emissionColor = texture(emissionMap, TexCoords).rgb;
+    vec3 color = ambient + Lo;//vec3(emission.r * emissionColor.r, emission.g * emissionColor.g, emission.b * emissionColor.b);
+
+    color = color / (color + vec3(1.0));
+    color = pow(color, vec3(1.0/2.2)) + (emission * baseColor).rgb * emissionColor;
+
+    FragColor = vec4(color, alpha);
+}

@@ -1,0 +1,21 @@
+#material
+Texture screenMap
+#vertex postprocess
+#version 460 core
+const vec2 quadVertices[4] = vec2[](vec2(-1.0, -1.0), vec2(1.0, -1.0), vec2(-1.0, 1.0), vec2(1.0, 1.0));
+const vec2 quadUV[4] = vec2[](vec2(0.0, 0.0), vec2(1.0, 0.0), vec2(0.0, 1.0), vec2(1.0, 1.0));
+out vec2 UV;
+void main()
+{
+    gl_Position = vec4(quadVertices[gl_VertexID], 0.0, 1.0);
+    UV = quadUV[gl_VertexID];
+}
+#fragment postprocess
+#version 460 core
+uniform sampler2D screenMap;
+layout (location = 0) out vec4 FragColor;
+in vec2 UV;
+
+void main() {
+    FragColor = textureLod(screenMap, UV, 0);
+}

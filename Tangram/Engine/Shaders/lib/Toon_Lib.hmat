@@ -1,0 +1,7 @@
+#include "Basic_FS_Lib.hmat"
+
+vec4 smoothToon(vec4 base, vec4 over, float value, float cut, float smoothValue)
+{
+    float hs = clamp(smoothValue, 0.0f, 1.0f) / 2.0f;
+    return mix(over, base, smoothstep(max(0.0f, cut - hs), min(1.0f, cut + hs), value));
+}

@@ -1,0 +1,121 @@
+#adapter name default
+#vertex
+#version 460 core
+#include "../lib/TransformData_def.hmat"
+#include "../lib/CameraData_Def.hmat"
+#include "../lib/Light_Def.hmat"
+#include "../lib/MeshData_Def.hmat"
+
+out vec3 Normal;
+out vec2 TexCoords;
+out vec4 lightSpacePos;
+out vec3 WorldPos;
+
+void main()
+{
+    mat4 fm = Transforms[ObjectIDs[gl_InstanceID + gl_BaseInstance]];
+    vec4 _WorldPos = fm * vec4(pos, 1.0);
+    WorldPos = _WorldPos.xyz;
+    gl_Position = camData.pmat * _WorldPos;
+    Normal = normalize(mat3(fm) * norm);
+    lightSpacePos = directLight.lmat * _WorldPos;
+    TexCoords = uv;
+    TexCoords.y = 1 - TexCoords.y;
+}
+#vertex skeleton
+#version 460 core
+#include "../lib/TransformData_def.hmat"
+#include "../lib/CameraData_Def.hmat"
+#include "../lib/Light_Def.hmat"
+#include "../lib/SkeletonMeshData_Def.hmat"
+
+out vec3 Normal;
+out vec2 TexCoords;
+out vec4 lightSpacePos;
+out vec3 WorldPos;
+
+mat4 getFinalMat()
+{
+    float tw = weights[0] + weights[1] + weights[2] + weights[3];
+    uint bid = ObjectIDs[gl_InstanceID + gl_BaseInstance];
+    mat4 fm = Transforms[bid + boneId[0]] * weights[0] / tw;
+    if (weights[1] != 0)
+        fm += Transforms[bid + boneId[1]] * weights[1] / tw;
+    if (weights[2] != 0)
+        fm += Transforms[bid + boneId[2]] * weights[2] / tw;
+    if (weights[3] != 0)
+        fm += Transforms[bid + boneId[3]] * weights[3] / tw;
+    return fm;
+}
+
+void main()
+{
+    mat4 fm = getFinalMat();
+    vec4 _WorldPos = fm * vec4(pos, 1.0);
+    WorldPos = _WorldPos.xyz;
+    gl_Position = camData.pmat * _WorldPos;
+    Normal = normalize(mat3(fm) * norm);
+    lightSpacePos = directLight.lmat * _WorldPos;
+    TexCoords = uv;
+    TexCoords.y = 1 - TexCoords.y;
+}
+#vertex skeleton morph
+#version 460 core
+#include "../lib/TransformData_def.hmat"
+#include "../lib/CameraData_Def.hmat"
+#include "../lib/Light_Def.hmat"
+#include "../lib/SkeletonMeshData_Def.hmat"
+#include "../lib/MorphData_def.hmat"
+
+out vec3 Normal;
+out vec2 TexCoords;
+out vec4 lightSpacePos;
+out vec3 WorldPos;
+
+vec3 morphPos()
+{
+    uint nMorph = uint(nMorphV);
+    uint base = gl_VertexID * nMorph;
+    vec3 w = vec3(0, 0, 0);
+    for (uint i = 0; i < nMorph; i++) {
+        w += morphData[(base + i) * 2].xyz * morphWeight[i];
+    }
+    return pos + w;
+}
+
+vec3 morphNorm()
+{
+    uint nMorph = uint(nMorphV);
+    uint base = gl_VertexID * nMorph;
+    vec3 w = vec3(0, 0, 0);
+    for (uint i = 0; i < nMorph; i++) {
+        w += morphData[(base + i) * 2 + 1].xyz * morphWeight[i];
+    }
+    return norm + w;
+}
+
+mat4 getFinalMat()
+{
+    float tw = weights[0] + weights[1] + weights[2] + weights[3];
+    uint bid = ObjectIDs[gl_InstanceID + gl_BaseInstance];
+    mat4 fm = Transforms[bid + boneId[0]] * weights[0] / tw;
+    if (weights[1] != 0)
+        fm += Transforms[bid + boneId[1]] * weights[1] / tw;
+    if (weights[2] != 0)
+        fm += Transforms[bid + boneId[2]] * weights[2] / tw;
+    if (weights[3] != 0)
+        fm += Transforms[bid + boneId[3]] * weights[3] / tw;
+    return fm;
+}
+
+void main()
+{
+    mat4 fm = getFinalMat();
+    vec4 _WorldPos = fm * vec4(morphPos(), 1.0);
+    WorldPos = _WorldPos.xyz;
+    gl_Position = camData.pmat * _WorldPos;
+    Normal = normalize(mat3(fm) * morphNorm());
+    lightSpacePos = directLight.lmat * _WorldPos;
+    TexCoords = uv;
+    TexCoords.y = 1 - TexCoords.y;
+}

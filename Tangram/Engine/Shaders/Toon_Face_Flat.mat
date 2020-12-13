@@ -1,0 +1,65 @@
+#order 1000
+#material
+Color baseColor: 255, 255, 255, 255
+Texture colorMap: white
+Color shadowColor: 150, 150, 150, 255
+Color highlightColor: 50, 50, 50, 255
+Color rimColor: 50, 50, 50, 255
+Color overColor: 255, 255, 255, 255
+Scalar shadowCut: 0.5
+Scalar shadowCutSmooth: 0.0
+Scalar highlightCut: 0.999
+Scalar highlightCutSmooth: 0.0
+Scalar rimCut: 0.8
+Scalar rimCutSmooth: 0.0
+Scalar normalScale: 1.0
+Texture normalMap: black
+Texture depthMap: white
+#vertex use default
+#fragment
+#version 460 core
+
+#include "lib/Light_Def.hmat"
+#include "../lib/CameraData_Def.hmat"
+
+layout (location = 0) out vec4 FragColor;
+layout (location = 1) out vec4 ssnMask;
+in vec3 Normal;
+in vec2 TexCoords;
+in vec4 lightSpacePos;
+in vec3 WorldPos;
+
+uniform vec4 baseColor;
+uniform sampler2D colorMap;
+uniform vec4 shadowColor;
+uniform vec4 highlightColor;
+uniform vec4 rimColor;
+uniform vec4 overColor;
+uniform float shadowCut;
+uniform float shadowCutSmooth;
+uniform float highlightCut;
+uniform float highlightCutSmooth;
+uniform float rimCut;
+uniform float rimCutSmooth;
+uniform float normalScale;
+uniform sampler2D normalMap;
+uniform sampler2D depthMap;
+
+#include "lib/Toon_Lib.hmat"
+
+void main()
+{
+    vec3 N = normalize(cotangent(Normal, WorldPos, TexCoords) * ((normalize(texture(normalMap, TexCoords) * 2 - 1)).xyz) * normalScale);
+    vec3 V = normalize(camData.camPos - WorldPos);
+    vec4 albedo = texture(colorMap, TexCoords);
+    float a = albedo.a * baseColor.a;
+    vec3 L = normalize(directLight.direction);
+    vec3 H = normalize(V + L);
+    vec4 ambience = mix(shadowColor, baseColor, ShadowCalculation(depthMap, lightSpacePos, N, L));
+    ambience = smoothToon(ambience, shadowColor, dot(N, L), shadowCut, shadowCutSmooth);
+    ambience = mix(ambience, highlightColor, smoothToon(vec4(1.0f), vec4(0.0f), dot(N, H), highlightCut, highlightCutSmooth));
+    FragColor = albedo * ambience;
+    FragColor.a = a;
+    FragColor *= overColor;
+    ssnMask = vec4(1);
+}

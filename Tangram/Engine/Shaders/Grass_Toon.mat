@@ -1,0 +1,121 @@
+#order 2450
+#noearlyz
+#castshadow false
+#material
+Scalar noiseUVScale: 500
+Scalar lightFactor: 0.5
+Scalar darkCut: 0.5
+Scalar darkSmooth: 0.5
+Scalar alphaCut: 0.5
+Scalar time: 0
+Scalar windDensity: 1
+Color baseColor: 255, 255, 255, 255
+Color darkColor: 255, 255, 255, 255
+Color shadowColor: 150, 150, 150, 255
+Color noiseColor: 150, 150, 150, 255
+Color overColor: 255, 255, 255, 255
+Color windForce: 2.0, 2.0, 0.0, 0.0
+Texture colorMap: white
+Texture noiseMap: black
+Texture depthMap: white
+#vertex
+#version 460 core
+#include "lib/TransformData_def.hmat"
+#include "lib/CameraData_Def.hmat"
+#include "lib/Light_Def.hmat"
+#include "lib/MeshData_Def.hmat"
+
+out vec3 Normal;
+out vec2 TexCoords;
+out vec4 lightSpacePos;
+out vec3 WorldPos;
+
+uniform float time;
+uniform float windDensity;
+uniform vec4 windForce;
+
+vec2 random2(vec2 st){
+    st = vec2( dot(st,vec2(127.1,311.7)),
+              dot(st,vec2(269.5,183.3)) );
+    return -1.0 + 2.0*fract(sin(st)*43758.5453123);
+}
+
+float noise(vec2 st) {
+    vec2 i = floor(st);
+    vec2 f = fract(st);
+
+    vec2 u = f*f*(3.0-2.0*f);
+
+    return mix( mix( dot( random2(i + vec2(0.0,0.0) ), f - vec2(0.0,0.0) ),
+                     dot( random2(i + vec2(1.0,0.0) ), f - vec2(1.0,0.0) ), u.x),
+                mix( dot( random2(i + vec2(0.0,1.0) ), f - vec2(0.0,1.0) ),
+                     dot( random2(i + vec2(1.0,1.0) ), f - vec2(1.0,1.0) ), u.x), u.y);
+}
+
+void main() {
+    mat4 fm = Transforms[ObjectIDs[gl_InstanceID + gl_BaseInstance]];
+    vec4 _WorldPos = fm * vec4(pos, 1.0);
+
+    vec2 offset = (noise((_WorldPos.xz + time * normalize(windForce.xy)) *
+        windDensity) - 0.5) * windForce.xy;
+    
+    _WorldPos.xy += offset * uv.y;
+
+    WorldPos = _WorldPos.xyz;
+    gl_Position = camData.pmat * _WorldPos;
+    Normal = normalize(mat3(fm) * norm);
+    lightSpacePos = directLight.lmat * _WorldPos;
+    TexCoords = uv;
+    TexCoords.y = 1 - TexCoords.y;
+}
+
+#fragment
+#version 460 core
+
+#include "lib/Light_Def.hmat"
+#include "lib/CameraData_Def.hmat"
+#include "lib/Toon_Lib.hmat"
+
+const mat4 thresholdMatrix = mat4(
+1.0 / 17.0,  9.0 / 17.0,  3.0 / 17.0, 11.0 / 17.0,
+13.0 / 17.0,  5.0 / 17.0, 15.0 / 17.0,  7.0 / 17.0,
+4.0 / 17.0, 12.0 / 17.0,  2.0 / 17.0, 10.0 / 17.0,
+16.0 / 17.0,  8.0 / 17.0, 14.0 / 17.0,  6.0 / 17.0
+);
+
+layout (location = 0) out vec4 FragColor;
+layout (location = 1) out vec4 ssnMask;
+in vec3 Normal;
+in vec2 TexCoords;
+in vec4 lightSpacePos;
+in vec3 WorldPos;
+
+uniform float noiseUVScale;
+uniform float lightFactor;
+uniform float darkCut;
+uniform float darkSmooth;
+uniform float alphaCut;
+uniform vec4 baseColor;
+uniform vec4 darkColor;
+uniform vec4 shadowColor;
+uniform vec4 noiseColor;
+uniform vec4 overColor;
+uniform sampler2D colorMap;
+uniform sampler2D noiseMap;
+uniform sampler2D depthMap;
+
+void main() {
+    vec4 color = texture(colorMap, TexCoords);
+    if (color.a < alphaCut)
+        discard;
+
+    vec3 L = normalize(directLight.direction);
+    vec4 ambience = smoothToon(darkColor, baseColor, TexCoords.y, darkCut, darkSmooth);
+    ambience.rgb *= mix(vec3(1), directLight.color, lightFactor);
+    float shadowFactor = ShadowCalculation(depthMap, lightSpacePos, Normal, L);
+    ambience = mix(shadowColor, ambience, shadowFactor);
+    ambience *= mix(overColor, noiseColor, texture(noiseMap, WorldPos.xy / noiseUVScale));
+    
+    FragColor = color * ambience;
+    ssnMask = vec4(1);
+}
