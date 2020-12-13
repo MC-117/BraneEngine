@@ -32,6 +32,10 @@ protected:
 	int selectedMaterialID = 0;
 
 	// Character
+	float springArmRadius = 2;
+	float springArmLength = 50;
+
+	// Character
 	float capsuleRadius = 5;
 	float capsuleHalfLength = 20;
 

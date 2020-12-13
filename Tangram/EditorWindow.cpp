@@ -341,8 +341,9 @@ void EditorWindow::objectContextMenu(Object * obj)
 	Object& target = obj == NULL ? object : *obj;
 	ImGui::Text("%s(%s)", target.getSerialization().type.c_str(), target.name.c_str());
 	ImGui::Separator();
+	ImGui::PushID("ContextMenu");
 	if (ImGui::BeginMenu("New Object")) {
-
+		
 		// Transform
 		if (ImGui::BeginMenu("Transform")) {
 			ImGui::InputText("Name", &newObjectName);
@@ -373,7 +374,7 @@ void EditorWindow::objectContextMenu(Object * obj)
 				}
 				ImGui::EndMenu();
 			}
-			if (ImGui::BeginMenu("PostProcessingCamera")) {
+			if (ImGui::BeginMenu("PostProcessingCamera##PostProcessingCameraMenu")) {
 				ImGui::InputText("Name", &newObjectName);
 				if (Brane::find(typeid(Object).hash_code(), newObjectName) == NULL) {
 					if (ImGui::Button("Create", { -1, 36 })) {
@@ -386,6 +387,26 @@ void EditorWindow::objectContextMenu(Object * obj)
 				}
 				ImGui::EndMenu();
 			}
+			ImGui::EndMenu();
+		}
+
+		// SpringArm
+		if (ImGui::BeginMenu("SpringArm")) {
+			ImGui::InputText("Name", &newObjectName);
+			ImGui::DragFloat("Radius", &springArmRadius);
+			ImGui::DragFloat("SpringLength", &springArmLength);
+			if (Brane::find(typeid(Object).hash_code(), newObjectName) == NULL) {
+				if (ImGui::Button("Create", { -1, 36 })) {
+					SpringArm* t = new SpringArm(newObjectName);
+					t->setRadius(springArmRadius);
+					t->setSpringLength(springArmLength);
+					target.addChild(*t);
+				}
+			}
+			else {
+				ImGui::Text("Name exists");
+			}
+			ImGui::EndMenu();
 		}
 
 		// Character
@@ -432,6 +453,7 @@ void EditorWindow::objectContextMenu(Object * obj)
 
 		ImGui::EndMenu();
 	}
+	ImGui::PopID();
 	if (obj != NULL) {
 		if (ImGui::MenuItem("Delete"))
 			target.destroy();
