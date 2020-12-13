@@ -52,7 +52,9 @@ Serializable * Character::instantiate(const SerializationInfo & from)
 {
 	Capsule capsule;
 	from.get("capsule", capsule);
-	return new Character(capsule, from.name);
+	Character* character = new Character(capsule, from.name);
+	ChildrenInstantiateObject(from, character);
+	return character;
 }
 
 bool Character::deserialize(const SerializationInfo & from)
@@ -62,6 +64,9 @@ bool Character::deserialize(const SerializationInfo & from)
 
 bool Character::serialize(SerializationInfo & to)
 {
+	if (!Actor::serialize(to))
+		return false;
+	to.type = "Character";
 	to.set("capsule", physicalController.capsule);
 	return true;
 }
