@@ -1,7 +1,7 @@
 # BraneEngine
 >by Luo Yizhou
 
-## *This version is out of maintenance. New upadate is in BraneEngineDx repo.*
+## *This version is out of maintenance. New updates is in BraneEngineDx repo.*
 https://github.com/MC-117/BraneEngineDx
 
 ## Introduction
